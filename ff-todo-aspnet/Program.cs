@@ -1,3 +1,6 @@
+using tiszaszaki_asp_webapp_2022.Repositories;
+using tiszaszaki_asp_webapp_2022.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
