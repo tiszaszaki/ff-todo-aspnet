@@ -1,55 +1,22 @@
-﻿using System;
+﻿using ff_todo_aspnet.Constants;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tiszaszaki_asp_webapp_2022.Entities
 {
-    public class Todo
+	[Table("todo")]
+	public class Todo
     {
 		public long id { get; set; }
+        [Required]
 		public string name { get; set; }
+        [StringLength(TodoCommon.MAX_TODO_DESCRIPTION_LENGTH)]
 		public string description { get; set; }
 		public int phase { get; set; }
+        [Column("date_created")]
 		public DateTime dateCreated { get; set; }
+		[Column("date_modified")]
 		public DateTime dateModified { get; set; }
-		public DateTime deadline { get; set; }
-		/*
-		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO)
-		@Column(updatable = false, nullable = false)
-		private Long id;
-
-		@NotBlank
-		@Column(nullable = false, unique = true)
-		private String name;
-
-		@Size(max = TodoCommon.maxTodoDescriptionLength)
-		@Column(length = TodoCommon.maxTodoDescriptionLength)
-		private String description;
-
-		@NotNull
-		@Min(TodoCommon.phaseMin)
-		@Max(TodoCommon.phaseMax)
-		private Integer phase;
-
-		@PastOrPresent
-		@Column(nullable = false)
-		@Temporal(TemporalType.TIMESTAMP)
-		private Date dateCreated;
-
-		@PastOrPresent
-		@Column(nullable = false)
-		@Temporal(TemporalType.TIMESTAMP)
-		private Date dateModified;
-
-		private Date deadline;
-		@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "todo")
-
-		private List<Task> tasks;
-		@ManyToOne
-		@JoinColumn(name = "board_id", nullable = false)
-		@JsonIgnore
-		@ToString.Exclude
-
-		private Board board;
-		*/
+		public DateTime? deadline { get; set; }
 	}
 }

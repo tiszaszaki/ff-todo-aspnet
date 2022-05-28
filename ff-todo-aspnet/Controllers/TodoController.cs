@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using tiszaszaki_asp_webapp_2022.Entities;
 using tiszaszaki_asp_webapp_2022.Services;
 
 namespace tiszaszaki_asp_webapp_2022.Controllers
@@ -13,9 +14,9 @@ namespace tiszaszaki_asp_webapp_2022.Controllers
             this.todoService = todoService;
         }
         [HttpGet]
-        public void Test()
+        public IEnumerable<Todo> GetTodos()
         {
-            todoService.Test();
+            return todoService.GetTodos();
         }
     }
 }

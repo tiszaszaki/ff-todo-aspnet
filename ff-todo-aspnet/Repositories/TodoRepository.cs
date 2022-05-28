@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using tiszaszaki_asp_webapp_2022.Configurations;
+﻿using tiszaszaki_asp_webapp_2022.Configurations;
 using tiszaszaki_asp_webapp_2022.Entities;
 
 namespace tiszaszaki_asp_webapp_2022.Repositories
@@ -13,13 +12,7 @@ namespace tiszaszaki_asp_webapp_2022.Repositories
         }
         public IEnumerable<Todo> FetchTodos()
         {
-            return context.todos;
+            return context.Todos;
         }
-        /*
-        public IEnumerable<Todo> FetchTodosFromFrame(int phase)
-        {
-            return 
-        }
-        */
     }
 }

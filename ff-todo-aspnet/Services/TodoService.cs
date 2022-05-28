@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using tiszaszaki_asp_webapp_2022.Entities;
 using tiszaszaki_asp_webapp_2022.Repositories;
 
 namespace tiszaszaki_asp_webapp_2022.Services
@@ -13,9 +10,9 @@ namespace tiszaszaki_asp_webapp_2022.Services
         {
             this.todoRepository = todoRepository;
         }
-        public void Test()
+        public IEnumerable<Todo> GetTodos()
         {
-            Console.WriteLine("Testing tiszaszaki_asp_webapp_2022 service");
+            return todoRepository.FetchTodos();
         }
     }
 }
