@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using tiszaszaki_asp_webapp_2022.Entities;
-using tiszaszaki_asp_webapp_2022.ResponseObjects;
-using tiszaszaki_asp_webapp_2022.Services;
+using ff_todo_aspnet.Entities;
+using ff_todo_aspnet.ResponseObjects;
+using ff_todo_aspnet.Services;
+using ff_todo_aspnet.RequestObjects;
 
-namespace tiszaszaki_asp_webapp_2022.Controllers
+namespace ff_todo_aspnet.Controllers
 {
     [ApiController]
     [Route("todo")]
@@ -22,7 +23,7 @@ namespace tiszaszaki_asp_webapp_2022.Controllers
             return todoService.GetTodos();
         }
         [HttpPut]
-        public Todo AddTodo(Todo todo)
+        public Todo AddTodo(TodoRequest todo)
         {
             return todoService.AddTodo(testBoardId, todo);
         }
@@ -32,7 +33,7 @@ namespace tiszaszaki_asp_webapp_2022.Controllers
             todoService.RemoveTodo(id);
         }
         [HttpPatch("{id}")]
-        public void UpdateTodo(long id, [FromBody]Todo patchedTodo)
+        public void UpdateTodo(long id, [FromBody] TodoRequest patchedTodo)
         {
             todoService.UpdateTodo(id, patchedTodo);
         }

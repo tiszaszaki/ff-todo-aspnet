@@ -1,8 +1,9 @@
-﻿using tiszaszaki_asp_webapp_2022.Entities;
-using tiszaszaki_asp_webapp_2022.Repositories;
-using tiszaszaki_asp_webapp_2022.ResponseObjects;
+﻿using ff_todo_aspnet.Entities;
+using ff_todo_aspnet.Repositories;
+using ff_todo_aspnet.RequestObjects;
+using ff_todo_aspnet.ResponseObjects;
 
-namespace tiszaszaki_asp_webapp_2022.Services
+namespace ff_todo_aspnet.Services
 {
     public class TodoService
     {
@@ -19,11 +20,12 @@ namespace tiszaszaki_asp_webapp_2022.Services
         {
             return DateTime.Now.ToUniversalTime();
         }
-        public Todo AddTodo(long boardId, Todo todo)
+        public Todo AddTodo(long boardId, TodoRequest todoRequest)
         {
+            Todo todo = todoRequest;
             todo.dateCreated = fetchNewDateTime();
-            todo.dateModified = todo.dateCreated;
-            //todo.boardId = boardId;
+            todo.dateModified = fetchNewDateTime();
+            todo.boardId = boardId;
             return todoRepository.AddTodo(todo);
         }
 
@@ -32,8 +34,9 @@ namespace tiszaszaki_asp_webapp_2022.Services
             todoRepository.RemoveTodo(id);
         }
 
-        public void UpdateTodo(long id, Todo patchedTodo)
+        public void UpdateTodo(long id, TodoRequest patchRequest)
         {
+            Todo patchedTodo = patchRequest;
             patchedTodo.dateModified = fetchNewDateTime();
             todoRepository.UpdateTodo(id, patchedTodo);
         }

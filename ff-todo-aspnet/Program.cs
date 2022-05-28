@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using tiszaszaki_asp_webapp_2022.Configurations;
-using tiszaszaki_asp_webapp_2022.Repositories;
-using tiszaszaki_asp_webapp_2022.Services;
+using ff_todo_aspnet.Configurations;
+using ff_todo_aspnet.Repositories;
+using ff_todo_aspnet.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<TodoDbContext>(x => x.UseNpgsql(connectionString));
 
+builder.Services.AddScoped<BoardRepository>();
 builder.Services.AddScoped<TodoRepository>();
+builder.Services.AddScoped<TaskRepository>();
+
+builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<TodoService>();
+builder.Services.AddScoped<TaskService>();
 
 builder.Services.AddControllers();
 

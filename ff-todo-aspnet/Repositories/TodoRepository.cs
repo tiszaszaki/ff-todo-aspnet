@@ -1,8 +1,8 @@
-﻿using tiszaszaki_asp_webapp_2022.Configurations;
-using tiszaszaki_asp_webapp_2022.Entities;
-using tiszaszaki_asp_webapp_2022.ResponseObjects;
+﻿using ff_todo_aspnet.Configurations;
+using ff_todo_aspnet.Entities;
+using ff_todo_aspnet.ResponseObjects;
 
-namespace tiszaszaki_asp_webapp_2022.Repositories
+namespace ff_todo_aspnet.Repositories
 {
     public class TodoRepository
     {
@@ -13,16 +13,7 @@ namespace tiszaszaki_asp_webapp_2022.Repositories
         }
         public IEnumerable<TodoResponse> FetchTodos()
         {
-            return context.Todos.Select(todo => new TodoResponse{
-                id = todo.id,
-                name = todo.name,
-                description = todo.description,
-                phase = todo.phase,
-                dateCreated = todo.dateCreated,
-                dateModified = todo.dateModified,
-                deadline = todo.deadline,
-                boardId = todo.boardId
-            });
+            return context.Todos.Select<Todo, TodoResponse>(todo => todo);
         }
         public Todo AddTodo(Todo todo)
         {
@@ -42,6 +33,7 @@ namespace tiszaszaki_asp_webapp_2022.Repositories
             todo.name = patchedTodo.name;
             todo.description = patchedTodo.description;
             todo.phase = patchedTodo.phase;
+            todo.deadline = patchedTodo.deadline;
             context.SaveChanges();
         }
     }

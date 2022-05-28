@@ -1,9 +1,8 @@
 ﻿using ff_todo_aspnet.Constants;
-using ff_todo_aspnet.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace tiszaszaki_asp_webapp_2022.Entities
+namespace ff_todo_aspnet.Entities
 {
 	[Table("todo")]
 	public class Todo
@@ -21,6 +20,7 @@ namespace tiszaszaki_asp_webapp_2022.Entities
 		[Column("date_modified")]
 		public DateTime dateModified { get; set; }
 		public DateTime? deadline { get; set; }
+		public IEnumerable<Task>? tasks { get; set; }
 		[Column("board_id")]
 		public long boardId { get; set; }
 		public Board board { get; set; }

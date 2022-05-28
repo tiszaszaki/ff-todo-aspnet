@@ -1,7 +1,6 @@
 ﻿using ff_todo_aspnet.Constants;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using tiszaszaki_asp_webapp_2022.Entities;
 
 namespace ff_todo_aspnet.Entities
 {
@@ -21,6 +20,6 @@ namespace ff_todo_aspnet.Entities
 		public bool readonlyTodos { get; set; }
 		[Column("readonly_tasks")]
 		public bool readonlyTasks { get; set; }
-		public IEnumerable<Todo> todos { get; set; }
+		public IEnumerable<Todo>? todos { get; set; }
 	}
 }

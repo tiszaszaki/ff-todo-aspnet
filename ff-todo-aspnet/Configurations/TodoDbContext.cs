@@ -1,20 +1,25 @@
 ﻿using ff_todo_aspnet.Entities;
 using Microsoft.EntityFrameworkCore;
-using tiszaszaki_asp_webapp_2022.Entities;
 
-namespace tiszaszaki_asp_webapp_2022.Configurations
+namespace ff_todo_aspnet.Configurations
 {
     public class TodoDbContext : DbContext
     {
-        public TodoDbContext(DbContextOptions<TodoDbContext> options) : base(options)
-        { }
+        public TodoDbContext(DbContextOptions<TodoDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Board>()
                 .HasMany(b => b.todos)
                 .WithOne(t => t.board)
                 .HasForeignKey(t => t.boardId);
+
+            modelBuilder.Entity<Todo>()
+                .HasMany(to => to.tasks)
+                .WithOne(ta => ta.todo)
+                .HasForeignKey(ta => ta.todoId);
         }
+        public DbSet<Board> Boards { get; set; }
         public DbSet<Todo> Todos { get; set; }
+        public DbSet<Entities.Task> Tasks { get; set; }
     }
 }
