@@ -18,5 +18,7 @@ namespace tiszaszaki_asp_webapp_2022.Entities
 		[Column("date_modified")]
 		public DateTime dateModified { get; set; }
 		public DateTime? deadline { get; set; }
+		[Column("board_id")]
+		public long boardId { get; set; }
 	}
 }

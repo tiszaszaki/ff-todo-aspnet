@@ -14,5 +14,27 @@ namespace tiszaszaki_asp_webapp_2022.Services
         {
             return todoRepository.FetchTodos();
         }
+        public DateTime fetchNewDateTime()
+        {
+            return DateTime.Now.ToUniversalTime();
+        }
+        public Todo AddTodo(int boardId, Todo todo)
+        {
+            todo.dateCreated = fetchNewDateTime();
+            todo.dateModified = todo.dateCreated;
+            todo.boardId = boardId;
+            return todoRepository.AddTodo(todo);
+        }
+
+        public void RemoveTodo(int id)
+        {
+            todoRepository.RemoveTodo(id);
+        }
+
+        public void UpdateTodo(int id, Todo patchedTodo)
+        {
+            patchedTodo.dateModified = fetchNewDateTime();
+            todoRepository.UpdateTodo(id, patchedTodo);
+        }
     }
 }
