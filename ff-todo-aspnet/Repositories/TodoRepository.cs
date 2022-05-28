@@ -1,5 +1,6 @@
 ﻿using tiszaszaki_asp_webapp_2022.Configurations;
 using tiszaszaki_asp_webapp_2022.Entities;
+using tiszaszaki_asp_webapp_2022.ResponseObjects;
 
 namespace tiszaszaki_asp_webapp_2022.Repositories
 {
@@ -10,9 +11,18 @@ namespace tiszaszaki_asp_webapp_2022.Repositories
         {
             this.context = context;
         }
-        public IEnumerable<Todo> FetchTodos()
+        public IEnumerable<TodoResponse> FetchTodos()
         {
-            return context.Todos;
+            return context.Todos.Select(todo => new TodoResponse{
+                id = todo.id,
+                name = todo.name,
+                description = todo.description,
+                phase = todo.phase,
+                dateCreated = todo.dateCreated,
+                dateModified = todo.dateModified,
+                deadline = todo.deadline,
+                boardId = todo.boardId
+            });
         }
         public Todo AddTodo(Todo todo)
         {
@@ -20,13 +30,13 @@ namespace tiszaszaki_asp_webapp_2022.Repositories
             context.SaveChanges();
             return todo;
         }
-        public void RemoveTodo(int id)
+        public void RemoveTodo(long id)
         {
             var todo = context.Todos.Single(todo => todo.id == id);
             context.Todos.Remove(todo);
             context.SaveChanges();
         }
-        public void UpdateTodo(int id, Todo patchedTodo)
+        public void UpdateTodo(long id, Todo patchedTodo)
         {
             var todo = context.Todos.Single(todo => todo.id == id);
             todo.name = patchedTodo.name;

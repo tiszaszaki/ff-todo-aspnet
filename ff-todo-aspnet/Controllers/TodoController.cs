@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using tiszaszaki_asp_webapp_2022.Entities;
+using tiszaszaki_asp_webapp_2022.ResponseObjects;
 using tiszaszaki_asp_webapp_2022.Services;
 
 namespace tiszaszaki_asp_webapp_2022.Controllers
@@ -16,7 +17,7 @@ namespace tiszaszaki_asp_webapp_2022.Controllers
             this.todoService = todoService;
         }
         [HttpGet]
-        public IEnumerable<Todo> GetTodos()
+        public IEnumerable<TodoResponse> GetTodos()
         {
             return todoService.GetTodos();
         }
@@ -26,12 +27,12 @@ namespace tiszaszaki_asp_webapp_2022.Controllers
             return todoService.AddTodo(testBoardId, todo);
         }
         [HttpDelete("{id}")]
-        public void RemoveTodo(int id)
+        public void RemoveTodo(long id)
         {
             todoService.RemoveTodo(id);
         }
         [HttpPatch("{id}")]
-        public void UpdateTodo(int id, [FromBody]Todo patchedTodo)
+        public void UpdateTodo(long id, [FromBody]Todo patchedTodo)
         {
             todoService.UpdateTodo(id, patchedTodo);
         }

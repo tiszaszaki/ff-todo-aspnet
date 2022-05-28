@@ -1,5 +1,6 @@
 ﻿using tiszaszaki_asp_webapp_2022.Entities;
 using tiszaszaki_asp_webapp_2022.Repositories;
+using tiszaszaki_asp_webapp_2022.ResponseObjects;
 
 namespace tiszaszaki_asp_webapp_2022.Services
 {
@@ -10,7 +11,7 @@ namespace tiszaszaki_asp_webapp_2022.Services
         {
             this.todoRepository = todoRepository;
         }
-        public IEnumerable<Todo> GetTodos()
+        public IEnumerable<TodoResponse> GetTodos()
         {
             return todoRepository.FetchTodos();
         }
@@ -18,20 +19,20 @@ namespace tiszaszaki_asp_webapp_2022.Services
         {
             return DateTime.Now.ToUniversalTime();
         }
-        public Todo AddTodo(int boardId, Todo todo)
+        public Todo AddTodo(long boardId, Todo todo)
         {
             todo.dateCreated = fetchNewDateTime();
             todo.dateModified = todo.dateCreated;
-            todo.boardId = boardId;
+            //todo.boardId = boardId;
             return todoRepository.AddTodo(todo);
         }
 
-        public void RemoveTodo(int id)
+        public void RemoveTodo(long id)
         {
             todoRepository.RemoveTodo(id);
         }
 
-        public void UpdateTodo(int id, Todo patchedTodo)
+        public void UpdateTodo(long id, Todo patchedTodo)
         {
             patchedTodo.dateModified = fetchNewDateTime();
             todoRepository.UpdateTodo(id, patchedTodo);
