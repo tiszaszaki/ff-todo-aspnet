@@ -2,6 +2,7 @@
 using ff_todo_aspnet.Constants;
 using ff_todo_aspnet.Entities;
 using ff_todo_aspnet.ResponseObjects;
+using System.Text.RegularExpressions;
 
 namespace ff_todo_aspnet.Repositories
 {
@@ -50,11 +51,33 @@ namespace ff_todo_aspnet.Repositories
             todo.deadline = patchedTodo.deadline;
             context.SaveChanges();
         }
+        private string replaceNameToUnused(long id)
+        {
+            string res = context.Todos.Single(todo => todo.id == id).name;
+            while (context.Todos.Where(todo => todo.name == res).ToArray().Length > 0)
+            {
+                string strNew; var i = 0;
+                string reNumPat = @"\d+";
+                var matchCount = new Regex(reNumPat).Matches(res).Count;
+                strNew = Regex.Replace(res, reNumPat, m => {
+                    string res = m.Value;
+                    if (i == matchCount - 1)
+                        res = (long.Parse(res) + 1).ToString();
+                    i++;
+                    return res;
+                });
+                if (res == strNew)
+                    res = strNew + " " + 2.ToString() + TodoCommon.TODO_CLONE_SUFFIX;
+                else
+                    res = strNew;
+            }
+            return res;
+        }
         public Todo CloneTodo(long id, int phase, long boardId, DateTime dateCreatedNew, DateTime dateModifiedNew)
         {
             Todo todo = context.Todos.Single(todo => todo.id == id);
             todo.id = context.Todos.Max(todo => todo.id) + 1;
-            todo.name += TodoCommon.TODO_CLONE_SUFFIX;
+            todo.name = replaceNameToUnused(id);
             todo.phase = phase;
             todo.dateCreated = dateCreatedNew;
             todo.dateModified = dateModifiedNew;

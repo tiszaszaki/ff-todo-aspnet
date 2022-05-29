@@ -20,9 +20,9 @@ namespace ff_todo_aspnet.Services
         {
             return todoRepository.FetchTodo(id);
         }
-        public DateTime FetchNewDateTime()
+        private DateTime FetchNewDateTime()
         {
-            return DateTime.Now.ToUniversalTime();
+            return DateTime.UtcNow;
         }
         public Todo AddTodo(long boardId, TodoRequest todoRequest)
         {

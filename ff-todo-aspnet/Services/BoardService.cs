@@ -21,9 +21,9 @@ namespace ff_todo_aspnet.Services
         {
             return boardRepository.FetchBoard(id);
         }
-        public DateTime FetchNewDateTime()
+        private DateTime FetchNewDateTime()
         {
-            return DateTime.Now.ToUniversalTime();
+            return DateTime.UtcNow;
         }
         public Board AddBoard(BoardRequest boardRequest)
         {
