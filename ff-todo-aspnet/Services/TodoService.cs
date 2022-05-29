@@ -20,15 +20,15 @@ namespace ff_todo_aspnet.Services
         {
             return todoRepository.FetchTodo(id);
         }
-        public DateTime fetchNewDateTime()
+        public DateTime FetchNewDateTime()
         {
             return DateTime.Now.ToUniversalTime();
         }
         public Todo AddTodo(long boardId, TodoRequest todoRequest)
         {
             Todo todo = todoRequest;
-            todo.dateCreated = fetchNewDateTime();
-            todo.dateModified = fetchNewDateTime();
+            todo.dateCreated = FetchNewDateTime();
+            todo.dateModified = FetchNewDateTime();
             todo.boardId = boardId;
             return todoRepository.AddTodo(todo);
         }
@@ -47,12 +47,12 @@ namespace ff_todo_aspnet.Services
         public void UpdateTodo(long id, TodoRequest patchRequest)
         {
             Todo patchedTodo = patchRequest;
-            patchedTodo.dateModified = fetchNewDateTime();
+            patchedTodo.dateModified = FetchNewDateTime();
             todoRepository.UpdateTodo(id, patchedTodo);
         }
         public Todo CloneTodo(long id, int phase, long boardId)
         {
-            return todoRepository.CloneTodo(id, phase, boardId);
+            return todoRepository.CloneTodo(id, phase, boardId, FetchNewDateTime(), FetchNewDateTime());
         }
     }
 }

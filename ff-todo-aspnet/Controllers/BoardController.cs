@@ -43,29 +43,29 @@ namespace ff_todo_aspnet.Controllers
             boardService.UpdateBoard(id, patchedBoard);
         }
         [HttpGet("description-max-length")]
-        public long getDescriptionMaxLength()
+        public long GetDescriptionMaxLength()
         {
             return TodoCommon.MAX_BOARD_DESCRIPTION_LENGTH;
         }
         [HttpGet("{id}/readonly-todos")]
-        public bool getBoardReadonlyTodosSetting(long id)
+        public bool GetBoardReadonlyTodosSetting(long id)
         {
-            return boardService.getBoardReadonlyTodosSetting(id);
+            return boardService.GetBoardReadonlyTodosSetting(id);
         }
         [HttpPatch("{id}/readonly-todos/{isReadonly}")]
-        public void setBoardReadonlyTodosSetting(long id, bool isReadonly)
+        public void SetBoardReadonlyTodosSetting(long id, bool isReadonly)
         {
-            boardService.setBoardReadonlyTodosSetting(id, isReadonly);
+            boardService.SetBoardReadonlyTodosSetting(id, isReadonly);
         }
         [HttpGet("{id}/readonly-tasks")]
-        public bool getBoardReadonlyTasksSetting(long id)
+        public bool GetBoardReadonlyTasksSetting(long id)
         {
-            return boardService.getBoardReadonlyTasksSetting(id);
+            return boardService.GetBoardReadonlyTasksSetting(id);
         }
         [HttpPatch("{id}/readonly-tasks/{isReadonly}")]
-        public void setBoardReadonlyTasksSetting(long id, bool isReadonly)
+        public void SetBoardReadonlyTasksSetting(long id, bool isReadonly)
         {
-            boardService.setBoardReadonlyTodosSetting(id, isReadonly);
+            boardService.SetBoardReadonlyTodosSetting(id, isReadonly);
         }
     }
 }

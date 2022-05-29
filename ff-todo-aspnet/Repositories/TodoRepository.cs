@@ -1,4 +1,5 @@
 ﻿using ff_todo_aspnet.Configurations;
+using ff_todo_aspnet.Constants;
 using ff_todo_aspnet.Entities;
 using ff_todo_aspnet.ResponseObjects;
 
@@ -49,10 +50,14 @@ namespace ff_todo_aspnet.Repositories
             todo.deadline = patchedTodo.deadline;
             context.SaveChanges();
         }
-        public Todo CloneTodo(long id, int phase, long boardId)
+        public Todo CloneTodo(long id, int phase, long boardId, DateTime dateCreatedNew, DateTime dateModifiedNew)
         {
-            var todo = context.Todos.Single(todo => todo.id == id);
+            Todo todo = context.Todos.Single(todo => todo.id == id);
+            todo.id = context.Todos.Max(todo => todo.id) + 1;
+            todo.name += TodoCommon.TODO_CLONE_SUFFIX;
             todo.phase = phase;
+            todo.dateCreated = dateCreatedNew;
+            todo.dateModified = dateModifiedNew;
             todo.boardId = boardId;
             context.Todos.Add(todo);
             context.SaveChanges();

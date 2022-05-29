@@ -21,14 +21,14 @@ namespace ff_todo_aspnet.Services
         {
             return boardRepository.FetchBoard(id);
         }
-        public DateTime fetchNewDateTime()
+        public DateTime FetchNewDateTime()
         {
             return DateTime.Now.ToUniversalTime();
         }
         public Board AddBoard(BoardRequest boardRequest)
         {
             Board board = boardRequest;
-            board.dateCreated = fetchNewDateTime();
+            board.dateCreated = FetchNewDateTime();
             board.todos = new Collection<Todo>();
             return boardRepository.AddBoard(board);
         }
@@ -40,21 +40,21 @@ namespace ff_todo_aspnet.Services
         {
             boardRepository.UpdateBoard(id, patchRequest);
         }
-        public bool getBoardReadonlyTodosSetting(long id)
+        public bool GetBoardReadonlyTodosSetting(long id)
         {
-            return boardRepository.fetchBoardReadonlyTodosSetting(id);
+            return boardRepository.FetchBoardReadonlyTodosSetting(id);
         }
-        public void setBoardReadonlyTodosSetting(long id, bool isReadonly)
+        public void SetBoardReadonlyTodosSetting(long id, bool isReadonly)
         {
-            boardRepository.updateBoardReadonlyTodosSetting(id, isReadonly);
+            boardRepository.UpdateBoardReadonlyTodosSetting(id, isReadonly);
         }
-        public bool getBoardReadonlyTasksSetting(long id)
+        public bool GetBoardReadonlyTasksSetting(long id)
         {
-            return boardRepository.fetchBoardReadonlyTasksSetting(id);
+            return boardRepository.FetchBoardReadonlyTasksSetting(id);
         }
-        public void setBoardReadonlyTasksSetting(long id, bool isReadonly)
+        public void SetBoardReadonlyTasksSetting(long id, bool isReadonly)
         {
-            boardRepository.updateBoardReadonlyTodosSetting(id, isReadonly);
+            boardRepository.UpdateBoardReadonlyTodosSetting(id, isReadonly);
         }
     }
 }

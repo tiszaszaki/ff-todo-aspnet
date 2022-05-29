@@ -60,12 +60,12 @@ namespace ff_todo_aspnet.Controllers
             return todoService.CloneTodo(id, phase, boardId);
         }
         [HttpGet("description-max-length")]
-        public long getDescriptionMaxLength()
+        public long GetDescriptionMaxLength()
         {
             return TodoCommon.MAX_BOARD_DESCRIPTION_LENGTH;
         }
         [HttpGet("phase-val-range")]
-        public IEnumerable<int> getTodoPhaseRange()
+        public IEnumerable<int> GetTodoPhaseRange()
         {
             return new Collection<int>{ TodoCommon.PHASE_MIN, TodoCommon.PHASE_MAX };
         }
