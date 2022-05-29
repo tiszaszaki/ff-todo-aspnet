@@ -15,6 +15,10 @@ namespace ff_todo_aspnet.Repositories
         {
             return context.Todos.Select<Todo, TodoResponse>(todo => todo);
         }
+        public TodoResponse FetchTodo(long id)
+        {
+            return context.Todos.Single(todo => todo.id == id);
+        }
         public Todo AddTodo(Todo todo)
         {
             context.Todos.Add(todo);
@@ -27,6 +31,15 @@ namespace ff_todo_aspnet.Repositories
             context.Todos.Remove(todo);
             context.SaveChanges();
         }
+        public void RemoveAllTodos()
+        {
+            context.Todos.RemoveRange(context.Todos);
+        }
+        public void RemoveAllTodosFromBoard(long boardId)
+        {
+            foreach (var todo in context.Todos.Where(todo => todo.boardId == boardId))
+                context.Todos.Remove(todo);
+        }
         public void UpdateTodo(long id, Todo patchedTodo)
         {
             var todo = context.Todos.Single(todo => todo.id == id);
@@ -35,6 +48,15 @@ namespace ff_todo_aspnet.Repositories
             todo.phase = patchedTodo.phase;
             todo.deadline = patchedTodo.deadline;
             context.SaveChanges();
+        }
+        public Todo CloneTodo(long id, int phase, long boardId)
+        {
+            var todo = context.Todos.Single(todo => todo.id == id);
+            todo.phase = phase;
+            todo.boardId = boardId;
+            context.Todos.Add(todo);
+            context.SaveChanges();
+            return context.Todos.Single(clonedTodo => clonedTodo.name == todo.name);
         }
     }
 }

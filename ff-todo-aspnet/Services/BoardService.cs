@@ -17,6 +17,10 @@ namespace ff_todo_aspnet.Services
         {
             return boardRepository.FetchBoards();
         }
+        public BoardResponse GetBoard(long id)
+        {
+            return boardRepository.FetchBoard(id);
+        }
         public DateTime fetchNewDateTime()
         {
             return DateTime.Now.ToUniversalTime();
@@ -28,15 +32,29 @@ namespace ff_todo_aspnet.Services
             board.todos = new Collection<Todo>();
             return boardRepository.AddBoard(board);
         }
-
         public void RemoveBoard(long id)
         {
             boardRepository.RemoveBoard(id);
         }
-
         public void UpdateBoard(long id, BoardRequest patchRequest)
         {
             boardRepository.UpdateBoard(id, patchRequest);
+        }
+        public bool getBoardReadonlyTodosSetting(long id)
+        {
+            return boardRepository.fetchBoardReadonlyTodosSetting(id);
+        }
+        public void setBoardReadonlyTodosSetting(long id, bool isReadonly)
+        {
+            boardRepository.updateBoardReadonlyTodosSetting(id, isReadonly);
+        }
+        public bool getBoardReadonlyTasksSetting(long id)
+        {
+            return boardRepository.fetchBoardReadonlyTasksSetting(id);
+        }
+        public void setBoardReadonlyTasksSetting(long id, bool isReadonly)
+        {
+            boardRepository.updateBoardReadonlyTodosSetting(id, isReadonly);
         }
     }
 }

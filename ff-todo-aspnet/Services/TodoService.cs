@@ -16,6 +16,10 @@ namespace ff_todo_aspnet.Services
         {
             return todoRepository.FetchTodos();
         }
+        public TodoResponse GetTodo(long id)
+        {
+            return todoRepository.FetchTodo(id);
+        }
         public DateTime fetchNewDateTime()
         {
             return DateTime.Now.ToUniversalTime();
@@ -28,17 +32,27 @@ namespace ff_todo_aspnet.Services
             todo.boardId = boardId;
             return todoRepository.AddTodo(todo);
         }
-
         public void RemoveTodo(long id)
         {
             todoRepository.RemoveTodo(id);
         }
-
+        public void RemoveAllTodos()
+        {
+            todoRepository.RemoveAllTodos();
+        }
+        public void RemoveAllTodosFromBoard(long boardId)
+        {
+            todoRepository.RemoveAllTodosFromBoard(boardId);
+        }
         public void UpdateTodo(long id, TodoRequest patchRequest)
         {
             Todo patchedTodo = patchRequest;
             patchedTodo.dateModified = fetchNewDateTime();
             todoRepository.UpdateTodo(id, patchedTodo);
+        }
+        public Todo CloneTodo(long id, int phase, long boardId)
+        {
+            return todoRepository.CloneTodo(id, phase, boardId);
         }
     }
 }

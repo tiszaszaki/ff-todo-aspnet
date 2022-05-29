@@ -15,7 +15,7 @@ namespace ff_todo_aspnet.Repositories
         {
             return context.Boards.Select<Board, BoardResponse>(board => board);
         }
-        public Board FetchBoard(long id)
+        public BoardResponse FetchBoard(long id)
         {
             return context.Boards.Single(board => board.id == id);
         }
@@ -37,8 +37,26 @@ namespace ff_todo_aspnet.Repositories
             board.name = patchedBoard.name;
             board.description = patchedBoard.description;
             board.author = patchedBoard.author;
-            board.readonlyTodos = patchedBoard.readonlyTodos;
-            board.readonlyTasks = patchedBoard.readonlyTasks;
+            context.SaveChanges();
+        }
+        public bool fetchBoardReadonlyTodosSetting(long id)
+        {
+            return context.Boards.Single(board => board.id == id).readonlyTodos;
+        }
+        public void updateBoardReadonlyTodosSetting(long id, bool isReadonly)
+        {
+            var board = context.Boards.Single(board => board.id == id);
+            board.readonlyTodos = isReadonly;
+            context.SaveChanges();
+        }
+        public bool fetchBoardReadonlyTasksSetting(long id)
+        {
+            return context.Boards.Single(board => board.id == id).readonlyTasks;
+        }
+        public void updateBoardReadonlyTasksSetting(long id, bool isReadonly)
+        {
+            var board = context.Boards.Single(board => board.id == id);
+            board.readonlyTasks = isReadonly;
             context.SaveChanges();
         }
     }

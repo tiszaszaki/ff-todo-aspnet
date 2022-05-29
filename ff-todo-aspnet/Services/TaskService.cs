@@ -15,18 +15,28 @@ namespace ff_todo_aspnet.Services
         {
             return taskRepository.FetchTasks();
         }
+        public TaskResponse GetTask(long id)
+        {
+            return taskRepository.FetchTask(id);
+        }
         public Entities.Task AddTask(long todoId, TaskRequest taskRequest)
         {
             Entities.Task task = taskRequest;
             task.todoId = todoId;
             return taskRepository.AddTask(task);
         }
-
         public void RemoveTask(long id)
         {
             taskRepository.RemoveTask(id);
         }
-
+        public void RemoveAllTasks()
+        {
+            taskRepository.RemoveAllTasks();
+        }
+        public void RemoveAllTasksFromTodo(long todoId)
+        {
+            taskRepository.RemoveAllTasksFromTodo(todoId);
+        }
         public void UpdateTask(long id, TaskRequest patchRequest)
         {
             taskRepository.UpdateTask(id, patchRequest);

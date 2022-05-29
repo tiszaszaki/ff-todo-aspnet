@@ -14,6 +14,10 @@ namespace ff_todo_aspnet.Repositories
         {
             return context.Tasks.Select<Entities.Task, TaskResponse>(task => task);
         }
+        public TaskResponse FetchTask(long id)
+        {
+            return context.Tasks.Single(task => task.id == id);
+        }
         public Entities.Task AddTask(Entities.Task task)
         {
             context.Tasks.Add(task);
@@ -25,6 +29,15 @@ namespace ff_todo_aspnet.Repositories
             var task = context.Tasks.Single(task => task.id == id);
             context.Tasks.Remove(task);
             context.SaveChanges();
+        }
+        public void RemoveAllTasks()
+        {
+            context.Tasks.RemoveRange(context.Tasks);
+        }
+        public void RemoveAllTasksFromTodo(long todoId)
+        {
+            foreach (var task in context.Tasks.Where(task => task.todoId == todoId))
+                context.Tasks.Remove(task);
         }
         public void UpdateTask(long id, Entities.Task patchedTask)
         {
