@@ -16,9 +16,17 @@ namespace ff_todo_aspnet.Services
         {
             return todoRepository.FetchTodos();
         }
+        public IEnumerable<TodoResponse> GetTodosFromBoard(long boardId)
+        {
+            return todoRepository.FetchTodosFromBoard(boardId);
+        }
         public TodoResponse GetTodo(long id)
         {
             return todoRepository.FetchTodo(id);
+        }
+        public TodoResponse GetTodoByName(string name)
+        {
+            return todoRepository.FetchTodoByName(name);
         }
         private DateTime FetchNewDateTime()
         {

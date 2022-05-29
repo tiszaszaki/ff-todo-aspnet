@@ -25,6 +25,7 @@ namespace ff_todo_aspnet.ResponseObjects
 		public DateTime dateCreated { get; set; }
 		public DateTime dateModified { get; set; }
 		public DateTime? deadline { get; set; }
+		public IEnumerable<TaskResponse>? tasks { get; set; }
 		public long boardId { get; set; }
 	}
 }

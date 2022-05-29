@@ -14,9 +14,19 @@ namespace ff_todo_aspnet.Repositories
         {
             return context.Tasks.Select<Entities.Task, TaskResponse>(task => task);
         }
+        public IEnumerable<TaskResponse> FetchTasksFromTodo(long todoId)
+        {
+            return context.Tasks
+                .Select<Entities.Task, TaskResponse>(task => task)
+                .Where(task => task.todoId == todoId);
+        }
         public TaskResponse FetchTask(long id)
         {
             return context.Tasks.Single(task => task.id == id);
+        }
+        public TaskResponse FetchTaskByName(string name)
+        {
+            return context.Tasks.Single(task => task.name == name);
         }
         public Entities.Task AddTask(Entities.Task task)
         {

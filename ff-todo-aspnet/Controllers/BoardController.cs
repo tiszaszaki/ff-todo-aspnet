@@ -12,10 +12,11 @@ namespace ff_todo_aspnet.Controllers
     public class BoardController : Controller
     {
         private readonly BoardService boardService;
-
-        public BoardController(BoardService boardService)
+        private readonly TodoService todoService;
+        public BoardController(BoardService boardService, TodoService todoService)
         {
             this.boardService = boardService;
+            this.todoService = todoService;
         }
         [HttpGet]
         public IEnumerable<BoardResponse> GetBoards()
@@ -41,6 +42,21 @@ namespace ff_todo_aspnet.Controllers
         public void UpdateBoard(long id, [FromBody] BoardRequest patchedBoard)
         {
             boardService.UpdateBoard(id, patchedBoard);
+        }
+        [HttpGet("{id}/todos")]
+        public IEnumerable<TodoResponse> GetTodosFromBoard(long id)
+        {
+            return todoService.GetTodosFromBoard(id);
+        }
+        [HttpPut("{id}/todo")]
+        public Todo AddTodo(long id, [FromBody] TodoRequest todo)
+        {
+            return todoService.AddTodo(id, todo);
+        }
+        [HttpDelete("{id}/todo/clear")]
+        public void RemoveAllTodosFromBoard(long id)
+        {
+            todoService.RemoveAllTodosFromBoard(id);
         }
         [HttpGet("description-max-length")]
         public long GetDescriptionMaxLength()

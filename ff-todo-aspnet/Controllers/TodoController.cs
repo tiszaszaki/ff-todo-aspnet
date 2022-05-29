@@ -13,11 +13,11 @@ namespace ff_todo_aspnet.Controllers
     public class TodoController : Controller
     {
         private readonly TodoService todoService;
-
-        private readonly int testBoardId = 71;
-        public TodoController(TodoService todoService)
+        private readonly TaskService taskService;
+        public TodoController(TodoService todoService, TaskService taskService)
         {
             this.todoService = todoService;
+            this.taskService = taskService;
         }
         [HttpGet]
         public IEnumerable<TodoResponse> GetTodos()
@@ -29,10 +29,10 @@ namespace ff_todo_aspnet.Controllers
         {
             return todoService.GetTodo(id);
         }
-        [HttpPut]
-        public Todo AddTodo(TodoRequest todo)
+        [HttpGet("name/{name}")]
+        public TodoResponse GetTodoByName(string name)
         {
-            return todoService.AddTodo(testBoardId, todo);
+            return todoService.GetTodoByName(name);
         }
         [HttpDelete("{id}")]
         public void RemoveTodo(long id)
@@ -44,11 +44,6 @@ namespace ff_todo_aspnet.Controllers
         {
             todoService.RemoveAllTodos();
         }
-        [HttpDelete("{boardId}/clear")]
-        public void RemoveAllTodosFromBoard(long boardId)
-        {
-            todoService.RemoveAllTodosFromBoard(boardId);
-        }
         [HttpPatch("{id}")]
         public void UpdateTodo(long id, [FromBody] TodoRequest patchedTodo)
         {
@@ -58,6 +53,21 @@ namespace ff_todo_aspnet.Controllers
         public Todo CloneTodo(long id, int phase, long boardId)
         {
             return todoService.CloneTodo(id, phase, boardId);
+        }
+        [HttpGet("{id}/tasks")]
+        public IEnumerable<TaskResponse> GetTasksFromTodo(long id)
+        {
+            return taskService.GetTasksFromTodo(id);
+        }
+        [HttpPut("{id}/task")]
+        public Entities.Task AddTask(long id, [FromBody] TaskRequest task)
+        {
+            return taskService.AddTask(id, task);
+        }
+        [HttpDelete("{id}/task/clear")]
+        public void RemoveAllTodosFromTodo(long id)
+        {
+            taskService.RemoveAllTasksFromTodo(id);
         }
         [HttpGet("description-max-length")]
         public long GetDescriptionMaxLength()

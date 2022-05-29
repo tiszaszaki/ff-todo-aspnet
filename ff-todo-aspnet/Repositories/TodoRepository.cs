@@ -17,9 +17,19 @@ namespace ff_todo_aspnet.Repositories
         {
             return context.Todos.Select<Todo, TodoResponse>(todo => todo);
         }
+        public IEnumerable<TodoResponse> FetchTodosFromBoard(long boardId)
+        {
+            return context.Todos
+                .Select<Todo, TodoResponse>(todo => todo)
+                .Where(todo => todo.boardId == boardId);
+        }
         public TodoResponse FetchTodo(long id)
         {
             return context.Todos.Single(todo => todo.id == id);
+        }
+        public TodoResponse FetchTodoByName(string name)
+        {
+            return context.Todos.Single(todo => todo.name == name);
         }
         public Todo AddTodo(Todo todo)
         {

@@ -26,11 +26,6 @@ namespace ff_todo_aspnet.Controllers
         {
             return taskService.GetTask(id);
         }
-        [HttpPut]
-        public Entities.Task AddTask(TaskRequest task)
-        {
-            return taskService.AddTask(testTodoId, task);
-        }
         [HttpDelete("{id}")]
         public void RemoveTask(long id)
         {
@@ -40,11 +35,6 @@ namespace ff_todo_aspnet.Controllers
         public void RemoveAllTasks()
         {
             taskService.RemoveAllTasks();
-        }
-        [HttpDelete("{todoId}/clear")]
-        public void RemoveAllTodosFromTodo(long todoId)
-        {
-            taskService.RemoveAllTasksFromTodo(todoId);
         }
         [HttpPatch("{id}")]
         public void UpdateTask(long id, [FromBody] TaskRequest patchedTask)
