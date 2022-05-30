@@ -12,5 +12,6 @@
 		}
 		public string name { get; set; }
 		public bool done { get; set; }
+		public DateTime? deadline { get; set; }
 	}
 }
