@@ -73,9 +73,9 @@ namespace ff_todo_aspnet.Repositories
             string res = context.Todos.Single(todo => todo.id == id).name;
             while (context.Todos.Where(todo => todo.name == res).ToList().Count > 0)
             {
-                string strNew; var i = 0;
-                string reNumPat = @"\d+";
-                var matchCount = new Regex(reNumPat).Matches(res).Count;
+                string reNumPat = @"\d+", strNew;
+                int matchCount, i = 0;
+                matchCount = new Regex(reNumPat).Matches(res).Count;
                 strNew = Regex.Replace(res, reNumPat, m => {
                     string res = m.Value;
                     if (i == matchCount - 1)
@@ -84,9 +84,12 @@ namespace ff_todo_aspnet.Repositories
                     return res;
                 });
                 if (res == strNew)
-                    res = strNew + " " + 2.ToString() + TodoCommon.TODO_CLONE_SUFFIX;
+                    res = strNew + " " + 2.ToString();
                 else
                     res = strNew;
+                matchCount = new Regex(TodoCommon.TODO_CLONE_SUFFIX_REGEX + "$").Matches(res).Count;
+                if (matchCount == 0)
+                    res += TodoCommon.TODO_CLONE_SUFFIX;
             }
             return res;
         }

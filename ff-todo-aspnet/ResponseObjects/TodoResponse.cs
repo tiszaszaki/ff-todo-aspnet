@@ -30,7 +30,7 @@ namespace ff_todo_aspnet.ResponseObjects
 		public long boardId { get; set; }
 		public override string ToString()
 		{
-			return $"{id}, \"{name}\", \"{description}\", {phase}, {dateCreated}, {dateModified}, {deadline}";
+			return $"{id}, \"{name}\", \"{description}\", {phase}, \"{dateCreated}\", \"{dateModified}\", \"{deadline}\"";
 		}
 	}
 }

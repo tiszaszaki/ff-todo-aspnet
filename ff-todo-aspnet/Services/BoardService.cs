@@ -57,24 +57,24 @@ namespace ff_todo_aspnet.Services
         public bool GetBoardReadonlyTodosSetting(long id)
         {
             bool result = boardRepository.FetchBoardReadonlyTodosSetting(id);
-            Console.WriteLine("Successfully queried ReadonlyTodos setting for Board with ID (${0}): {1}", id, result);
+            Console.WriteLine("Successfully queried ReadonlyTodos setting for Board with ID ({0}): {1}", id, result);
             return result;
         }
         public void SetBoardReadonlyTodosSetting(long id, bool isReadonly)
         {
             bool result = boardRepository.UpdateBoardReadonlyTodosSetting(id, isReadonly);
-            Console.WriteLine("Successfully changed ReadonlyTodos setting for Board with ID (${0}) to {1}", id, result);
+            Console.WriteLine("Successfully changed ReadonlyTodos setting for Board with ID ({0}) to {1}", id, result);
         }
         public bool GetBoardReadonlyTasksSetting(long id)
         {
             bool result = boardRepository.FetchBoardReadonlyTasksSetting(id);
-            Console.WriteLine("Successfully queried ReadonlyTasks setting for Board with ID (${0}): {1}", id, result);
+            Console.WriteLine("Successfully queried ReadonlyTasks setting for Board with ID ({0}): {1}", id, result);
             return result;
         }
         public void SetBoardReadonlyTasksSetting(long id, bool isReadonly)
         {
             bool result = boardRepository.UpdateBoardReadonlyTodosSetting(id, isReadonly);
-            Console.WriteLine("Successfully changed ReadonlyTasks setting for Board with ID (${0}) to {1}", id, result);
+            Console.WriteLine("Successfully changed ReadonlyTasks setting for Board with ID ({0}) to {1}", id, result);
         }
     }
 }

@@ -12,5 +12,6 @@
 		public const string taskPath = "task";
 
 		public const string TODO_CLONE_SUFFIX = " (cloned)";
-    }
+		public const string TODO_CLONE_SUFFIX_REGEX = @"\(cloned\)";
+	}
 }
