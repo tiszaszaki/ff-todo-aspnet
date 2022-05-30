@@ -20,7 +20,7 @@
 		public long todoId { get; set; }
 		public override string ToString()
 		{
-			return $"{id}, \"{name}\", {done}, \"{deadline}\"";
+			return $"[{id}, \"{name}\", {done}, \"{deadline}\"]";
 		}
 	}
 }

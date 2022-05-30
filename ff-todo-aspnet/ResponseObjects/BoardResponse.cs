@@ -27,7 +27,7 @@ namespace ff_todo_aspnet.ResponseObjects
 		public bool readonlyTasks { get; set; }
 		public override string ToString()
 		{
-			return $"{id}, \"{name}\", \"{description}\", \"{author}\", \"{dateCreated}\", {readonlyTodos}, {readonlyTasks}";
+			return $"[{id}, \"{name}\", \"{description}\", \"{author}\", \"{dateCreated}\", {readonlyTodos}, {readonlyTasks}]";
 		}
 	}
 }

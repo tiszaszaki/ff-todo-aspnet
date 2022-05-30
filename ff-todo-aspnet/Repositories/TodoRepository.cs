@@ -4,6 +4,7 @@ using ff_todo_aspnet.Entities;
 using ff_todo_aspnet.ResponseObjects;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using static ff_todo_aspnet.Configurations.TodoDbContext;
 
 namespace ff_todo_aspnet.Repositories
 {
@@ -39,6 +40,7 @@ namespace ff_todo_aspnet.Repositories
         }
         public Todo AddTodo(Todo todo)
         {
+            todo.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TODO, todo.name, false);
             context.Todos.Add(todo);
             context.SaveChanges();
             return todo;
@@ -52,11 +54,13 @@ namespace ff_todo_aspnet.Repositories
         public void RemoveAllTodos()
         {
             context.Todos.RemoveRange(context.Todos);
+            context.SaveChanges();
         }
         public void RemoveAllTodosFromBoard(long boardId)
         {
             foreach (var todo in context.Todos.Where(todo => todo.boardId == boardId))
                 context.Todos.Remove(todo);
+            context.SaveChanges();
         }
         public TodoResponse UpdateTodo(long id, Todo patchedTodo)
         {
@@ -67,31 +71,6 @@ namespace ff_todo_aspnet.Repositories
             todo.deadline = patchedTodo.deadline;
             context.SaveChanges();
             return todo;
-        }
-        private string replaceNameToUnused(long id)
-        {
-            string res = context.Todos.Single(todo => todo.id == id).name;
-            while (context.Todos.Where(todo => todo.name == res).ToList().Count > 0)
-            {
-                string reNumPat = @"\d+", strNew;
-                int matchCount, i = 0;
-                matchCount = new Regex(reNumPat).Matches(res).Count;
-                strNew = Regex.Replace(res, reNumPat, m => {
-                    string res = m.Value;
-                    if (i == matchCount - 1)
-                        res = (long.Parse(res) + 1).ToString();
-                    i++;
-                    return res;
-                });
-                if (res == strNew)
-                    res = strNew + " " + 2.ToString();
-                else
-                    res = strNew;
-                matchCount = new Regex(TodoCommon.TODO_CLONE_SUFFIX_REGEX + "$").Matches(res).Count;
-                if (matchCount == 0)
-                    res += TodoCommon.TODO_CLONE_SUFFIX;
-            }
-            return res;
         }
         private void CloneTasks(Todo todo, Todo newTodo)
         {
@@ -114,7 +93,7 @@ namespace ff_todo_aspnet.Repositories
                 .Include(todo => todo.tasks)
                 .Single(todo => todo.id == id);
             Todo todo = new Todo {
-                name = replaceNameToUnused(id),
+                name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TODO, persistedTodo.name, true),
                 description = persistedTodo.description,
                 phase = phase,
                 dateCreated = dateCreatedNew,

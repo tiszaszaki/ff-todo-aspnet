@@ -1,6 +1,7 @@
 ﻿using ff_todo_aspnet.Configurations;
 using ff_todo_aspnet.Entities;
 using ff_todo_aspnet.ResponseObjects;
+using static ff_todo_aspnet.Configurations.TodoDbContext;
 
 namespace ff_todo_aspnet.Repositories
 {
@@ -25,6 +26,8 @@ namespace ff_todo_aspnet.Repositories
         }
         public Board AddBoard(Board board)
         {
+            board.id = context.Boards.Max(board => board.id) + 1;
+            board.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_BOARD, board.name, false);
             context.Boards.Add(board);
             context.SaveChanges();
             return board;

@@ -31,11 +31,12 @@ namespace ff_todo_aspnet.Services
         }
         public Entities.Task AddTask(long todoId, TaskRequest taskRequest)
         {
-            Entities.Task task = taskRequest, addedTask;
+            Entities.Task task = taskRequest;
+            TaskResponse addedTask;
             task.todoId = todoId;
             addedTask = taskRepository.AddTask(task);
             Console.WriteLine("Successfully added new Task: {0}", addedTask.ToString());
-            return addedTask;
+            return task;
         }
         public void RemoveTask(long id)
         {

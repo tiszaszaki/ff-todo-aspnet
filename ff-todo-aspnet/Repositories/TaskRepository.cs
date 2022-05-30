@@ -1,5 +1,6 @@
 ﻿using ff_todo_aspnet.Configurations;
 using ff_todo_aspnet.ResponseObjects;
+using static ff_todo_aspnet.Configurations.TodoDbContext;
 
 namespace ff_todo_aspnet.Repositories
 {
@@ -30,6 +31,7 @@ namespace ff_todo_aspnet.Repositories
         }
         public Entities.Task AddTask(Entities.Task task)
         {
+            task.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TASK, task.name, false);
             context.Tasks.Add(task);
             context.SaveChanges();
             return task;
@@ -43,11 +45,13 @@ namespace ff_todo_aspnet.Repositories
         public void RemoveAllTasks()
         {
             context.Tasks.RemoveRange(context.Tasks);
+            context.SaveChanges();
         }
         public void RemoveAllTasksFromTodo(long todoId)
         {
             foreach (var task in context.Tasks.Where(task => task.todoId == todoId))
                 context.Tasks.Remove(task);
+            context.SaveChanges();
         }
         public TaskResponse UpdateTask(long id, Entities.Task patchedTask)
         {

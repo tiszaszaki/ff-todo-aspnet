@@ -42,13 +42,14 @@ namespace ff_todo_aspnet.Services
         }
         public Todo AddTodo(long boardId, TodoRequest todoRequest)
         {
-            Todo todo = todoRequest, addedTodo;
+            Todo todo = todoRequest;
+            TodoResponse addedTodo;
             todo.dateCreated = FetchNewDateTime();
             todo.dateModified = FetchNewDateTime();
             todo.boardId = boardId;
             addedTodo = todoRepository.AddTodo(todo);
             Console.WriteLine("Successfully added new Todo: {0}", addedTodo.ToString());
-            return addedTodo;
+            return todo;
         }
         public void RemoveTodo(long id)
         {

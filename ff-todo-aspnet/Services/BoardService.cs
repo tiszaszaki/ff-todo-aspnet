@@ -37,12 +37,13 @@ namespace ff_todo_aspnet.Services
         }
         public Board AddBoard(BoardRequest boardRequest)
         {
-            Board board = boardRequest, addedBoard;
+            Board board = boardRequest;
+            BoardResponse addedBoard;
             board.dateCreated = FetchNewDateTime();
             board.todos = new Collection<Todo>();
             addedBoard = boardRepository.AddBoard(board);
             Console.WriteLine("Successfully added new Board: {0}", addedBoard.ToString());
-            return addedBoard;
+            return board;
         }
         public void RemoveBoard(long id)
         {
