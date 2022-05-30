@@ -7,6 +7,10 @@
 		public const int PHASE_MIN = 0;
 		public const int PHASE_MAX = 2;
 
+		public const string boardPath = "board";
+		public const string todoPath = "todo";
+		public const string taskPath = "task";
+
 		public const string TODO_CLONE_SUFFIX = " (cloned)";
     }
 }

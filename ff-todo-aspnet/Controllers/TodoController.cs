@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 namespace ff_todo_aspnet.Controllers
 {
     [ApiController]
-    [Route("todo")]
+    [Route(TodoCommon.todoPath)]
     public class TodoController : Controller
     {
         private readonly TodoService todoService;
@@ -55,9 +55,9 @@ namespace ff_todo_aspnet.Controllers
             return todoService.CloneTodo(id, phase, boardId);
         }
         [HttpGet("{id}/tasks")]
-        public IEnumerable<TaskResponse> GetTasksFromTodo(long id)
+        public IEnumerable<TaskResponse> GetAllTasksFromTodo(long id)
         {
-            return taskService.GetTasksFromTodo(id);
+            return taskService.GetAllTasksFromTodo(id);
         }
         [HttpPut("{id}/task")]
         public Entities.Task AddTask(long id, [FromBody] TaskRequest task)
@@ -65,7 +65,7 @@ namespace ff_todo_aspnet.Controllers
             return taskService.AddTask(id, task);
         }
         [HttpDelete("{id}/task/clear")]
-        public void RemoveAllTodosFromTodo(long id)
+        public void RemoveAllTasksFromTodo(long id)
         {
             taskService.RemoveAllTasksFromTodo(id);
         }

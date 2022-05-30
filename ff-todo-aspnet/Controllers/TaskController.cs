@@ -2,16 +2,15 @@
 using ff_todo_aspnet.ResponseObjects;
 using ff_todo_aspnet.RequestObjects;
 using ff_todo_aspnet.Services;
+using ff_todo_aspnet.Constants;
 
 namespace ff_todo_aspnet.Controllers
 {
     [ApiController]
-    [Route("task")]
+    [Route(TodoCommon.taskPath)]
     public class TaskController : Controller
     {
         private readonly TaskService taskService;
-
-        private readonly int testTodoId = 79;
         public TaskController(TaskService taskService)
         {
             this.taskService = taskService;

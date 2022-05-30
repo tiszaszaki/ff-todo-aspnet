@@ -14,7 +14,7 @@ namespace ff_todo_aspnet.Repositories
         {
             return context.Tasks.Select<Entities.Task, TaskResponse>(task => task);
         }
-        public IEnumerable<TaskResponse> FetchTasksFromTodo(long todoId)
+        public IEnumerable<TaskResponse> FetchAllTasksFromTodo(long todoId)
         {
             return context.Tasks
                 .Select<Entities.Task, TaskResponse>(task => task)

@@ -17,7 +17,7 @@ namespace ff_todo_aspnet.Repositories
         {
             return context.Todos.Select<Todo, TodoResponse>(todo => todo);
         }
-        public IEnumerable<TodoResponse> FetchTodosFromBoard(long boardId)
+        public IEnumerable<TodoResponse> FetchAllTodosFromBoard(long boardId)
         {
             return context.Todos
                 .Select<Todo, TodoResponse>(todo => todo)
@@ -64,7 +64,7 @@ namespace ff_todo_aspnet.Repositories
         private string replaceNameToUnused(long id)
         {
             string res = context.Todos.Single(todo => todo.id == id).name;
-            while (context.Todos.Where(todo => todo.name == res).ToArray().Length > 0)
+            while (context.Todos.Where(todo => todo.name == res).Count() > 0)
             {
                 string strNew; var i = 0;
                 string reNumPat = @"\d+";

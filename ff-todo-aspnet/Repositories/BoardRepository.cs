@@ -15,6 +15,10 @@ namespace ff_todo_aspnet.Repositories
         {
             return context.Boards.Select<Board, BoardResponse>(board => board);
         }
+        public IEnumerable<long> FetchBoardIds()
+        {
+            return context.Boards.Select(board => board.id);
+        }
         public BoardResponse FetchBoard(long id)
         {
             return context.Boards.Single(board => board.id == id);

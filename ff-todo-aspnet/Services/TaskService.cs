@@ -13,11 +13,15 @@ namespace ff_todo_aspnet.Services
         }
         public IEnumerable<TaskResponse> GetTasks()
         {
-            return taskRepository.FetchTasks();
+            IEnumerable<TaskResponse> result = taskRepository.FetchTasks();
+            Console.WriteLine("Fetched {0} Task(s)", result.Count());
+            return result;
         }
-        public IEnumerable<TaskResponse> GetTasksFromTodo(long todoId)
+        public IEnumerable<TaskResponse> GetAllTasksFromTodo(long todoId)
         {
-            return taskRepository.FetchTasksFromTodo(todoId);
+            IEnumerable<TaskResponse> result = taskRepository.FetchAllTasksFromTodo(todoId);
+            Console.WriteLine("Fetched {0} Task(s) from Todo with ID ({1})", result.Count(), todoId);
+            return result;
         }
         public TaskResponse GetTask(long id)
         {

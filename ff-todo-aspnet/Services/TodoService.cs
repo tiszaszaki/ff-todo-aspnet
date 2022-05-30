@@ -14,11 +14,15 @@ namespace ff_todo_aspnet.Services
         }
         public IEnumerable<TodoResponse> GetTodos()
         {
-            return todoRepository.FetchTodos();
+            IEnumerable<TodoResponse> result = todoRepository.FetchTodos();
+            Console.WriteLine("Fetched {0} Todo(s)", result.Count());
+            return result;
         }
-        public IEnumerable<TodoResponse> GetTodosFromBoard(long boardId)
+        public IEnumerable<TodoResponse> GetAllTodosFromBoard(long boardId)
         {
-            return todoRepository.FetchTodosFromBoard(boardId);
+            IEnumerable<TodoResponse> result = todoRepository.FetchAllTodosFromBoard(boardId);
+            Console.WriteLine("Fetched {0} Todo(s) from Board with ID ({1})", result.Count(), boardId);
+            return result;
         }
         public TodoResponse GetTodo(long id)
         {

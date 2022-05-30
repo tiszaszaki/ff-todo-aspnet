@@ -15,7 +15,15 @@ namespace ff_todo_aspnet.Services
         }
         public IEnumerable<BoardResponse> GetBoards()
         {
-            return boardRepository.FetchBoards();
+            IEnumerable<BoardResponse> result = boardRepository.FetchBoards();
+            Console.WriteLine("Fetched {0} Board(s)", result.Count());
+            return result;
+        }
+        public IEnumerable<long> GetBoardIds()
+        {
+            IEnumerable<long> result = boardRepository.FetchBoardIds();
+            Console.WriteLine("Fetched {0} Board ID(s)", result.Count());
+            return result;
         }
         public BoardResponse GetBoard(long id)
         {

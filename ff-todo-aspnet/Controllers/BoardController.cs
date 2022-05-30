@@ -8,7 +8,7 @@ using ff_todo_aspnet.Constants;
 namespace ff_todo_aspnet.Controllers
 {
     [ApiController]
-    [Route("board")]
+    [Route(TodoCommon.boardPath)]
     public class BoardController : Controller
     {
         private readonly BoardService boardService;
@@ -19,9 +19,9 @@ namespace ff_todo_aspnet.Controllers
             this.todoService = todoService;
         }
         [HttpGet]
-        public IEnumerable<BoardResponse> GetBoards()
+        public IEnumerable<long> GetBoardIds()
         {
-            return boardService.GetBoards();
+            return boardService.GetBoardIds();
         }
         [HttpGet("{id}")]
         public BoardResponse GetBoard(long id)
@@ -44,9 +44,9 @@ namespace ff_todo_aspnet.Controllers
             boardService.UpdateBoard(id, patchedBoard);
         }
         [HttpGet("{id}/todos")]
-        public IEnumerable<TodoResponse> GetTodosFromBoard(long id)
+        public IEnumerable<TodoResponse> GetAllTodosFromBoard(long id)
         {
-            return todoService.GetTodosFromBoard(id);
+            return todoService.GetAllTodosFromBoard(id);
         }
         [HttpPut("{id}/todo")]
         public Todo AddTodo(long id, [FromBody] TodoRequest todo)
