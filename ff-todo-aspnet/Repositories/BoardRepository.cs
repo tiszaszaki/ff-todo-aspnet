@@ -25,7 +25,6 @@ namespace ff_todo_aspnet.Repositories
         }
         public Board AddBoard(Board board)
         {
-            board.id = context.Boards.Max(board => board.id) + 1;
             context.Boards.Add(board);
             context.SaveChanges();
             return board;
@@ -36,33 +35,36 @@ namespace ff_todo_aspnet.Repositories
             context.Boards.Remove(board);
             context.SaveChanges();
         }
-        public void UpdateBoard(long id, Board patchedBoard)
+        public BoardResponse UpdateBoard(long id, Board patchedBoard)
         {
             var board = context.Boards.Single(board => board.id == id);
             board.name = patchedBoard.name;
             board.description = patchedBoard.description;
             board.author = patchedBoard.author;
             context.SaveChanges();
+            return board;
         }
         public bool FetchBoardReadonlyTodosSetting(long id)
         {
             return context.Boards.Single(board => board.id == id).readonlyTodos;
         }
-        public void UpdateBoardReadonlyTodosSetting(long id, bool isReadonly)
+        public bool UpdateBoardReadonlyTodosSetting(long id, bool isReadonly)
         {
             var board = context.Boards.Single(board => board.id == id);
             board.readonlyTodos = isReadonly;
             context.SaveChanges();
+            return board.readonlyTodos;
         }
         public bool FetchBoardReadonlyTasksSetting(long id)
         {
             return context.Boards.Single(board => board.id == id).readonlyTasks;
         }
-        public void UpdateBoardReadonlyTasksSetting(long id, bool isReadonly)
+        public bool UpdateBoardReadonlyTasksSetting(long id, bool isReadonly)
         {
             var board = context.Boards.Single(board => board.id == id);
             board.readonlyTasks = isReadonly;
             context.SaveChanges();
+            return board.readonlyTasks;
         }
     }
 }

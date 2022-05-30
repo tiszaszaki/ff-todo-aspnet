@@ -18,5 +18,9 @@
 		public bool done { get; set; }
 		public DateTime? deadline { get; set; }
 		public long todoId { get; set; }
+		public override string ToString()
+		{
+			return $"{id}, \"{name}\", {done}, {deadline}";
+		}
 	}
 }

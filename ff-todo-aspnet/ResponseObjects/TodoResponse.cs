@@ -15,6 +15,7 @@ namespace ff_todo_aspnet.ResponseObjects
 				dateCreated = tr.dateCreated,
 				dateModified = tr.dateModified,
 				deadline = tr.deadline,
+				tasks = tr.tasks.Select<Entities.Task, TaskResponse>(task => task),
 				boardId = tr.boardId
 			};
 		}
@@ -27,5 +28,9 @@ namespace ff_todo_aspnet.ResponseObjects
 		public DateTime? deadline { get; set; }
 		public IEnumerable<TaskResponse>? tasks { get; set; }
 		public long boardId { get; set; }
+		public override string ToString()
+		{
+			return $"{id}, \"{name}\", \"{description}\", {phase}, {dateCreated}, {dateModified}, {deadline}";
+		}
 	}
 }

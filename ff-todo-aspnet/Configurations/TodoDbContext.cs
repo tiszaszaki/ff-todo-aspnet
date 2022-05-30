@@ -9,15 +9,6 @@ namespace ff_todo_aspnet.Configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Board>()
-                .HasKey(b => b.id);
-
-            modelBuilder.Entity<Todo>()
-                .HasKey(t => t.id);
-
-            modelBuilder.Entity<Entities.Task>()
-                .HasKey(t => t.id);
-
-            modelBuilder.Entity<Board>()
                 .HasMany(b => b.todos)
                 .WithOne(t => t.board)
                 .HasForeignKey(t => t.boardId);

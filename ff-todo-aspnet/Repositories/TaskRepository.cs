@@ -17,8 +17,8 @@ namespace ff_todo_aspnet.Repositories
         public IEnumerable<TaskResponse> FetchAllTasksFromTodo(long todoId)
         {
             return context.Tasks
-                .Select<Entities.Task, TaskResponse>(task => task)
-                .Where(task => task.todoId == todoId);
+                .Where(task => task.todoId == todoId)
+                .Select<Entities.Task, TaskResponse>(task => task);
         }
         public TaskResponse FetchTask(long id)
         {
@@ -49,13 +49,14 @@ namespace ff_todo_aspnet.Repositories
             foreach (var task in context.Tasks.Where(task => task.todoId == todoId))
                 context.Tasks.Remove(task);
         }
-        public void UpdateTask(long id, Entities.Task patchedTask)
+        public TaskResponse UpdateTask(long id, Entities.Task patchedTask)
         {
             var task = context.Tasks.Single(task => task.id == id);
             task.name = patchedTask.name;
             task.done = patchedTask.done;
             task.deadline = patchedTask.deadline;
             context.SaveChanges();
+            return task;
         }
     }
 }

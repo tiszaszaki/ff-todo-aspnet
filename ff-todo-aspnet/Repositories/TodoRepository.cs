@@ -2,6 +2,7 @@
 using ff_todo_aspnet.Constants;
 using ff_todo_aspnet.Entities;
 using ff_todo_aspnet.ResponseObjects;
+using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
 namespace ff_todo_aspnet.Repositories
@@ -15,17 +16,22 @@ namespace ff_todo_aspnet.Repositories
         }
         public IEnumerable<TodoResponse> FetchTodos()
         {
-            return context.Todos.Select<Todo, TodoResponse>(todo => todo);
+            return context.Todos
+                .Include(todo => todo.tasks)
+                .Select<Todo, TodoResponse>(todo => todo);
         }
         public IEnumerable<TodoResponse> FetchAllTodosFromBoard(long boardId)
         {
             return context.Todos
-                .Select<Todo, TodoResponse>(todo => todo)
-                .Where(todo => todo.boardId == boardId);
+                .Include(todo => todo.tasks)
+                .Where(todo => todo.boardId == boardId)
+                .Select<Todo, TodoResponse>(todo => todo);
         }
         public TodoResponse FetchTodo(long id)
         {
-            return context.Todos.Single(todo => todo.id == id);
+            return context.Todos
+                .Include(todo => todo.tasks)
+                .Single(todo => todo.id == id);
         }
         public TodoResponse FetchTodoByName(string name)
         {
@@ -52,7 +58,7 @@ namespace ff_todo_aspnet.Repositories
             foreach (var todo in context.Todos.Where(todo => todo.boardId == boardId))
                 context.Todos.Remove(todo);
         }
-        public void UpdateTodo(long id, Todo patchedTodo)
+        public TodoResponse UpdateTodo(long id, Todo patchedTodo)
         {
             var todo = context.Todos.Single(todo => todo.id == id);
             todo.name = patchedTodo.name;
@@ -60,11 +66,12 @@ namespace ff_todo_aspnet.Repositories
             todo.phase = patchedTodo.phase;
             todo.deadline = patchedTodo.deadline;
             context.SaveChanges();
+            return todo;
         }
         private string replaceNameToUnused(long id)
         {
             string res = context.Todos.Single(todo => todo.id == id).name;
-            while (context.Todos.Where(todo => todo.name == res).Count() > 0)
+            while (context.Todos.Where(todo => todo.name == res).ToList().Count > 0)
             {
                 string strNew; var i = 0;
                 string reNumPat = @"\d+";
@@ -83,18 +90,39 @@ namespace ff_todo_aspnet.Repositories
             }
             return res;
         }
+        private void CloneTasks(Todo todo, Todo newTodo)
+        {
+            foreach (var task in todo.tasks)
+            {
+                var clonedTask = new Entities.Task
+                {
+                    name = task.name,
+                    done = task.done,
+                    deadline = task.deadline?.ToUniversalTime(),
+                    todo = newTodo
+                };
+                context.Tasks.Add(clonedTask);
+            }
+            context.SaveChanges();
+        }
         public Todo CloneTodo(long id, int phase, long boardId, DateTime dateCreatedNew, DateTime dateModifiedNew)
         {
-            Todo todo = context.Todos.Single(todo => todo.id == id);
-            todo.id = context.Todos.Max(todo => todo.id) + 1;
-            todo.name = replaceNameToUnused(id);
-            todo.phase = phase;
-            todo.dateCreated = dateCreatedNew;
-            todo.dateModified = dateModifiedNew;
-            todo.boardId = boardId;
+            Todo persistedTodo = context.Todos
+                .Include(todo => todo.tasks)
+                .Single(todo => todo.id == id);
+            Todo todo = new Todo {
+                name = replaceNameToUnused(id),
+                description = persistedTodo.description,
+                phase = phase,
+                dateCreated = dateCreatedNew,
+                dateModified = dateModifiedNew,
+                deadline = persistedTodo.deadline,
+                boardId = boardId
+            };
             context.Todos.Add(todo);
             context.SaveChanges();
-            return context.Todos.Single(clonedTodo => clonedTodo.name == todo.name);
+            CloneTasks(persistedTodo, todo);
+            return todo;
         }
     }
 }

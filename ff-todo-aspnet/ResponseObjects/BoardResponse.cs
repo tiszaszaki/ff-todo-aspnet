@@ -25,5 +25,9 @@ namespace ff_todo_aspnet.ResponseObjects
 		public DateTime dateCreated { get; set; }
 		public bool readonlyTodos { get; set; }
 		public bool readonlyTasks { get; set; }
+		public override string ToString()
+		{
+			return $"{id}, \"{name}\", \"{description}\", \"{author}\", {dateCreated}, {readonlyTodos}, {readonlyTasks}";
+		}
 	}
 }
