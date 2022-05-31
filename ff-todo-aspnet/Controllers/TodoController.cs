@@ -72,7 +72,7 @@ namespace ff_todo_aspnet.Controllers
         [HttpGet("description-max-length")]
         public long GetDescriptionMaxLength()
         {
-            return TodoCommon.MAX_BOARD_DESCRIPTION_LENGTH;
+            return TodoCommon.MAX_TODO_DESCRIPTION_LENGTH;
         }
         [HttpGet("phase-val-range")]
         public IEnumerable<int> GetTodoPhaseRange()

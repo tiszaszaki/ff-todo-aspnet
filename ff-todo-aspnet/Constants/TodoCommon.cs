@@ -2,8 +2,13 @@
 {
     public class TodoCommon
     {
+		public const int MAX_BOARD_NAME_LENGTH = 64;
+
 		public const int MAX_BOARD_DESCRIPTION_LENGTH = 1024;
 		public const int MAX_TODO_DESCRIPTION_LENGTH = 1024;
+
+		public const int MAX_BOARD_AUTHOR_LENGTH = 128;
+
 		public const int PHASE_MIN = 0;
 		public const int PHASE_MAX = 2;
 

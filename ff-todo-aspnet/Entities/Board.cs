@@ -10,9 +10,11 @@ namespace ff_todo_aspnet.Entities
 		[Key]
 		public long id { get; set; }
 		[Required(AllowEmptyStrings = false)]
+		[MaxLength(TodoCommon.MAX_BOARD_NAME_LENGTH)]
 		public string name { get; set; }
 		[MaxLength(TodoCommon.MAX_BOARD_DESCRIPTION_LENGTH)]
 		public string description { get; set; }
+		[MaxLength(TodoCommon.MAX_BOARD_AUTHOR_LENGTH)]
 		public string author { get; set; }
 		[Column("date_created")]
 		public DateTime dateCreated { get; set; }

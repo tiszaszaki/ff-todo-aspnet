@@ -58,10 +58,20 @@ namespace ff_todo_aspnet.Controllers
         {
             todoService.RemoveAllTodosFromBoard(id);
         }
+        [HttpGet("name-max-length")]
+        public long GetNameMaxLength()
+        {
+            return TodoCommon.MAX_BOARD_NAME_LENGTH;
+        }
         [HttpGet("description-max-length")]
         public long GetDescriptionMaxLength()
         {
             return TodoCommon.MAX_BOARD_DESCRIPTION_LENGTH;
+        }
+        [HttpGet("author-max-length")]
+        public long GetAuthorMaxLength()
+        {
+            return TodoCommon.MAX_BOARD_AUTHOR_LENGTH;
         }
         [HttpGet("{id}/readonly-todos")]
         public bool GetBoardReadonlyTodosSetting(long id)
