@@ -69,6 +69,11 @@ namespace ff_todo_aspnet.Controllers
         {
             taskService.RemoveAllTasksFromTodo(id);
         }
+        [HttpGet("name-max-length")]
+        public long GetNameMaxLength()
+        {
+            return TodoCommon.MAX_TODO_NAME_LENGTH;
+        }
         [HttpGet("description-max-length")]
         public long GetDescriptionMaxLength()
         {

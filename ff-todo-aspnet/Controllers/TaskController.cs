@@ -40,5 +40,10 @@ namespace ff_todo_aspnet.Controllers
         {
             taskService.UpdateTask(id, patchedTask);
         }
+        [HttpGet("name-max-length")]
+        public long GetNameMaxLength()
+        {
+            return TodoCommon.MAX_TASK_NAME_LENGTH;
+        }
     }
 }

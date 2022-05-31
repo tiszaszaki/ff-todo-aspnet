@@ -53,7 +53,7 @@ namespace ff_todo_aspnet.Configurations
                     res = strNew;
                 if (doCloning)
                 {
-                    matchCount = new Regex(TodoCommon.TODO_CLONE_SUFFIX_REGEX + "$").Matches(res).Count;
+                    matchCount = new Regex(TodoCommon.TODO_CLONE_SUFFIX_REGEX).Matches(res).Count;
                     if (matchCount == 0)
                         res += TodoCommon.TODO_CLONE_SUFFIX;
                 }
