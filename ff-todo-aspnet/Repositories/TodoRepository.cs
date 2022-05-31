@@ -1,9 +1,6 @@
 ﻿using ff_todo_aspnet.Configurations;
-using ff_todo_aspnet.Constants;
 using ff_todo_aspnet.Entities;
 using ff_todo_aspnet.ResponseObjects;
-using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 using static ff_todo_aspnet.Configurations.TodoDbContext;
 
 namespace ff_todo_aspnet.Repositories
@@ -17,22 +14,17 @@ namespace ff_todo_aspnet.Repositories
         }
         public IEnumerable<TodoResponse> FetchTodos()
         {
-            return context.Todos
-                .Include(todo => todo.tasks)
-                .Select<Todo, TodoResponse>(todo => todo);
+            return context.Todos.Select<Todo, TodoResponse>(todo => todo);
         }
         public IEnumerable<TodoResponse> FetchAllTodosFromBoard(long boardId)
         {
             return context.Todos
-                .Include(todo => todo.tasks)
                 .Where(todo => todo.boardId == boardId)
                 .Select<Todo, TodoResponse>(todo => todo);
         }
         public TodoResponse FetchTodo(long id)
         {
-            return context.Todos
-                .Include(todo => todo.tasks)
-                .Single(todo => todo.id == id);
+            return context.Todos.Single(todo => todo.id == id);
         }
         public TodoResponse FetchTodoByName(string name)
         {
@@ -72,16 +64,17 @@ namespace ff_todo_aspnet.Repositories
             context.SaveChanges();
             return todo;
         }
-        private void CloneTasks(Todo todo, Todo newTodo)
+        private void CloneTasks(long oldTodoId, long newTodoId)
         {
-            foreach (var task in todo.tasks)
+            var tasks = context.Tasks.Where(task => task.todoId == oldTodoId).AsEnumerable();
+            foreach (var task in tasks)
             {
                 var clonedTask = new Entities.Task
                 {
                     name = task.name,
                     done = task.done,
                     deadline = task.deadline?.ToUniversalTime(),
-                    todo = newTodo
+                    todoId = newTodoId
                 };
                 context.Tasks.Add(clonedTask);
             }
@@ -89,22 +82,21 @@ namespace ff_todo_aspnet.Repositories
         }
         public Todo CloneTodo(long id, int phase, long boardId, DateTime dateCreatedNew, DateTime dateModifiedNew)
         {
-            Todo persistedTodo = context.Todos
-                .Include(todo => todo.tasks)
+            Todo oldTodo = context.Todos
                 .Single(todo => todo.id == id);
-            Todo todo = new Todo {
-                name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TODO, persistedTodo.name, true),
-                description = persistedTodo.description,
+            Todo newTodo = new Todo {
+                name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TODO, oldTodo.name, true),
+                description = oldTodo.description,
                 phase = phase,
                 dateCreated = dateCreatedNew,
                 dateModified = dateModifiedNew,
-                deadline = persistedTodo.deadline,
+                deadline = oldTodo.deadline,
                 boardId = boardId
             };
-            context.Todos.Add(todo);
+            context.Todos.Add(newTodo);
             context.SaveChanges();
-            CloneTasks(persistedTodo, todo);
-            return todo;
+            CloneTasks(oldTodo.id, newTodo.id);
+            return newTodo;
         }
     }
 }
