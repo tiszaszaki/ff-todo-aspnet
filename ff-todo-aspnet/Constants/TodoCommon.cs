@@ -18,6 +18,8 @@
 		public const string todoPath = "todo";
 		public const string taskPath = "task";
 
+		public const string FIELD_TRUNCATE_STR = "...";
+
 		public const string TODO_CLONE_SUFFIX = " (cloned)";
 		public const string TODO_CLONE_SUFFIX_REGEX = @"\(cloned\)$";
 	}

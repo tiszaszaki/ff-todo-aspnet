@@ -57,6 +57,16 @@ namespace ff_todo_aspnet.Configurations
                     if (matchCount == 0)
                         res += TodoCommon.TODO_CLONE_SUFFIX;
                 }
+                if (res.Length > TodoCommon.MAX_TODO_NAME_LENGTH)
+                {
+                    var strTruncateIdx = TodoCommon.MAX_TODO_NAME_LENGTH / 2; 
+                    var lengthOverrunHalf = 0;
+                    var lengthOverrun = res.Length - TodoCommon.MAX_TODO_NAME_LENGTH;
+                    lengthOverrun += TodoCommon.FIELD_TRUNCATE_STR.Length; lengthOverrunHalf = lengthOverrun / 2;
+                    res = res.Substring(0, strTruncateIdx - lengthOverrunHalf)
+                        + TodoCommon.FIELD_TRUNCATE_STR
+                        + res.Substring(strTruncateIdx + lengthOverrun - lengthOverrunHalf);
+                }
             }
             return res;
         }
