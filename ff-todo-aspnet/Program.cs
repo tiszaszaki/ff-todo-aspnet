@@ -4,10 +4,10 @@ using ff_todo_aspnet.Repositories;
 using ff_todo_aspnet.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<TodoDbContext>(x => x.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<BoardRepository>();
@@ -20,7 +20,20 @@ builder.Services.AddScoped<TaskService>();
 
 builder.Services.AddControllers();
 
-//services cors
+// logging
+using ILoggerFactory loggerFactory =
+    LoggerFactory.Create(builder =>
+        builder.AddSimpleConsole(options =>
+        {
+            options.IncludeScopes = true;
+            options.SingleLine = true;
+            options.UseUtcTimestamp = true;
+            //options.TimestampFormat = "yyyy-MM-dd HH:mm:ss ";
+        }));
+
+builder.Services.AddLogging();
+
+// setup CORS
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder => {
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
