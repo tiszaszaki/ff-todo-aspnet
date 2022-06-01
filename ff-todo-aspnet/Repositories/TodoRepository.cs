@@ -8,9 +8,14 @@ namespace ff_todo_aspnet.Repositories
     public class TodoRepository
     {
         private readonly TodoDbContext context;
+        public bool IsNameTruncated { get; set; }
+        public string CloneTodoOldName { get; set; }
+        public string CloneTodoNewName { get; set; }
         public TodoRepository(TodoDbContext context)
         {
             this.context = context;
+            IsNameTruncated = false;
+            CloneTodoOldName = ""; CloneTodoNewName = "";
         }
         public IEnumerable<TodoResponse> FetchTodos()
         {
@@ -93,6 +98,8 @@ namespace ff_todo_aspnet.Repositories
                 deadline = oldTodo.deadline,
                 boardId = boardId
             };
+            IsNameTruncated = context.IsNameTruncated;
+            CloneTodoOldName = oldTodo.name; CloneTodoNewName = newTodo.name;
             context.Todos.Add(newTodo);
             context.SaveChanges();
             CloneTasks(oldTodo.id, newTodo.id);
