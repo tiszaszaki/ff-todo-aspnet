@@ -88,8 +88,7 @@ namespace ff_todo_aspnet.Configurations
             modelBuilder.Entity<Todo>()
                 .HasOne(t => t.board)
                 .WithMany(b => b.todos)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .IsRequired();
 
             modelBuilder.Entity<Todo>()
                 .HasMany(to => to.tasks)
@@ -100,8 +99,7 @@ namespace ff_todo_aspnet.Configurations
             modelBuilder.Entity<Entities.Task>()
                 .HasOne(ta => ta.todo)
                 .WithMany(to => to.tasks)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .IsRequired();
         }
         public DbSet<Board> Boards { get; set; }
         public DbSet<Todo> Todos { get; set; }
