@@ -14,10 +14,14 @@ namespace ff_todo_aspnet.Controllers
     {
         private readonly TodoService todoService;
         private readonly TaskService taskService;
-        public TodoController(TodoService todoService, TaskService taskService)
+
+        private readonly ILogger<TodoService> logger;
+
+        public TodoController(TodoService todoService, TaskService taskService, ILogger<TodoService> logger)
         {
             this.todoService = todoService;
             this.taskService = taskService;
+            this.logger = logger;
         }
         [HttpGet]
         public IEnumerable<TodoResponse> GetTodos()
@@ -82,7 +86,22 @@ namespace ff_todo_aspnet.Controllers
         [HttpGet("phase-val-range")]
         public IEnumerable<int> GetTodoPhaseRange()
         {
-            return new Collection<int>{ TodoCommon.PHASE_MIN, TodoCommon.PHASE_MAX };
+            return new Collection<int>{ TodoCommon.TODO_PHASE_MIN, TodoCommon.TODO_PHASE_MAX };
+        }
+        [HttpGet("phase-name/{idx}")]
+        public IActionResult GetTodoPhaseName(int idx)
+        {
+            string result = TodoCommon.GetTodoPhaseName(idx);
+            if (result != "")
+            {
+                logger.LogInformation("Querying phase name with index ({0}) for all Todos: {1}", idx, result);
+                return Ok(result);
+            }
+            else
+            {
+                logger.LogError("Queried empty result for phase name with index ({0})", idx);
+                return BadRequest(ErrorMessages.TODO_PHASE_NOT_EXIST);
+            }
         }
     }
 }

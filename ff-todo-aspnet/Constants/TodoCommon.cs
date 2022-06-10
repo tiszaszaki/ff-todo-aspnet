@@ -11,8 +11,27 @@
 
 		public const int MAX_TASK_NAME_LENGTH = 32;
 
-		public const int PHASE_MIN = 0;
-		public const int PHASE_MAX = 2;
+		public const int TODO_PHASE_MIN = 0;
+		public const int TODO_PHASE_MAX = 2;
+
+		private static IDictionary<int, string> TodoPhaseNames = new Dictionary<int, string>();
+
+		static TodoCommon()
+		{
+			TodoPhaseNames.Add(0, "Backlog");
+			TodoPhaseNames.Add(1, "In progress");
+			TodoPhaseNames.Add(2, "Done");
+		}
+
+		public static string GetTodoPhaseName(int idx)
+        {
+			string result = "";
+
+			if ((idx >= TODO_PHASE_MIN) && (idx <= TODO_PHASE_MAX))
+				result = TodoPhaseNames[idx];
+
+			return result;
+		}
 
 		public const string boardPath = "board";
 		public const string todoPath = "todo";

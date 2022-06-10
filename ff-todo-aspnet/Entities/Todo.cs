@@ -14,7 +14,7 @@ namespace ff_todo_aspnet.Entities
 		public string name { get; set; }
         [MaxLength(TodoCommon.MAX_TODO_DESCRIPTION_LENGTH)]
 		public string description { get; set; }
-        [Range(TodoCommon.PHASE_MIN,TodoCommon.PHASE_MAX)]
+        [Range(TodoCommon.TODO_PHASE_MIN,TodoCommon.TODO_PHASE_MAX)]
 		public int phase { get; set; }
         [Column("date_created")]
 		public DateTime dateCreated { get; set; }
