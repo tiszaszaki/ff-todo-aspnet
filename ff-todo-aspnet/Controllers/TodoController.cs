@@ -89,19 +89,21 @@ namespace ff_todo_aspnet.Controllers
             return new Collection<int>{ TodoCommon.TODO_PHASE_MIN, TodoCommon.TODO_PHASE_MAX };
         }
         [HttpGet("phase-name/{idx}")]
-        public IActionResult GetTodoPhaseName(int idx)
+        public ActionResult GetTodoPhaseName(int idx)
         {
             string result = TodoCommon.GetTodoPhaseName(idx);
+            ActionResult response;
             if (result != "")
             {
                 logger.LogInformation("Querying phase name with index ({0}) for all Todos: {1}", idx, result);
-                return Ok(result);
+                response = Json(result);
             }
             else
             {
                 logger.LogError("Queried empty result for phase name with index ({0})", idx);
-                return BadRequest(ErrorMessages.TODO_PHASE_NOT_EXIST);
+                response = BadRequest(ErrorMessages.TODO_PHASE_NOT_EXIST);
             }
+            return response;
         }
     }
 }
