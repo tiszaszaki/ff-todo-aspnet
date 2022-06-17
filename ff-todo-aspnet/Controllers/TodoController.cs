@@ -33,18 +33,18 @@ namespace ff_todo_aspnet.Controllers
         {
             TodoResponse? todoResponse = todoService.GetTodo(id);
             if (todoResponse is not null)
-                return Json(todoResponse);
+                return Ok(todoResponse);
             else
-                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
+                return NotFound(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("name/{name}")]
         public ActionResult GetTodoByName(string name)
         {
             TodoResponse? todoResponse = todoService.GetTodoByName(name);
             if (todoResponse is not null)
-                return Json(todoResponse);
+                return Ok(todoResponse);
             else
-                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(name));
+                return NotFound(ErrorMessages.TODO_NOT_EXIST_MESSAGE(name));
         }
         [HttpDelete("{id}")]
         public ActionResult RemoveTodo(long id)
@@ -53,7 +53,7 @@ namespace ff_todo_aspnet.Controllers
             if (todo is not null)
                 return Ok();
             else
-                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
+                return NotFound(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
         }
         [HttpDelete("clear")]
         public void RemoveAllTodos()
@@ -67,16 +67,16 @@ namespace ff_todo_aspnet.Controllers
             if (todo is not null)
                 return Ok();
             else
-                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
+                return NotFound(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("{id}/clone/{phase}/{boardId}")]
         public ActionResult CloneTodo(long id, int phase, long boardId)
         {
             Todo? todo = todoService.CloneTodo(id, phase, boardId);
             if (todo is not null)
-                return Json(todo);
+                return Ok(todo);
             else
-                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
+                return NotFound(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("{id}/tasks")]
         public IEnumerable<TaskResponse> GetAllTasksFromTodo(long id)
@@ -116,12 +116,12 @@ namespace ff_todo_aspnet.Controllers
             if (result != "")
             {
                 logger.LogInformation("Querying phase name with index ({0}) for all Todos: {1}", idx, result);
-                response = Json(result);
+                response = Ok(result);
             }
             else
             {
                 logger.LogError("Queried empty result for phase name with index ({0})", idx);
-                response = BadRequest(ErrorMessages.TODO_PHASE_NOT_EXIST);
+                response = NotFound(ErrorMessages.TODO_PHASE_NOT_EXIST);
             }
             return response;
         }

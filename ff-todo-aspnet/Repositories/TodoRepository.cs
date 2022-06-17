@@ -60,16 +60,20 @@ namespace ff_todo_aspnet.Repositories
             else
                 return null;
         }
-        public void RemoveAllTodos()
+        public long RemoveAllTodos()
         {
+            var todoCount = context.Todos.Count();
             context.Todos.RemoveRange(context.Todos);
             context.SaveChanges();
+            return todoCount;
         }
-        public void RemoveAllTodosFromBoard(long boardId)
+        public long RemoveAllTodosFromBoard(long boardId)
         {
+            var todoCount = context.Todos.Count(todo => todo.boardId == boardId);
             foreach (var todo in context.Todos.Where(todo => todo.boardId == boardId))
                 context.Todos.Remove(todo);
             context.SaveChanges();
+            return todoCount;
         }
         public TodoResponse? UpdateTodo(long id, Todo patchedTodo)
         {

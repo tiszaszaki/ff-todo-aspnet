@@ -54,16 +54,20 @@ namespace ff_todo_aspnet.Repositories
             else
                 return null;
         }
-        public void RemoveAllTasks()
+        public long RemoveAllTasks()
         {
+            var taskCount = context.Tasks.Count();
             context.Tasks.RemoveRange(context.Tasks);
             context.SaveChanges();
+            return taskCount;
         }
-        public void RemoveAllTasksFromTodo(long todoId)
+        public long RemoveAllTasksFromTodo(long todoId)
         {
+            var taskCount = context.Tasks.Count(task => task.todoId == todoId);
             foreach (var task in context.Tasks.Where(task => task.todoId == todoId))
                 context.Tasks.Remove(task);
             context.SaveChanges();
+            return taskCount;
         }
         public TaskResponse? UpdateTask(long id, Entities.Task patchedTask)
         {

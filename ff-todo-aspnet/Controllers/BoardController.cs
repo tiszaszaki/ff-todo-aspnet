@@ -28,9 +28,9 @@ namespace ff_todo_aspnet.Controllers
         {
             BoardResponse? boardResponse = boardService.GetBoard(id);
             if (boardResponse is not null)
-                return Json(boardResponse);
+                return Ok(boardResponse);
             else
-                return BadRequest(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
+                return NotFound(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpPut]
         public Board AddBoard(BoardRequest board)
@@ -44,7 +44,7 @@ namespace ff_todo_aspnet.Controllers
             if (board is not null)
                 return Ok();
             else
-                return BadRequest(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
+                return NotFound(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpPatch("{id}")]
         public ActionResult UpdateBoard(long id, [FromBody] BoardRequest patchedBoard)
@@ -53,7 +53,7 @@ namespace ff_todo_aspnet.Controllers
             if (board is not null)
                 return Ok();
             else
-                return BadRequest(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
+                return NotFound(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("{id}/todos")]
         public IEnumerable<TodoResponse> GetAllTodosFromBoard(long id)
@@ -86,24 +86,42 @@ namespace ff_todo_aspnet.Controllers
             return TodoCommon.MAX_BOARD_AUTHOR_LENGTH;
         }
         [HttpGet("{id}/readonly-todos")]
-        public bool GetBoardReadonlyTodosSetting(long id)
+        public ActionResult GetBoardReadonlyTodosSetting(long id)
         {
-            return boardService.GetBoardReadonlyTodosSetting(id);
+            if (boardService.GetBoard(id) is not null)
+                return Ok(boardService.GetBoardReadonlyTodosSetting(id));
+            else
+                return NotFound(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpPatch("{id}/readonly-todos/{isReadonly}")]
-        public void SetBoardReadonlyTodosSetting(long id, bool isReadonly)
+        public ActionResult SetBoardReadonlyTodosSetting(long id, bool isReadonly)
         {
-            boardService.SetBoardReadonlyTodosSetting(id, isReadonly);
+            if (boardService.GetBoard(id) is not null)
+            {
+                boardService.SetBoardReadonlyTodosSetting(id, isReadonly);
+                return Ok();
+            }
+            else
+                return NotFound(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("{id}/readonly-tasks")]
-        public bool GetBoardReadonlyTasksSetting(long id)
+        public ActionResult GetBoardReadonlyTasksSetting(long id)
         {
-            return boardService.GetBoardReadonlyTasksSetting(id);
+            if (boardService.GetBoard(id) is not null)
+                return Ok(boardService.GetBoardReadonlyTasksSetting(id));
+            else
+                return NotFound(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpPatch("{id}/readonly-tasks/{isReadonly}")]
-        public void SetBoardReadonlyTasksSetting(long id, bool isReadonly)
+        public ActionResult SetBoardReadonlyTasksSetting(long id, bool isReadonly)
         {
-            boardService.SetBoardReadonlyTodosSetting(id, isReadonly);
+            if (boardService.GetBoard(id) is not null)
+            {
+                boardService.SetBoardReadonlyTodosSetting(id, isReadonly);
+                return Ok();
+            }
+            else
+                return NotFound(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
     }
 }
