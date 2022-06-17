@@ -21,14 +21,22 @@ namespace ff_todo_aspnet.Controllers
             return taskService.GetTasks();
         }
         [HttpGet("{id}")]
-        public TaskResponse GetTask(long id)
+        public ActionResult GetTask(long id)
         {
-            return taskService.GetTask(id);
+            TaskResponse? taskResponse = taskService.GetTask(id);
+            if (taskResponse is not null)
+                return Json(taskResponse);
+            else
+                return BadRequest(ErrorMessages.TASK_NOT_EXIST_MESSAGE(id));
         }
         [HttpDelete("{id}")]
-        public void RemoveTask(long id)
+        public ActionResult RemoveTask(long id)
         {
-            taskService.RemoveTask(id);
+            Entities.Task? task = taskService.RemoveTask(id);
+            if (task is not null)
+                return Ok();
+            else
+                return BadRequest(ErrorMessages.TASK_NOT_EXIST_MESSAGE(id));
         }
         [HttpDelete("clear")]
         public void RemoveAllTasks()
@@ -36,9 +44,13 @@ namespace ff_todo_aspnet.Controllers
             taskService.RemoveAllTasks();
         }
         [HttpPatch("{id}")]
-        public void UpdateTask(long id, [FromBody] TaskRequest patchedTask)
+        public ActionResult UpdateTask(long id, [FromBody] TaskRequest patchedTask)
         {
-            taskService.UpdateTask(id, patchedTask);
+            TaskResponse? taskResponse = taskService.UpdateTask(id, patchedTask);
+            if (taskResponse is not null)
+                return Ok();
+            else
+                return BadRequest(ErrorMessages.TASK_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("name-max-length")]
         public long GetNameMaxLength()

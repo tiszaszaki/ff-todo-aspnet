@@ -27,10 +27,13 @@ namespace ff_todo_aspnet.Services
             logger.LogInformation("Fetched {0} Board ID(s)", result.Count());
             return result;
         }
-        public BoardResponse GetBoard(long id)
+        public BoardResponse? GetBoard(long id)
         {
-            BoardResponse result = boardRepository.FetchBoard(id);
-            logger.LogInformation("Successfully fetched Board with ID ({0}): {1}", id, result.ToString());
+            BoardResponse? result = boardRepository.FetchBoard(id);
+            if (result is not null)
+                logger.LogInformation("Successfully fetched Board with ID ({0}): {1}", id, result.ToString());
+            else
+                logger.LogError("Failed to fetch Board with ID ({0})", id);
             return result;
         }
         private DateTime FetchNewDateTime()
@@ -47,15 +50,23 @@ namespace ff_todo_aspnet.Services
             logger.LogInformation("Successfully added new Board: {0}", addedBoard.ToString());
             return board;
         }
-        public void RemoveBoard(long id)
+        public Board? RemoveBoard(long id)
         {
-            boardRepository.RemoveBoard(id);
-            logger.LogInformation("Successfully removed Board with ID {0}", id);
+            Board? board = boardRepository.RemoveBoard(id);
+            if (board is not null)
+                logger.LogInformation("Successfully removed Board with ID ({0})", id);
+            else
+                logger.LogError("Failed to remove Board with ID ({0})", id);
+            return board;
         }
-        public void UpdateBoard(long id, BoardRequest patchRequest)
+        public BoardResponse? UpdateBoard(long id, BoardRequest patchRequest)
         {
-            BoardResponse result = boardRepository.UpdateBoard(id, patchRequest);
-            logger.LogInformation("Successfully updated Board with ID {0}: {1}", id, result.ToString());
+            BoardResponse? result = boardRepository.UpdateBoard(id, patchRequest);
+            if (result is not null)
+                logger.LogInformation("Successfully updated Board with ID ({0}): {1}", id, result.ToString());
+            else
+                logger.LogError("Failed to update Board with ID ({0})", id);
+            return result;
         }
         public bool GetBoardReadonlyTodosSetting(long id)
         {

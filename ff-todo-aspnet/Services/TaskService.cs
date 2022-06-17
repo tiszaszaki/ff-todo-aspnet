@@ -25,10 +25,13 @@ namespace ff_todo_aspnet.Services
             logger.LogInformation("Fetched {0} Task(s) from Todo with ID ({1})", result.ToList().Count, todoId);
             return result;
         }
-        public TaskResponse GetTask(long id)
+        public TaskResponse? GetTask(long id)
         {
-            TaskResponse result = taskRepository.FetchTask(id);
-            logger.LogInformation("Successfully fetched Task with ID ({0}): {1}", id, result.ToString());
+            TaskResponse? result = taskRepository.FetchTask(id);
+            if (result is not null)
+                logger.LogInformation("Successfully fetched Task with ID ({0}): {1}", id, result.ToString());
+            else
+                logger.LogError("Failed to fetch Task with ID ({0})", id);
             return result;
         }
         public Entities.Task AddTask(long todoId, TaskRequest taskRequest)
@@ -40,10 +43,14 @@ namespace ff_todo_aspnet.Services
             logger.LogInformation("Successfully added new Task: {0}", addedTask.ToString());
             return task;
         }
-        public void RemoveTask(long id)
+        public Entities.Task? RemoveTask(long id)
         {
-            taskRepository.RemoveTask(id);
-            logger.LogInformation("Successfully removed Task with ID {0}", id);
+            Entities.Task? task = taskRepository.RemoveTask(id);
+            if (task is not null)
+                logger.LogInformation("Successfully removed Task with ID ({0})", id);
+            else
+                logger.LogError("Failed to remove Task with ID ({0})", id);
+            return task;
         }
         public void RemoveAllTasks()
         {
@@ -55,10 +62,14 @@ namespace ff_todo_aspnet.Services
             taskRepository.RemoveAllTasksFromTodo(todoId);
             logger.LogInformation("Successfully removed all Tasks from Todo with ID ({0})", todoId);
         }
-        public void UpdateTask(long id, TaskRequest patchRequest)
+        public TaskResponse? UpdateTask(long id, TaskRequest patchRequest)
         {
-            TaskResponse result = taskRepository.UpdateTask(id, patchRequest);
-            logger.LogInformation("Successfully updated Task with ID {0}: {1}", id, result.ToString());
+            TaskResponse? result = taskRepository.UpdateTask(id, patchRequest);
+            if (result is not null)
+                logger.LogInformation("Successfully updated Task with ID ({0}): {1}", id, result.ToString());
+            else
+                logger.LogError("Failed to update Task with ID ({0})", id);
+            return result;
         }
     }
 }

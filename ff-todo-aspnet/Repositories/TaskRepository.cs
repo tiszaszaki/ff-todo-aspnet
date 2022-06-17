@@ -21,13 +21,19 @@ namespace ff_todo_aspnet.Repositories
                 .Where(task => task.todoId == todoId)
                 .Select<Entities.Task, TaskResponse>(task => task);
         }
-        public TaskResponse FetchTask(long id)
+        public TaskResponse? FetchTask(long id)
         {
-            return context.Tasks.Single(task => task.id == id);
+            if (context.Tasks.Count(task => task.id == id) > 0)
+                return context.Tasks.Single(task => task.id == id);
+            else
+                return null;
         }
-        public TaskResponse FetchTaskByName(string name)
+        public TaskResponse? FetchTaskByName(string name)
         {
-            return context.Tasks.Single(task => task.name == name);
+            if (context.Tasks.Count(task => task.name == name) > 0)
+                return context.Tasks.Single(task => task.name == name);
+            else
+                return null;
         }
         public Entities.Task AddTask(Entities.Task task)
         {
@@ -36,11 +42,17 @@ namespace ff_todo_aspnet.Repositories
             context.SaveChanges();
             return task;
         }
-        public void RemoveTask(long id)
+        public Entities.Task? RemoveTask(long id)
         {
-            var task = context.Tasks.Single(task => task.id == id);
-            context.Tasks.Remove(task);
-            context.SaveChanges();
+            if (context.Tasks.Count(task => task.id == id) > 0)
+            {
+                var task = context.Tasks.Single(task => task.id == id);
+                context.Tasks.Remove(task);
+                context.SaveChanges();
+                return task;
+            }
+            else
+                return null;
         }
         public void RemoveAllTasks()
         {
@@ -53,14 +65,19 @@ namespace ff_todo_aspnet.Repositories
                 context.Tasks.Remove(task);
             context.SaveChanges();
         }
-        public TaskResponse UpdateTask(long id, Entities.Task patchedTask)
+        public TaskResponse? UpdateTask(long id, Entities.Task patchedTask)
         {
-            var task = context.Tasks.Single(task => task.id == id);
-            task.name = patchedTask.name;
-            task.done = patchedTask.done;
-            task.deadline = patchedTask.deadline;
-            context.SaveChanges();
-            return task;
+            if (context.Tasks.Count(task => task.id == id) > 0)
+            {
+                var task = context.Tasks.Single(task => task.id == id);
+                task.name = patchedTask.name;
+                task.done = patchedTask.done;
+                task.deadline = patchedTask.deadline;
+                context.SaveChanges();
+                return task;
+            }
+            else
+                return null;
         }
     }
 }

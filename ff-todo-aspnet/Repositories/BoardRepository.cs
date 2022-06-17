@@ -20,9 +20,12 @@ namespace ff_todo_aspnet.Repositories
         {
             return context.Boards.Select(board => board.id);
         }
-        public BoardResponse FetchBoard(long id)
+        public BoardResponse? FetchBoard(long id)
         {
-            return context.Boards.Single(board => board.id == id);
+            if (context.Boards.Count(board => board.id == id) > 0)
+                return context.Boards.Single(board => board.id == id);
+            else
+                return null;
         }
         public Board AddBoard(Board board)
         {
@@ -32,20 +35,31 @@ namespace ff_todo_aspnet.Repositories
             context.SaveChanges();
             return board;
         }
-        public void RemoveBoard(long id)
+        public Board? RemoveBoard(long id)
         {
-            var board = context.Boards.Single(board => board.id == id);
-            context.Boards.Remove(board);
-            context.SaveChanges();
+            if (context.Boards.Count(board => board.id == id) > 0)
+            {
+                var board = context.Boards.Single(board => board.id == id);
+                context.Boards.Remove(board);
+                context.SaveChanges();
+                return board;
+            }
+            else
+                return null;
         }
-        public BoardResponse UpdateBoard(long id, Board patchedBoard)
+        public BoardResponse? UpdateBoard(long id, Board patchedBoard)
         {
-            var board = context.Boards.Single(board => board.id == id);
-            board.name = patchedBoard.name;
-            board.description = patchedBoard.description;
-            board.author = patchedBoard.author;
-            context.SaveChanges();
-            return board;
+            if (context.Boards.Count(board => board.id == id) > 0)
+            {
+                var board = context.Boards.Single(board => board.id == id);
+                board.name = patchedBoard.name;
+                board.description = patchedBoard.description;
+                board.author = patchedBoard.author;
+                context.SaveChanges();
+                return board;
+            }
+            else
+                return null;
         }
         public bool FetchBoardReadonlyTodosSetting(long id)
         {

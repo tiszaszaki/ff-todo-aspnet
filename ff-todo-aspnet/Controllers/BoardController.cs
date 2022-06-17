@@ -24,9 +24,13 @@ namespace ff_todo_aspnet.Controllers
             return boardService.GetBoardIds();
         }
         [HttpGet("{id}")]
-        public BoardResponse GetBoard(long id)
+        public ActionResult GetBoard(long id)
         {
-            return boardService.GetBoard(id);
+            BoardResponse? boardResponse = boardService.GetBoard(id);
+            if (boardResponse is not null)
+                return Json(boardResponse);
+            else
+                return BadRequest(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpPut]
         public Board AddBoard(BoardRequest board)
@@ -34,14 +38,22 @@ namespace ff_todo_aspnet.Controllers
             return boardService.AddBoard(board);
         }
         [HttpDelete("{id}")]
-        public void RemoveBoard(long id)
+        public ActionResult RemoveBoard(long id)
         {
-            boardService.RemoveBoard(id);
+            Board? board = boardService.RemoveBoard(id);
+            if (board is not null)
+                return Ok();
+            else
+                return BadRequest(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpPatch("{id}")]
-        public void UpdateBoard(long id, [FromBody] BoardRequest patchedBoard)
+        public ActionResult UpdateBoard(long id, [FromBody] BoardRequest patchedBoard)
         {
-            boardService.UpdateBoard(id, patchedBoard);
+            BoardResponse? board = boardService.UpdateBoard(id, patchedBoard);
+            if (board is not null)
+                return Ok();
+            else
+                return BadRequest(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("{id}/todos")]
         public IEnumerable<TodoResponse> GetAllTodosFromBoard(long id)

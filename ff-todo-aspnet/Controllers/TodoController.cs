@@ -29,19 +29,31 @@ namespace ff_todo_aspnet.Controllers
             return todoService.GetTodos();
         }
         [HttpGet("{id}")]
-        public TodoResponse GetTodo(long id)
+        public ActionResult GetTodo(long id)
         {
-            return todoService.GetTodo(id);
+            TodoResponse? todoResponse = todoService.GetTodo(id);
+            if (todoResponse is not null)
+                return Json(todoResponse);
+            else
+                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("name/{name}")]
-        public TodoResponse GetTodoByName(string name)
+        public ActionResult GetTodoByName(string name)
         {
-            return todoService.GetTodoByName(name);
+            TodoResponse? todoResponse = todoService.GetTodoByName(name);
+            if (todoResponse is not null)
+                return Json(todoResponse);
+            else
+                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(name));
         }
         [HttpDelete("{id}")]
-        public void RemoveTodo(long id)
+        public ActionResult RemoveTodo(long id)
         {
-            todoService.RemoveTodo(id);
+            Todo? todo=todoService.RemoveTodo(id);
+            if (todo is not null)
+                return Ok();
+            else
+                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
         }
         [HttpDelete("clear")]
         public void RemoveAllTodos()
@@ -49,14 +61,22 @@ namespace ff_todo_aspnet.Controllers
             todoService.RemoveAllTodos();
         }
         [HttpPatch("{id}")]
-        public void UpdateTodo(long id, [FromBody] TodoRequest patchedTodo)
+        public ActionResult UpdateTodo(long id, [FromBody] TodoRequest patchedTodo)
         {
-            todoService.UpdateTodo(id, patchedTodo);
+            TodoResponse? todo = todoService.UpdateTodo(id, patchedTodo);
+            if (todo is not null)
+                return Ok();
+            else
+                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("{id}/clone/{phase}/{boardId}")]
-        public Todo CloneTodo(long id, int phase, long boardId)
+        public ActionResult CloneTodo(long id, int phase, long boardId)
         {
-            return todoService.CloneTodo(id, phase, boardId);
+            Todo? todo = todoService.CloneTodo(id, phase, boardId);
+            if (todo is not null)
+                return Json(todo);
+            else
+                return BadRequest(ErrorMessages.TODO_NOT_EXIST_MESSAGE(id));
         }
         [HttpGet("{id}/tasks")]
         public IEnumerable<TaskResponse> GetAllTasksFromTodo(long id)
