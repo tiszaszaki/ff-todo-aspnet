@@ -111,19 +111,17 @@ namespace ff_todo_aspnet.Controllers
         [HttpGet("phase-name/{idx}")]
         public ActionResult GetTodoPhaseName(int idx)
         {
-            string result = TodoCommon.GetTodoPhaseName(idx);
-            ActionResult response;
-            if (result != "")
+            TodoPhaseNameResponse result = new TodoPhaseNameResponse{phase = TodoCommon.GetTodoPhaseName(idx)};
+            if (result.phase != "")
             {
                 logger.LogInformation("Querying phase name with index ({0}) for all Todos: {1}", idx, result);
-                response = Ok(result);
+                return Ok(result);
             }
             else
             {
                 logger.LogError("Queried empty result for phase name with index ({0})", idx);
-                response = NotFound(ErrorMessages.TODO_PHASE_NOT_EXIST);
+                return NotFound(ErrorMessages.TODO_PHASE_NOT_EXIST);
             }
-            return response;
         }
     }
 }
