@@ -3,12 +3,21 @@ using ff_todo_aspnet.Configurations;
 using ff_todo_aspnet.Repositories;
 using ff_todo_aspnet.Services;
 
+var isRealDatabase = true;
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
 
-builder.Services.AddDbContext<TodoDbContext>(x => x.UseNpgsql(connectionString));
+if (isRealDatabase)
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    builder.Services.AddDbContext<TodoDbContext>(x => x.UseNpgsql(connectionString));
+}
+else
+{
+    var databaseName = "ff-todo-inmemory-" + Guid.NewGuid().ToString();
+    builder.Services.AddDbContext<TodoDbContext>(x => x.UseInMemoryDatabase(databaseName: databaseName));
+}
 
 builder.Services.AddScoped<BoardRepository>();
 builder.Services.AddScoped<TodoRepository>();
