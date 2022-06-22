@@ -3,8 +3,8 @@ using ff_todo_aspnet.Configurations;
 using ff_todo_aspnet.Repositories;
 using ff_todo_aspnet.Services;
 
-var isRealDatabase = false;
 var builder = WebApplication.CreateBuilder(args);
+var isRealDatabase = Boolean.Parse(builder.Configuration["IsRealDatabase"]);
 
 // Add services to the container.
 
