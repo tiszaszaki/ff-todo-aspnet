@@ -6,9 +6,9 @@ namespace ff_todo_aspnet.Services
 {
     public class TaskService
     {
-        private readonly TaskRepository taskRepository;
+        private readonly ITaskRepository taskRepository;
         private readonly ILogger<TaskService> logger;
-        public TaskService(TaskRepository taskRepository, ILogger<TaskService> logger)
+        public TaskService(ITaskRepository taskRepository, ILogger<TaskService> logger)
         {
             this.taskRepository = taskRepository;
             this.logger = logger;

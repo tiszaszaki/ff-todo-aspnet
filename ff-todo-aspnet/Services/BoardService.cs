@@ -8,9 +8,9 @@ namespace ff_todo_aspnet.Services
 {
     public class BoardService
     {
-        private readonly BoardRepository boardRepository;
+        private readonly IBoardRepository boardRepository;
         private readonly ILogger<BoardService> logger;
-        public BoardService(BoardRepository boardRepository, ILogger<BoardService> logger)
+        public BoardService(IBoardRepository boardRepository, ILogger<BoardService> logger)
         {
             this.boardRepository = boardRepository;
             this.logger = logger;

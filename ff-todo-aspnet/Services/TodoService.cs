@@ -7,9 +7,9 @@ namespace ff_todo_aspnet.Services
 {
     public class TodoService
     {
-        private readonly TodoRepository todoRepository;
+        private readonly ITodoRepository todoRepository;
         private readonly ILogger<TodoService> logger;
-        public TodoService(TodoRepository todoRepository, ILogger<TodoService> logger)
+        public TodoService(ITodoRepository todoRepository, ILogger<TodoService> logger)
         {
             this.todoRepository = todoRepository;
             this.logger = logger;
