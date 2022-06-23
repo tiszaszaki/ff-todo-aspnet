@@ -4,7 +4,7 @@ using static ff_todo_aspnet.Configurations.TodoDbContext;
 
 namespace ff_todo_aspnet.Repositories
 {
-    public class TaskRepository
+    public class TaskRepository : ITaskRepository
     {
         private readonly TodoDbContext context;
         public TaskRepository(TodoDbContext context)

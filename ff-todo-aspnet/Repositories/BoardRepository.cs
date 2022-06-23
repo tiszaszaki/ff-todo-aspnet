@@ -5,7 +5,7 @@ using static ff_todo_aspnet.Configurations.TodoDbContext;
 
 namespace ff_todo_aspnet.Repositories
 {
-    public class BoardRepository
+    public class BoardRepository : IBoardRepository
     {
         private readonly TodoDbContext context;
         public BoardRepository(TodoDbContext context)

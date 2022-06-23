@@ -5,7 +5,7 @@ using static ff_todo_aspnet.Configurations.TodoDbContext;
 
 namespace ff_todo_aspnet.Repositories
 {
-    public class TodoRepository
+    public class TodoRepository : ITodoRepository
     {
         private readonly TodoDbContext context;
         public bool IsNameTruncated { get; set; }
