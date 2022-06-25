@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace ff_todo_aspnet.Services
 {
-    public class BoardService
+    public class BoardService : IBoardService
     {
         private readonly IBoardRepository boardRepository;
         private readonly ILogger<BoardService> logger;

@@ -1,9 +1,6 @@
-﻿using ff_todo_aspnet.Controllers;
-using ff_todo_aspnet.Entities;
-using ff_todo_aspnet.Repositories;
+﻿using ff_todo_aspnet.Entities;
+using ff_todo_aspnet.RequestObjects;
 using ff_todo_aspnet.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using System.Collections.ObjectModel;
 
@@ -11,39 +8,58 @@ namespace ff_todo_aspnet_test
 {
     public class BoardUnitTest
     {
-        private Mock<IBoardRepository> boardMock = new Mock<IBoardRepository>();
-        private Mock<ITodoRepository> todoMock = new Mock<ITodoRepository>();
-        private ILogger<BoardService> boardLogger = Mock.Of<ILogger<BoardService>>();
-        private ILogger<TodoService> todoLogger = Mock.Of<ILogger<TodoService>>();
+        private Mock<IBoardService> boardMock = new Mock<IBoardService>();
 
+        private Board GetTestBoard()
+        {
+            return new Board {
+                name = "Test board",
+                description = "Test description",
+                author = "Test author"
+            };
+        }
         private Collection<long> GetTestBoardIds()
         {
-            var boardIds = new Collection<long>();
+            var boardIds = new Collection<long> {
+                1L, 2L
+            };
             return boardIds;
         }
 
-        [Fact]
-        public void FetchBoardsTest()
+        private void AssertBoardsEqual(Board expected, Board actual, bool is_strict=false)
         {
-            var boardService = new BoardService(boardMock.Object, boardLogger);
-            var todoService = new TodoService(todoMock.Object, todoLogger);
-            var controller = new BoardController(boardService, todoService);
+            Assert.Equal(expected.name, actual.name);
+            Assert.Equal(expected.description, actual.description);
+            Assert.Equal(expected.author, actual.author);
+            if (is_strict) Assert.Equal(expected.dateCreated, actual.dateCreated);
+            Assert.Equal(expected.readonlyTodos, actual.readonlyTodos);
+            Assert.Equal(expected.readonlyTasks, actual.readonlyTasks);
+        }
 
-            boardMock.Setup(r => r.FetchBoardIds()).Returns(GetTestBoardIds());
+        [Fact]
+        public void GetBoardsTest()
+        {
+            boardMock.Setup(s => s.GetBoardIds()).Returns(GetTestBoardIds());
 
-            var result = controller.GetBoardIds() as OkObjectResult;
-            var actual = result as IEnumerable<long>;
+            var expected = GetTestBoardIds();
+            var actual = boardMock.Object.GetBoardIds();
 
-            /*
-            Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(GetTestBoardIds().Count(), actual.Count());
-            */
+            Assert.Equal(expected.Count(), actual.Count());
         }
 
         [Fact]
         public void AddBoardTest()
         {
-            boardMock.Setup(r => r.AddBoard(It.IsAny<Board>())).Returns(new Board());
+            Board testEntity = GetTestBoard();
+            BoardRequest testRequest = new BoardRequest {
+                name = testEntity.name,
+                description = testEntity.description,
+                author = testEntity.author
+            };
+            boardMock.Setup(r => r.AddBoard(testRequest)).Returns(testEntity);
+            var expected = GetTestBoard();
+            var actual = boardMock.Object.AddBoard(testRequest);
+            AssertBoardsEqual(expected, actual);
         }
     }
 }

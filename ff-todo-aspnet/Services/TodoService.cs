@@ -5,7 +5,7 @@ using ff_todo_aspnet.ResponseObjects;
 
 namespace ff_todo_aspnet.Services
 {
-    public class TodoService
+    public class TodoService : ITodoService
     {
         private readonly ITodoRepository todoRepository;
         private readonly ILogger<TodoService> logger;

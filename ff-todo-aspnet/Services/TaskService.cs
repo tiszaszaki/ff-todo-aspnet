@@ -4,7 +4,7 @@ using ff_todo_aspnet.ResponseObjects;
 
 namespace ff_todo_aspnet.Services
 {
-    public class TaskService
+    public class TaskService : ITaskService
     {
         private readonly ITaskRepository taskRepository;
         private readonly ILogger<TaskService> logger;
