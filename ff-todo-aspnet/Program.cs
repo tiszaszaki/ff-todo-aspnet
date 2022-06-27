@@ -19,13 +19,13 @@ else
     builder.Services.AddDbContext<TodoDbContext>(x => x.UseInMemoryDatabase(databaseName: databaseName));
 }
 
-builder.Services.AddScoped<BoardRepository>();
-builder.Services.AddScoped<TodoRepository>();
-builder.Services.AddScoped<TaskRepository>();
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
-builder.Services.AddScoped<BoardService>();
-builder.Services.AddScoped<TodoService>();
-builder.Services.AddScoped<TaskService>();
+builder.Services.AddScoped<IBoardService, BoardService>();
+builder.Services.AddScoped<ITodoService, TodoService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 
 builder.Services.AddControllers();
 

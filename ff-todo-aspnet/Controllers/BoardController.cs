@@ -11,9 +11,9 @@ namespace ff_todo_aspnet.Controllers
     [Route(TodoCommon.boardPath)]
     public class BoardController : Controller
     {
-        private readonly BoardService boardService;
-        private readonly TodoService todoService;
-        public BoardController(BoardService boardService, TodoService todoService)
+        private readonly IBoardService boardService;
+        private readonly ITodoService todoService;
+        public BoardController(IBoardService boardService, ITodoService todoService)
         {
             this.boardService = boardService;
             this.todoService = todoService;

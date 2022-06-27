@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 namespace ff_todo_aspnet_test;
 public class BoardUnitTest
 {
-    private Mock<IBoardService> mockService = new Mock<IBoardService>();
+    private readonly Mock<IBoardService> mockService = new Mock<IBoardService>();
 
     private Board GetTestBoard()
     {

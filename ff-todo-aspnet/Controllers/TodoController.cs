@@ -12,12 +12,12 @@ namespace ff_todo_aspnet.Controllers
     [Route(TodoCommon.todoPath)]
     public class TodoController : Controller
     {
-        private readonly TodoService todoService;
-        private readonly TaskService taskService;
+        private readonly ITodoService todoService;
+        private readonly ITaskService taskService;
 
-        private readonly ILogger<TodoService> logger;
+        private readonly ILogger<TodoController> logger;
 
-        public TodoController(TodoService todoService, TaskService taskService, ILogger<TodoService> logger)
+        public TodoController(ITodoService todoService, ITaskService taskService, ILogger<TodoController> logger)
         {
             this.todoService = todoService;
             this.taskService = taskService;

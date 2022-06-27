@@ -10,8 +10,8 @@ namespace ff_todo_aspnet.Controllers
     [Route(TodoCommon.taskPath)]
     public class TaskController : Controller
     {
-        private readonly TaskService taskService;
-        public TaskController(TaskService taskService)
+        private readonly ITaskService taskService;
+        public TaskController(ITaskService taskService)
         {
             this.taskService = taskService;
         }
