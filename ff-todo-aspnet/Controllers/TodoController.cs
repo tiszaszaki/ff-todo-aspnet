@@ -15,13 +15,10 @@ namespace ff_todo_aspnet.Controllers
         private readonly ITodoService todoService;
         private readonly ITaskService taskService;
 
-        private readonly ILogger<TodoController> logger;
-
-        public TodoController(ITodoService todoService, ITaskService taskService, ILogger<TodoController> logger)
+        public TodoController(ITodoService todoService, ITaskService taskService)
         {
             this.todoService = todoService;
             this.taskService = taskService;
-            this.logger = logger;
         }
         [HttpGet]
         public IEnumerable<TodoResponse> GetTodos()
@@ -111,17 +108,11 @@ namespace ff_todo_aspnet.Controllers
         [HttpGet("phase-name/{idx}")]
         public ActionResult GetTodoPhaseName(int idx)
         {
-            TodoPhaseNameResponse result = new TodoPhaseNameResponse{phase = TodoCommon.GetTodoPhaseName(idx)};
-            if (result.phase != "")
-            {
-                logger.LogInformation("Querying phase name with index ({0}) for all Todos: {1}", idx, result);
-                return Ok(result);
-            }
+            String result = todoService.GetTodoPhaseName(idx);
+            if (result != "")
+                return Ok(new TodoPhaseNameResponse { phase = result });
             else
-            {
-                logger.LogError("Queried empty result for phase name with index ({0})", idx);
-                return NotFound(ErrorMessages.TODO_PHASE_NOT_EXIST);
-            }
+                return NotFound(ErrorMessages.TODO_PHASE_NOT_EXIST(idx));
         }
     }
 }

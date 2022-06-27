@@ -1,4 +1,5 @@
-﻿using ff_todo_aspnet.Entities;
+﻿using ff_todo_aspnet.Constants;
+using ff_todo_aspnet.Entities;
 using ff_todo_aspnet.Repositories;
 using ff_todo_aspnet.RequestObjects;
 using ff_todo_aspnet.ResponseObjects;
@@ -110,5 +111,16 @@ namespace ff_todo_aspnet.Services
                 logger.LogError("Failed to clone Todo with ID ({0})", id);
             return result;
         }
+
+        public String GetTodoPhaseName(int idx)
+        {
+            String result = TodoCommon.GetTodoPhaseName(idx);
+            if (result != "")
+                logger.LogInformation("Querying phase name with index ({0}) for all Todos: {1}", idx, result);
+            else
+                logger.LogError("Queried empty result for phase name with index ({0})", idx);
+            return result;
+        }
+
     }
 }

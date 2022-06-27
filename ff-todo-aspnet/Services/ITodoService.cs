@@ -16,5 +16,6 @@ namespace ff_todo_aspnet.Services
         void RemoveAllTodosFromBoard(long boardId);
         Todo? RemoveTodo(long id);
         TodoResponse? UpdateTodo(long id, TodoRequest patchRequest);
+        String GetTodoPhaseName(int idx);
     }
 }

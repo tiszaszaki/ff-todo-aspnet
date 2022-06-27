@@ -6,7 +6,7 @@ using Moq;
 using System.Collections.ObjectModel;
 
 namespace ff_todo_aspnet_test;
-public class BoardUnitTest
+public class BoardServiceUnitTest
 {
     private readonly Mock<IBoardService> mockService = new Mock<IBoardService>();
 
