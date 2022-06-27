@@ -3,6 +3,7 @@ using ff_todo_aspnet.ResponseObjects;
 using ff_todo_aspnet.RequestObjects;
 using ff_todo_aspnet.Services;
 using ff_todo_aspnet.Constants;
+using Task = ff_todo_aspnet.Entities.Task;
 
 namespace ff_todo_aspnet.Controllers
 {
@@ -32,7 +33,7 @@ namespace ff_todo_aspnet.Controllers
         [HttpDelete("{id}")]
         public ActionResult RemoveTask(long id)
         {
-            Entities.Task? task = taskService.RemoveTask(id);
+            Task? task = taskService.RemoveTask(id);
             if (task is not null)
                 return Ok();
             else

@@ -1,6 +1,7 @@
 ﻿using ff_todo_aspnet.Repositories;
 using ff_todo_aspnet.RequestObjects;
 using ff_todo_aspnet.ResponseObjects;
+using Task = ff_todo_aspnet.Entities.Task;
 
 namespace ff_todo_aspnet.Services
 {
@@ -34,18 +35,18 @@ namespace ff_todo_aspnet.Services
                 logger.LogError("Failed to fetch Task with ID ({0})", id);
             return result;
         }
-        public Entities.Task AddTask(long todoId, TaskRequest taskRequest)
+        public Task AddTask(long todoId, TaskRequest taskRequest)
         {
-            Entities.Task task = taskRequest;
+            Task task = taskRequest;
             TaskResponse addedTask;
             task.todoId = todoId;
             addedTask = taskRepository.AddTask(task);
             logger.LogInformation("Successfully added new Task: {0}", addedTask.ToString());
             return task;
         }
-        public Entities.Task? RemoveTask(long id)
+        public Task? RemoveTask(long id)
         {
-            Entities.Task? task = taskRepository.RemoveTask(id);
+            Task? task = taskRepository.RemoveTask(id);
             if (task is not null)
                 logger.LogInformation("Successfully removed Task with ID ({0})", id);
             else

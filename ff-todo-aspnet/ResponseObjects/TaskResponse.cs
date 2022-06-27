@@ -1,8 +1,10 @@
-﻿namespace ff_todo_aspnet.ResponseObjects
+﻿using Task = ff_todo_aspnet.Entities.Task;
+
+namespace ff_todo_aspnet.ResponseObjects
 {
 	public class TaskResponse
     {
-		public static implicit operator TaskResponse(Entities.Task tr)
+		public static implicit operator TaskResponse(Task tr)
 		{
 			return new TaskResponse
 			{

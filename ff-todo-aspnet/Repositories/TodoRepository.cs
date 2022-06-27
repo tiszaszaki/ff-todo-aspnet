@@ -2,6 +2,7 @@
 using ff_todo_aspnet.Entities;
 using ff_todo_aspnet.ResponseObjects;
 using static ff_todo_aspnet.Configurations.TodoDbContext;
+using Task = ff_todo_aspnet.Entities.Task;
 
 namespace ff_todo_aspnet.Repositories
 {
@@ -95,7 +96,7 @@ namespace ff_todo_aspnet.Repositories
             var tasks = context.Tasks.Where(task => task.todoId == oldTodoId).AsEnumerable();
             foreach (var task in tasks)
             {
-                var clonedTask = new Entities.Task
+                var clonedTask = new Task
                 {
                     name = task.name,
                     done = task.done,

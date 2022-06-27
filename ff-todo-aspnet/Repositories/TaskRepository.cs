@@ -1,6 +1,7 @@
 ﻿using ff_todo_aspnet.Configurations;
 using ff_todo_aspnet.ResponseObjects;
 using static ff_todo_aspnet.Configurations.TodoDbContext;
+using Task = ff_todo_aspnet.Entities.Task;
 
 namespace ff_todo_aspnet.Repositories
 {
@@ -13,13 +14,13 @@ namespace ff_todo_aspnet.Repositories
         }
         public IEnumerable<TaskResponse> FetchTasks()
         {
-            return context.Tasks.Select<Entities.Task, TaskResponse>(task => task);
+            return context.Tasks.Select<Task, TaskResponse>(task => task);
         }
         public IEnumerable<TaskResponse> FetchAllTasksFromTodo(long todoId)
         {
             return context.Tasks
                 .Where(task => task.todoId == todoId)
-                .Select<Entities.Task, TaskResponse>(task => task);
+                .Select<Task, TaskResponse>(task => task);
         }
         public TaskResponse? FetchTask(long id)
         {
@@ -35,14 +36,14 @@ namespace ff_todo_aspnet.Repositories
             else
                 return null;
         }
-        public Entities.Task AddTask(Entities.Task task)
+        public Task AddTask(Task task)
         {
             task.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TASK, task.name, false);
             context.Tasks.Add(task);
             context.SaveChanges();
             return task;
         }
-        public Entities.Task? RemoveTask(long id)
+        public Task? RemoveTask(long id)
         {
             if (context.Tasks.Count(task => task.id == id) > 0)
             {
@@ -69,7 +70,7 @@ namespace ff_todo_aspnet.Repositories
             context.SaveChanges();
             return taskCount;
         }
-        public TaskResponse? UpdateTask(long id, Entities.Task patchedTask)
+        public TaskResponse? UpdateTask(long id, Task patchedTask)
         {
             if (context.Tasks.Count(task => task.id == id) > 0)
             {

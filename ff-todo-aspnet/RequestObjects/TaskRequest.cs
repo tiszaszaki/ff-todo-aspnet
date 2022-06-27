@@ -1,10 +1,12 @@
-﻿namespace ff_todo_aspnet.RequestObjects
+﻿using Task = ff_todo_aspnet.Entities.Task;
+
+namespace ff_todo_aspnet.RequestObjects
 {
     public class TaskRequest
     {
-		public static implicit operator Entities.Task(TaskRequest tr)
+		public static implicit operator Task(TaskRequest tr)
 		{
-			return new Entities.Task
+			return new Task
 			{
 				name = tr.name,
 				done = tr.done

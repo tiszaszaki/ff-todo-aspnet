@@ -5,6 +5,7 @@ using ff_todo_aspnet.Services;
 using ff_todo_aspnet.RequestObjects;
 using ff_todo_aspnet.Constants;
 using System.Collections.ObjectModel;
+using Task = ff_todo_aspnet.Entities.Task;
 
 namespace ff_todo_aspnet.Controllers
 {
@@ -81,7 +82,7 @@ namespace ff_todo_aspnet.Controllers
             return taskService.GetAllTasksFromTodo(id);
         }
         [HttpPut("{id}/task")]
-        public Entities.Task AddTask(long id, [FromBody] TaskRequest task)
+        public Task AddTask(long id, [FromBody] TaskRequest task)
         {
             return taskService.AddTask(id, task);
         }

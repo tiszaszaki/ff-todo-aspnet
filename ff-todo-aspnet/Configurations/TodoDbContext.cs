@@ -2,6 +2,7 @@
 using ff_todo_aspnet.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using Task = ff_todo_aspnet.Entities.Task;
 
 namespace ff_todo_aspnet.Configurations
 {
@@ -96,13 +97,13 @@ namespace ff_todo_aspnet.Configurations
                 .HasForeignKey(ta => ta.todoId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Entities.Task>()
+            modelBuilder.Entity<Task>()
                 .HasOne(ta => ta.todo)
                 .WithMany(to => to.tasks)
                 .IsRequired();
         }
         public DbSet<Board> Boards { get; set; }
         public DbSet<Todo> Todos { get; set; }
-        public DbSet<Entities.Task> Tasks { get; set; }
+        public DbSet<Task> Tasks { get; set; }
     }
 }
