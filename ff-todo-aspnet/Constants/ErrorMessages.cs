@@ -11,6 +11,10 @@
 				result = $"with name ({id})";
 			return result;
         }
+		public static string INVALID_PIVOT_QUERY(string tempQueryLabel) {
+			var queryLabel = tempQueryLabel.Trim() != "" ? tempQueryLabel.Trim() : "defaultPivotQuery";
+			return $"This pivot ({queryLabel}) is not queryable.";
+		}
 		public static string BOARD_NOT_EXIST_MESSAGE(object id)
 		{
 			string addStr = NOT_EXISTING_ID_ADDSTR(id);

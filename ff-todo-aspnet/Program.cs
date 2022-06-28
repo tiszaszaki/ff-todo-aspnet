@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ff_todo_aspnet.Configurations;
 using ff_todo_aspnet.Repositories;
 using ff_todo_aspnet.Services;
+using ff_todo_aspnet.PivotTables;
 
 var builder = WebApplication.CreateBuilder(args);
 var isRealDatabase = Boolean.Parse(builder.Configuration["IsRealDatabase"]);
@@ -22,10 +23,12 @@ else
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IPivotRepository, PivotRepository>();
 
 builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IPivotService, PivotService>();
 
 builder.Services.AddControllers();
 

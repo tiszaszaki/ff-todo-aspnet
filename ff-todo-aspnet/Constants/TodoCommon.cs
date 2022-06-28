@@ -36,6 +36,9 @@
 		public const string boardPath = "board";
 		public const string todoPath = "todo";
 		public const string taskPath = "task";
+		public const string pivotPath = "pivot";
+
+		public const string pivotLabel1 = "board-readiness";
 
 		public const string FIELD_TRUNCATE_STR = "...";
 
