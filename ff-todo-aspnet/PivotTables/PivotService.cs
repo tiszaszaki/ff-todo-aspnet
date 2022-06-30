@@ -16,8 +16,8 @@ namespace ff_todo_aspnet.PivotTables
         {
             label.Trim();
             if (label == "") label = "default-pivot";
-            logger.LogDebug($"{label}-records: ", result.records);
-            logger.LogDebug($"{label}-fields: ", result.records);
+            logger.LogDebug($"{label}-records: ", result.records.ToString());
+            logger.LogDebug($"{label}-fields: ", result.fields.ToString());
         }
         public PivotResponse<ReadinessRecord> GetBoardReadiness()
         {

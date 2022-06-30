@@ -12,6 +12,26 @@ namespace ff_todo_aspnet.PivotTables
             this.context = context;
         }
 
+        private class PivotPrimaryKey
+        {
+            public long id { get; set; }
+            public string name { get; set; }
+        }
+        private PivotResponse<ReadinessRecord> ResultReadinessPivot(IEnumerable<ReadinessRecord> foundKeys, IEnumerable<PivotPrimaryKey> remainingKeys)
+        {
+            var records = new Collection<ReadinessRecord>(foundKeys.ToList());
+            foreach (var e in remainingKeys)
+                records.Add(new ReadinessRecord
+                {
+                    id = e.id,
+                    name = e.name,
+                    doneTaskCount = 0,
+                    TaskCount = 0
+                });
+            var res = new PivotResponse<ReadinessRecord>(records);
+            return res;
+        }
+
         public PivotResponse<ReadinessRecord> FetchBoardReadiness()
         {
             var foundKeys = context.Boards
@@ -49,19 +69,9 @@ namespace ff_todo_aspnet.PivotTables
                     }
                 );
             var remainingKeys = context.Boards
-                .Select(board => new { id = board.id, name = board.name })
-                .Except(foundKeys.Select(e => new { id = e.id, name = e.name }));
-            var records = new Collection<ReadinessRecord>(foundKeys.ToList());
-            foreach (var e in remainingKeys)
-                records.Add(new ReadinessRecord
-                {
-                    id = e.id,
-                    name = e.name,
-                    doneTaskCount = 0,
-                    TaskCount = 0
-                });
-            var res = new PivotResponse<ReadinessRecord>(records);
-            return res;
+                .Select(board => new PivotPrimaryKey { id = board.id, name = board.name })
+                .Except(foundKeys.Select(e => new PivotPrimaryKey { id = e.id, name = e.name }));
+            return ResultReadinessPivot(foundKeys, remainingKeys);
         }
         public PivotResponse<ReadinessRecord> FetchTodoReadiness()
         {
@@ -78,7 +88,7 @@ namespace ff_todo_aspnet.PivotTables
                         done = task.done
                     }
                 )
-                .GroupBy(todoTask => new { id = todoTask.todoId, name = todoTask.name })
+                .GroupBy(todoTask => new PivotPrimaryKey { id = todoTask.todoId, name = todoTask.name })
                 .Select(groupedTodoTask => new ReadinessRecord
                 {
                     id = groupedTodoTask.Key.id,
@@ -88,19 +98,9 @@ namespace ff_todo_aspnet.PivotTables
                 }
             );
             var remainingKeys = context.Todos
-                .Select(todo => new { id = todo.id, name = todo.name })
-                .Except(foundKeys.Select(e => new { id = e.id, name = e.name }));
-            var records = new Collection<ReadinessRecord>(foundKeys.ToList());
-            foreach (var e in remainingKeys)
-                records.Add(new ReadinessRecord
-                {
-                    id = e.id,
-                    name = e.name,
-                    doneTaskCount = 0,
-                    TaskCount = 0
-                });
-            var res = new PivotResponse<ReadinessRecord>(records);
-            return res;
+                .Select(todo => new PivotPrimaryKey { id = todo.id, name = todo.name })
+                .Except(foundKeys.Select(e => new PivotPrimaryKey { id = e.id, name = e.name }));
+            return ResultReadinessPivot(foundKeys, remainingKeys);
         }
     }
 }
