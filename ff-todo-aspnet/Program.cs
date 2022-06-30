@@ -6,6 +6,8 @@ using ff_todo_aspnet.PivotTables;
 
 var builder = WebApplication.CreateBuilder(args);
 var isRealDatabase = Boolean.Parse(builder.Configuration["IsRealDatabase"]);
+var enableCors = Boolean.Parse(builder.Configuration["EnableCors"]);
+var allowedHosts = builder.Configuration["AllowedHosts"];
 
 // Add services to the container.
 
@@ -46,17 +48,19 @@ using ILoggerFactory loggerFactory =
 builder.Services.AddLogging();
 
 // setup CORS
-builder.Services.AddCors(p => p.AddPolicy("corsapp", builder => {
-    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-}));
-
-var app = builder.Build();
+if (enableCors)
+{
+    builder.Services.AddCors(p => p.AddPolicy("ff-todo-cors", builder =>
+        builder.WithOrigins(allowedHosts).AllowAnyMethod().AllowAnyHeader()));
+}
 
 // Configure the HTTP request pipeline.
+var app = builder.Build();
 
-//app cors
-app.UseCors("corsapp");
-app.UseHttpsRedirection();
+// add CORS
+app.UseCors("ff-todo-cors");
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
