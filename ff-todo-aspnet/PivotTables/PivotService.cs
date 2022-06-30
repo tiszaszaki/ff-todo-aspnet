@@ -1,4 +1,6 @@
-﻿namespace ff_todo_aspnet.PivotTables
+﻿using ff_todo_aspnet.Constants;
+
+namespace ff_todo_aspnet.PivotTables
 {
     public class PivotService : IPivotService
     {
@@ -10,10 +12,25 @@
             this.pivotRepository = pivotRepository;
             this.logger = logger;
         }
-        public IEnumerable<BoardReadinessResponse> GetBoardReadiness()
+        private void LogFetchingDebug(PivotResponse<ReadinessRecord> result, string label)
         {
-            IEnumerable<BoardReadinessResponse> result = pivotRepository.FetchBoardReadiness();
-            logger.LogInformation("Fetched {0} Board(s) with readiness", result.Count());
+            label.Trim();
+            if (label == "") label = "default-pivot";
+            logger.LogDebug($"{label}-records: ", result.records);
+            logger.LogDebug($"{label}-fields: ", result.records);
+        }
+        public PivotResponse<ReadinessRecord> GetBoardReadiness()
+        {
+            var result = pivotRepository.FetchBoardReadiness();
+            logger.LogInformation("Fetched {0} Board(s) with readiness", result.records.Count());
+            LogFetchingDebug(result, TodoCommon.pivotLabel1);
+            return result;
+        }
+        public PivotResponse<ReadinessRecord> GetTodoReadiness()
+        {
+            var result = pivotRepository.FetchTodoReadiness();
+            logger.LogInformation("Fetched {0} Todos(s) with readiness", result.records.Count());
+            LogFetchingDebug(result, TodoCommon.pivotLabel2);
             return result;
         }
     }

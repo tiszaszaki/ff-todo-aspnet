@@ -39,6 +39,7 @@
 		public const string pivotPath = "pivot";
 
 		public const string pivotLabel1 = "board-readiness";
+		public const string pivotLabel2 = "todo-readiness";
 
 		public const string FIELD_TRUNCATE_STR = "...";
 

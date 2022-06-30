@@ -2,6 +2,7 @@
 {
     public interface IPivotRepository
     {
-        IEnumerable<BoardReadinessResponse> FetchBoardReadiness();
+        PivotResponse<ReadinessRecord> FetchBoardReadiness();
+        PivotResponse<ReadinessRecord> FetchTodoReadiness();
     }
 }

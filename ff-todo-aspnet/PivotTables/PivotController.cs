@@ -15,9 +15,14 @@ namespace ff_todo_aspnet.PivotTables
         }
 
         [HttpGet(TodoCommon.pivotLabel1)]
-        public IEnumerable<BoardReadinessResponse> GetBoardReadiness()
+        public PivotResponse<ReadinessRecord> GetBoardReadiness()
         {
             return pivotService.GetBoardReadiness();
+        }
+        [HttpGet(TodoCommon.pivotLabel2)]
+        public PivotResponse<ReadinessRecord> GetTodoReadiness()
+        {
+            return pivotService.GetTodoReadiness();
         }
     }
 }

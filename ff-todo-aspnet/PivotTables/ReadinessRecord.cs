@@ -1,6 +1,6 @@
 ﻿namespace ff_todo_aspnet.PivotTables
 {
-    public class BoardReadinessResponse
+    public class ReadinessRecord
     {
         public long id { get; set; }
         public string name { get; set; }

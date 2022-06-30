@@ -12,7 +12,7 @@ namespace ff_todo_aspnet.PivotTables
             this.context = context;
         }
 
-        public IEnumerable<BoardReadinessResponse> FetchBoardReadiness()
+        public PivotResponse<ReadinessRecord> FetchBoardReadiness()
         {
             var foundKeys = context.Boards
                 .Join(
@@ -40,7 +40,7 @@ namespace ff_todo_aspnet.PivotTables
                     }
                 )
                 .GroupBy(boardTodoTask => new { id = boardTodoTask.boardId, name = boardTodoTask.name })
-                .Select(groupedBoardTodoTask => new BoardReadinessResponse
+                .Select(groupedBoardTodoTask => new ReadinessRecord
                     {
                         id = groupedBoardTodoTask.Key.id,
                         name = groupedBoardTodoTask.Key.name,
@@ -51,15 +51,55 @@ namespace ff_todo_aspnet.PivotTables
             var remainingKeys = context.Boards
                 .Select(board => new { id = board.id, name = board.name })
                 .Except(foundKeys.Select(e => new { id = e.id, name = e.name }));
-            var res = new Collection<BoardReadinessResponse>(foundKeys.ToList());
+            var records = new Collection<ReadinessRecord>(foundKeys.ToList());
             foreach (var e in remainingKeys)
-                res.Add(new BoardReadinessResponse
+                records.Add(new ReadinessRecord
                 {
                     id = e.id,
                     name = e.name,
                     doneTaskCount = 0,
                     TaskCount = 0
                 });
+            var res = new PivotResponse<ReadinessRecord>(records);
+            return res;
+        }
+        public PivotResponse<ReadinessRecord> FetchTodoReadiness()
+        {
+            var foundKeys = context.Todos
+                .Join(
+                    context.Tasks,
+                    todo => todo.id,
+                    task => task.todoId,
+                    (todo, task) => new
+                    {
+                        todoId = todo.id,
+                        name = todo.name,
+                        taskId = task.id,
+                        done = task.done
+                    }
+                )
+                .GroupBy(todoTask => new { id = todoTask.todoId, name = todoTask.name })
+                .Select(groupedTodoTask => new ReadinessRecord
+                {
+                    id = groupedTodoTask.Key.id,
+                    name = groupedTodoTask.Key.name,
+                    doneTaskCount = groupedTodoTask.Count(boardTodoTask => boardTodoTask.done),
+                    TaskCount = groupedTodoTask.Count()
+                }
+            );
+            var remainingKeys = context.Todos
+                .Select(todo => new { id = todo.id, name = todo.name })
+                .Except(foundKeys.Select(e => new { id = e.id, name = e.name }));
+            var records = new Collection<ReadinessRecord>(foundKeys.ToList());
+            foreach (var e in remainingKeys)
+                records.Add(new ReadinessRecord
+                {
+                    id = e.id,
+                    name = e.name,
+                    doneTaskCount = 0,
+                    TaskCount = 0
+                });
+            var res = new PivotResponse<ReadinessRecord>(records);
             return res;
         }
     }

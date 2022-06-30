@@ -2,6 +2,7 @@
 {
     public interface IPivotService
     {
-        IEnumerable<BoardReadinessResponse> GetBoardReadiness();
+        PivotResponse<ReadinessRecord> GetBoardReadiness();
+        PivotResponse<ReadinessRecord> GetTodoReadiness();
     }
 }
