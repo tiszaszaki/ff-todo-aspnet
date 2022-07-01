@@ -2,17 +2,12 @@
 {
     public class PivotResponse<T>
     {
-        public PivotResponse(IEnumerable<T> records)
-        {
-            this.records = records;
-            fields = ExtractFieldsFromType();
-        }
-        private Dictionary<string, string> ExtractFieldsFromType()
+        public static Dictionary<string, string> ExtractFieldsFromType(Type t)
         {
             var res = new Dictionary<string, string>();
-            var fields = typeof(T).GetFields();
-            foreach (var f in fields)
-                res.Add(f.Name, f.FieldType.Name);
+            var properties = t.GetProperties();
+            foreach (var p in properties)
+                res.Add(p.Name, p.PropertyType.Name);
             return res;
         }
         public Dictionary<string, string> fields { get; set; }
