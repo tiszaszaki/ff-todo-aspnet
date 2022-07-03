@@ -29,8 +29,9 @@ namespace ff_todo_aspnet.PivotTables
                     taskCount = 0
                 });
             var res = new PivotResponse<ReadinessRecord>
-            { 
+            {
                 fields = PivotResponse<ReadinessRecord>.ExtractFieldsFromType(typeof(ReadinessRecord)),
+                fieldOrder = ReadinessRecord.fieldOrder,
                 records = records
             };
             return res;

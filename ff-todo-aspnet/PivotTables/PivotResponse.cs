@@ -11,6 +11,7 @@
             return res;
         }
         public Dictionary<string, string> fields { get; set; }
+        public List<string> fieldOrder { get; set; }
         public IEnumerable<T> records { get; set; }
     }
 }
