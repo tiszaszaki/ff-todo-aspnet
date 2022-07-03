@@ -5,8 +5,8 @@ using ff_todo_aspnet.Services;
 using ff_todo_aspnet.PivotTables;
 
 var builder = WebApplication.CreateBuilder(args);
-var isRealDatabase = Boolean.Parse(builder.Configuration["IsRealDatabase"]);
-var enableCors = Boolean.Parse(builder.Configuration["EnableCors"]);
+var isRealDatabase = bool.Parse(builder.Configuration["IsRealDatabase"]);
+var enableCors = bool.Parse(builder.Configuration["EnableCors"]);
 var allowedHosts = builder.Configuration["AllowedHosts"];
 
 // Add services to the container.
@@ -42,7 +42,6 @@ using ILoggerFactory loggerFactory =
             options.IncludeScopes = true;
             options.SingleLine = true;
             options.UseUtcTimestamp = true;
-            //options.TimestampFormat = "yyyy-MM-dd HH:mm:ss ";
         }));
 
 builder.Services.AddLogging();

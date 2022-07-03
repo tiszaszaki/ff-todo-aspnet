@@ -28,12 +28,21 @@ namespace ff_todo_aspnet.PivotTables
                     doneTaskCount = 0,
                     taskCount = 0
                 });
+            foreach (var r in records)
+            {
+                if (r.taskCount != 0)
+                    r.doneTaskPercent = (double) r.doneTaskCount / r.taskCount;
+                else
+                    r.doneTaskPercent = -1;
+            }
             var res = new PivotResponse<ReadinessRecord>
             {
                 fields = PivotResponse<ReadinessRecord>.ExtractFieldsFromType(typeof(ReadinessRecord)),
                 fieldOrder = ReadinessRecord.fieldOrder,
                 records = records
             };
+            foreach (var f in res.fieldOrder)
+                res.fields[f] += $",{ReadinessRecord.fieldRoles[f].Trim()}";
             return res;
         }
 
