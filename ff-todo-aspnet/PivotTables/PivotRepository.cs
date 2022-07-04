@@ -42,7 +42,18 @@ namespace ff_todo_aspnet.PivotTables
                 records = records
             };
             foreach (var f in res.fieldOrder)
-                res.fields[f] += $",{ReadinessRecord.fieldRoles[f].Trim()}";
+            {
+                var role = ReadinessRecord.fieldRoles[f].Trim();
+                if (role != "")
+                {
+                    var temp = res.fields.Single(e => e.Key == f);
+                    var key = temp.Key;
+                    var value = temp.Value;
+                    res.fields.Remove(temp);
+                    value += $",{role}";
+                    res.fields.Add(new KeyValuePair<string, string>(key, value));
+                }
+            }
             return res;
         }
 
