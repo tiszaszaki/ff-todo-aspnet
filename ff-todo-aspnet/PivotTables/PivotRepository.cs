@@ -41,6 +41,9 @@ namespace ff_todo_aspnet.PivotTables
                 fieldOrder = ReadinessRecord.fieldOrder,
                 records = records
             };
+            res.fieldDisplay = new HashSet<KeyValuePair<string, string>>();
+            foreach (var e in ReadinessRecord.fieldDisplay)
+                res.fieldDisplay.Add(new KeyValuePair<string, string>(e.Key, e.Value));
             foreach (var f in res.fieldOrder)
             {
                 var role = ReadinessRecord.fieldRoles[f].Trim();

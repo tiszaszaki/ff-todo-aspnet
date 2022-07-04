@@ -11,6 +11,7 @@
             return res;
         }
         public ISet<KeyValuePair<string, string>> fields { get; set; }
+        public ISet<KeyValuePair<string, string>> fieldDisplay { get; set; }
         public List<string> fieldOrder { get; set; }
         public IEnumerable<T> records { get; set; }
     }

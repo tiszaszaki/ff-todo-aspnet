@@ -6,6 +6,11 @@
         public static readonly IDictionary<string, string> fieldRoles = new Dictionary<string, string> { 
             {"id", "Key"}, {"name", "Key"}, {"doneTaskCount", ""}, {"taskCount", ""}, {"doneTaskPercent", "Percent"}
         };
+        public static readonly IDictionary<string, string> fieldDisplay = new Dictionary<string, string> {
+            {"id", "ID"}, {"name", "Name"}, {"doneTaskCount", "Count of tasks done"},
+            {"taskCount", "Count of all tasks"}, {"doneTaskPercent", "% of tasks done"}
+        };
+
         public long id { get; set; }
         public string name { get; set; }
         public long doneTaskCount { get; set; }
