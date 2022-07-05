@@ -13,6 +13,7 @@ namespace ff_todo_aspnet.ResponseObjects
 				description = br.description,
 				author = br.author,
 				dateCreated = br.dateCreated,
+				dateModified = br.dateModified,
 				readonlyTodos = br.readonlyTodos,
 				readonlyTasks = br.readonlyTasks
 			};
@@ -23,6 +24,7 @@ namespace ff_todo_aspnet.ResponseObjects
 		public string description { get; set; }
 		public string author { get; set; }
 		public DateTime dateCreated { get; set; }
+		public DateTime dateModified { get; set; }
 		public bool readonlyTodos { get; set; }
 		public bool readonlyTasks { get; set; }
 		public override string ToString()

@@ -11,6 +11,8 @@ namespace ff_todo_aspnet.ResponseObjects
 				id = tr.id,
 				name = tr.name,
 				done = tr.done,
+				dateCreated = tr.dateCreated,
+				dateModified = tr.dateModified,
 				deadline = tr.deadline,
 				todoId = tr.todoId
 			};
@@ -18,6 +20,8 @@ namespace ff_todo_aspnet.ResponseObjects
 		public long id { get; set; }
 		public string name { get; set; }
 		public bool done { get; set; }
+		public DateTime dateCreated { get; set; }
+		public DateTime dateModified { get; set; }
 		public DateTime? deadline { get; set; }
 		public long todoId { get; set; }
 		public override string ToString()
