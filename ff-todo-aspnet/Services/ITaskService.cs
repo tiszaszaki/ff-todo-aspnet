@@ -10,8 +10,8 @@ namespace ff_todo_aspnet.Services
         IEnumerable<TaskResponse> GetAllTasksFromTodo(long todoId);
         TaskResponse? GetTask(long id);
         IEnumerable<TaskResponse> GetTasks();
-        void RemoveAllTasks();
-        void RemoveAllTasksFromTodo(long todoId);
+        long RemoveAllTasks();
+        long RemoveAllTasksFromTodo(long todoId);
         Task? RemoveTask(long id);
         TaskResponse? UpdateTask(long id, TaskRequest patchRequest);
     }

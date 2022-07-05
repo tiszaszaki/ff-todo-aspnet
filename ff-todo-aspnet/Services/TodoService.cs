@@ -69,21 +69,23 @@ namespace ff_todo_aspnet.Services
                 logger.LogError("Failed to remove Todo with ID ({0})", id);
             return todo;
         }
-        public void RemoveAllTodos()
+        public long RemoveAllTodos()
         {
             var todoCount = todoRepository.RemoveAllTodos();
             if (todoCount > 0)
                 logger.LogInformation("Successfully removed {0} Todo(s)", todoCount);
             else
                 logger.LogWarning("No Todos were removed");
+            return todoCount;
         }
-        public void RemoveAllTodosFromBoard(long boardId)
+        public long RemoveAllTodosFromBoard(long boardId)
         {
             var todoCount = todoRepository.RemoveAllTodosFromBoard(boardId);
             if (todoCount > 0)
                 logger.LogInformation("Successfully removed {0} Todos from Board with ID ({1})", todoCount, boardId);
             else
                 logger.LogWarning("No Todos were removed from Board with ID ({0})", boardId);
+            return todoCount;
         }
         public TodoResponse? UpdateTodo(long id, TodoRequest patchRequest)
         {

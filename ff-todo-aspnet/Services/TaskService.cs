@@ -53,21 +53,23 @@ namespace ff_todo_aspnet.Services
                 logger.LogError("Failed to remove Task with ID ({0})", id);
             return task;
         }
-        public void RemoveAllTasks()
+        public long RemoveAllTasks()
         {
             var taskCount = taskRepository.RemoveAllTasks();
             if (taskCount > 0)
                 logger.LogInformation("Successfully removed {0} Tasks", taskCount);
             else
                 logger.LogWarning("No Tasks were removed");
+            return taskCount;
         }
-        public void RemoveAllTasksFromTodo(long todoId)
+        public long RemoveAllTasksFromTodo(long todoId)
         {
             var taskCount = taskRepository.RemoveAllTasksFromTodo(todoId);
             if (taskCount > 0)
                 logger.LogInformation("Successfully removed {0} Tasks from Todo with ID ({1})", taskCount, todoId);
             else
                 logger.LogWarning("No Tasks were removed from Todo with ID ({0})", todoId);
+            return taskCount;
         }
         public TaskResponse? UpdateTask(long id, TaskRequest patchRequest)
         {

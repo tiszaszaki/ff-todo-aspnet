@@ -87,9 +87,9 @@ namespace ff_todo_aspnet.Controllers
             return taskService.AddTask(id, task);
         }
         [HttpDelete("{id}/task/clear")]
-        public void RemoveAllTasksFromTodo(long id)
+        public long RemoveAllTasksFromTodo(long id)
         {
-            taskService.RemoveAllTasksFromTodo(id);
+            return taskService.RemoveAllTasksFromTodo(id);
         }
         [HttpGet("name-max-length")]
         public long GetNameMaxLength()

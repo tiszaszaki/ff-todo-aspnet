@@ -12,8 +12,8 @@ namespace ff_todo_aspnet.Services
         TodoResponse? GetTodo(long id);
         TodoResponse? GetTodoByName(string name);
         IEnumerable<TodoResponse> GetTodos();
-        void RemoveAllTodos();
-        void RemoveAllTodosFromBoard(long boardId);
+        long RemoveAllTodos();
+        long RemoveAllTodosFromBoard(long boardId);
         Todo? RemoveTodo(long id);
         TodoResponse? UpdateTodo(long id, TodoRequest patchRequest);
         String GetTodoPhaseName(int idx);
