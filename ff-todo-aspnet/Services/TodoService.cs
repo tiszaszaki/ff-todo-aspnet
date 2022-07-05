@@ -53,8 +53,9 @@ namespace ff_todo_aspnet.Services
         {
             Todo todo = todoRequest;
             TodoResponse addedTodo;
-            todo.dateCreated = FetchNewDateTime();
-            todo.dateModified = FetchNewDateTime();
+            var now = FetchNewDateTime();
+            todo.dateCreated = now;
+            todo.dateModified = now;
             todo.boardId = boardId;
             addedTodo = todoRepository.AddTodo(todo);
             logger.LogInformation("Successfully added new Todo: {0}", addedTodo.ToString());

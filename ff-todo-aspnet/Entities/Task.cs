@@ -13,6 +13,10 @@ namespace ff_todo_aspnet.Entities
 		[MaxLength(TodoCommon.MAX_TASK_NAME_LENGTH)]
 		public string name { get; set; }
 		public bool done { get; set; }
+		[Column("date_created")]
+		public DateTime dateCreated { get; set; }
+		[Column("date_modified")]
+		public DateTime dateModified { get; set; }
 		public DateTime? deadline { get; set; }
 		[Column("todo_id")]
 		public long todoId { get; set; }

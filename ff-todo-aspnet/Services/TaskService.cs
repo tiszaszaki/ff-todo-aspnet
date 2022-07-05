@@ -35,10 +35,17 @@ namespace ff_todo_aspnet.Services
                 logger.LogError("Failed to fetch Task with ID ({0})", id);
             return result;
         }
+        private DateTime FetchNewDateTime()
+        {
+            return DateTime.UtcNow;
+        }
         public Task AddTask(long todoId, TaskRequest taskRequest)
         {
             Task task = taskRequest;
             TaskResponse addedTask;
+            var now = FetchNewDateTime();
+            task.dateCreated = now;
+            task.dateModified = now;
             task.todoId = todoId;
             addedTask = taskRepository.AddTask(task);
             logger.LogInformation("Successfully added new Task: {0}", addedTask.ToString());
@@ -73,12 +80,15 @@ namespace ff_todo_aspnet.Services
         }
         public TaskResponse? UpdateTask(long id, TaskRequest patchRequest)
         {
-            TaskResponse? result = taskRepository.UpdateTask(id, patchRequest);
-            if (result is not null)
-                logger.LogInformation("Successfully updated Task with ID ({0}): {1}", id, result.ToString());
+            Task patchedTask = patchRequest;
+            TaskResponse? persistedTask;
+            patchedTask.dateModified = FetchNewDateTime();
+            persistedTask = taskRepository.UpdateTask(id, patchedTask);
+            if (persistedTask is not null)
+                logger.LogInformation("Successfully updated Task with ID ({0}): {1}", id, persistedTask.ToString());
             else
                 logger.LogError("Failed to update Task with ID ({0})", id);
-            return result;
+            return persistedTask;
         }
     }
 }

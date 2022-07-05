@@ -18,6 +18,8 @@ namespace ff_todo_aspnet.Entities
 		public string author { get; set; }
 		[Column("date_created")]
 		public DateTime dateCreated { get; set; }
+		[Column("date_modified")]
+		public DateTime dateModified { get; set; }
 		[Column("readonly_todos")]
 		public bool readonlyTodos { get; set; }
 		[Column("readonly_tasks")]

@@ -44,7 +44,9 @@ namespace ff_todo_aspnet.Services
         {
             Board board = boardRequest;
             BoardResponse addedBoard;
-            board.dateCreated = FetchNewDateTime();
+            var now = FetchNewDateTime();
+            board.dateCreated = now;
+            board.dateModified = now;
             board.todos = new Collection<Todo>();
             addedBoard = boardRepository.AddBoard(board);
             logger.LogInformation("Successfully added new Board: {0}", addedBoard.ToString());
@@ -61,12 +63,15 @@ namespace ff_todo_aspnet.Services
         }
         public BoardResponse? UpdateBoard(long id, BoardRequest patchRequest)
         {
-            BoardResponse? result = boardRepository.UpdateBoard(id, patchRequest);
-            if (result is not null)
-                logger.LogInformation("Successfully updated Board with ID ({0}): {1}", id, result.ToString());
+            Board patchedBoard = patchRequest;
+            BoardResponse? persistedBoard;
+            patchedBoard.dateModified = FetchNewDateTime();
+            persistedBoard = boardRepository.UpdateBoard(id, patchedBoard);
+            if (persistedBoard is not null)
+                logger.LogInformation("Successfully updated Board with ID ({0}): {1}", id, persistedBoard.ToString());
             else
                 logger.LogError("Failed to update Board with ID ({0})", id);
-            return result;
+            return persistedBoard;
         }
         public bool GetBoardReadonlyTodosSetting(long id)
         {
