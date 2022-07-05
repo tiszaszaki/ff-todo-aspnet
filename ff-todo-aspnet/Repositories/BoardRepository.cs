@@ -54,6 +54,7 @@ namespace ff_todo_aspnet.Repositories
                 board.name = patchedBoard.name;
                 board.description = patchedBoard.description;
                 board.author = patchedBoard.author;
+                board.dateModified = patchedBoard.dateModified;
                 context.SaveChanges();
                 return board;
             }

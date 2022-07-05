@@ -77,6 +77,7 @@ namespace ff_todo_aspnet.Repositories
                 var task = context.Tasks.Single(task => task.id == id);
                 task.name = patchedTask.name;
                 task.done = patchedTask.done;
+                task.dateModified = patchedTask.dateModified;
                 task.deadline = patchedTask.deadline;
                 context.SaveChanges();
                 return task;

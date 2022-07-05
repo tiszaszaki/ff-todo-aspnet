@@ -84,6 +84,7 @@ namespace ff_todo_aspnet.Repositories
                 todo.name = patchedTodo.name;
                 todo.description = patchedTodo.description;
                 todo.phase = patchedTodo.phase;
+                todo.dateModified = patchedTodo.dateModified;
                 todo.deadline = patchedTodo.deadline;
                 context.SaveChanges();
                 return todo;
