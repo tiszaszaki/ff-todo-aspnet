@@ -40,6 +40,8 @@
 
 		public const string pivotLabel1 = "board-readiness";
 		public const string pivotLabel2 = "todo-readiness";
+		public const string pivotLabel3 = "board-latest-update";
+		public const string pivotLabel4 = "todo-latest-update";
 
 		public const string FIELD_TRUNCATE_STR = "...";
 

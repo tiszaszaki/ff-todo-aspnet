@@ -1,6 +1,8 @@
 ﻿using ff_todo_aspnet.Constants;
+using ff_todo_aspnet.PivotTables;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static ff_todo_aspnet.PivotTables.LatestUpdateRecord;
 
 namespace ff_todo_aspnet.Entities
 {
@@ -25,5 +27,49 @@ namespace ff_todo_aspnet.Entities
 		[Column("board_id")]
 		public long boardId { get; set; }
 		public Board board { get; set; }
+
+		private List<PivotEntityEvent> GetEvents()
+		{
+			var result = new List<PivotEntityEvent> {
+				new PivotEntityEvent(LatestUpdateEvent.ADD_TODO, dateCreated, id, name),
+				new PivotEntityEvent(LatestUpdateEvent.UPDATE_TODO, dateModified, id, name)
+			};
+			if (tasks is not null)
+				foreach (var t in tasks)
+					result.Add(new PivotEntityEvent(t.latestEvent, t.latestUpdated, t.id, t.name));
+			return result;
+		}
+
+		public DateTime latestUpdated
+		{
+			get
+			{
+				return GetEvents().Max(e => e.time);
+			}
+		}
+
+		public LatestUpdateEvent latestEvent
+		{
+			get
+			{
+				return GetEvents().Where(e => e.time == latestUpdated).Select(e => e.type).First();
+			}
+		}
+
+		public long affectedId
+		{
+			get
+			{
+				return GetEvents().Where(e => e.time == latestUpdated).Select(e => e.affectedId).First();
+			}
+		}
+
+		public string affectedName
+		{
+			get
+			{
+				return GetEvents().Where(e => e.time == latestUpdated).Select(e => e.affectedName).First();
+			}
+		}
 	}
 }

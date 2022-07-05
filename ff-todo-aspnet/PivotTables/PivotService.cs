@@ -12,7 +12,7 @@ namespace ff_todo_aspnet.PivotTables
             this.pivotRepository = pivotRepository;
             this.logger = logger;
         }
-        private void LogFetchingDebug(PivotResponse<ReadinessRecord> result, string label)
+        private void LogFetchingDebug<T>(PivotResponse<T> result, string label)
         {
             label.Trim();
             if (label == "") label = "default-pivot";
@@ -31,6 +31,21 @@ namespace ff_todo_aspnet.PivotTables
             var result = pivotRepository.FetchTodoReadiness();
             logger.LogInformation("Fetched {0} Todos(s) with readiness", result.records.Count());
             LogFetchingDebug(result, TodoCommon.pivotLabel2);
+            return result;
+        }
+
+        public PivotResponse<LatestUpdateRecord> GetBoardLatestUpdate()
+        {
+            var result = pivotRepository.FetchBoardLatestUpdate();
+            logger.LogInformation("Fetched {0} Board(s) with latest update", result.records.Count());
+            LogFetchingDebug(result, TodoCommon.pivotLabel3);
+            return result;
+        }
+        public PivotResponse<LatestUpdateRecord> GetTodoLatestUpdate()
+        {
+            var result = pivotRepository.FetchTodoLatestUpdate();
+            logger.LogInformation("Fetched {0} Todos(s) with latest update", result.records.Count());
+            LogFetchingDebug(result, TodoCommon.pivotLabel4);
             return result;
         }
     }

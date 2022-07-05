@@ -4,5 +4,8 @@
     {
         PivotResponse<ReadinessRecord> FetchBoardReadiness();
         PivotResponse<ReadinessRecord> FetchTodoReadiness();
+
+        PivotResponse<LatestUpdateRecord> FetchBoardLatestUpdate();
+        PivotResponse<LatestUpdateRecord> FetchTodoLatestUpdate();
     }
 }

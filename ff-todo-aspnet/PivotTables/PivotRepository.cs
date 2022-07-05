@@ -59,6 +59,32 @@ namespace ff_todo_aspnet.PivotTables
             }
             return res;
         }
+        private PivotResponse<LatestUpdateRecord> ResultLatestUpdatePivot(IEnumerable<LatestUpdateRecord> records)
+        {
+            var res = new PivotResponse<LatestUpdateRecord>
+            {
+                fields = PivotResponse<LatestUpdateRecord>.ExtractFieldsFromType(typeof(LatestUpdateRecord)),
+                fieldOrder = LatestUpdateRecord.fieldOrder,
+                records = records
+            };
+            res.fieldDisplay = new HashSet<KeyValuePair<string, string>>();
+            foreach (var e in LatestUpdateRecord.fieldDisplay)
+                res.fieldDisplay.Add(new KeyValuePair<string, string>(e.Key, e.Value));
+            foreach (var f in res.fieldOrder)
+            {
+                var role = LatestUpdateRecord.fieldRoles[f].Trim();
+                if (role != "")
+                {
+                    var temp = res.fields.Single(e => e.Key == f);
+                    var key = temp.Key;
+                    var value = temp.Value;
+                    res.fields.Remove(temp);
+                    value += $",{role}";
+                    res.fields.Add(new KeyValuePair<string, string>(key, value));
+                }
+            }
+            return res;
+        }
 
         public PivotResponse<ReadinessRecord> FetchBoardReadiness()
         {
@@ -129,6 +155,33 @@ namespace ff_todo_aspnet.PivotTables
                 .Select(todo => new PivotPrimaryKey { id = todo.id, name = todo.name })
                 .Except(foundKeys.Select(e => new PivotPrimaryKey { id = e.id, name = e.name }));
             return ResultReadinessPivot(foundKeys, remainingKeys);
+        }
+
+        public PivotResponse<LatestUpdateRecord> FetchBoardLatestUpdate()
+        {
+            var records = context.Boards.Select(board => new LatestUpdateRecord
+            {
+                id = board.id,
+                name = board.name,
+                latestUpdated = board.latestUpdated,
+                latestEvent = board.latestEvent,
+                affectedId = board.affectedId,
+                affectedName = board.affectedName
+            }).AsEnumerable();
+            return ResultLatestUpdatePivot(records);
+        }
+        public PivotResponse<LatestUpdateRecord> FetchTodoLatestUpdate()
+        {
+            var records = context.Todos.Select(todo => new LatestUpdateRecord
+            {
+                id = todo.id,
+                name = todo.name,
+                latestUpdated = todo.latestUpdated,
+                latestEvent = todo.latestEvent,
+                affectedId = todo.affectedId,
+                affectedName = todo.affectedName
+            }).AsEnumerable();
+            return ResultLatestUpdatePivot(records);
         }
     }
 }

@@ -4,5 +4,8 @@
     {
         PivotResponse<ReadinessRecord> GetBoardReadiness();
         PivotResponse<ReadinessRecord> GetTodoReadiness();
+
+        PivotResponse<LatestUpdateRecord> GetBoardLatestUpdate();
+        PivotResponse<LatestUpdateRecord> GetTodoLatestUpdate();
     }
 }
