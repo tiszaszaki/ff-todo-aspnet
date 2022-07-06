@@ -28,7 +28,7 @@
         public long id { get; set; }
         public string name { get; set; }
         public DateTime latestUpdated { get; set; }
-        public LatestUpdateEvent latestEvent { get; set; }
+        public string latestEvent { get; set; }
         public long affectedId { get; set; }
         public string affectedName { get; set; }
     }

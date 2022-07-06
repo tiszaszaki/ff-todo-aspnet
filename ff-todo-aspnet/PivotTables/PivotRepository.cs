@@ -1,5 +1,4 @@
 ﻿using ff_todo_aspnet.Configurations;
-using System.Collections.ObjectModel;
 
 namespace ff_todo_aspnet.PivotTables
 {
@@ -17,21 +16,12 @@ namespace ff_todo_aspnet.PivotTables
             public long id { get; set; }
             public string name { get; set; }
         }
-        private PivotResponse<ReadinessRecord> ResultReadinessPivot(IEnumerable<ReadinessRecord> foundKeys, IEnumerable<PivotPrimaryKey> remainingKeys)
+        private PivotResponse<ReadinessRecord> ResultReadinessPivot(IEnumerable<ReadinessRecord> records)
         {
-            var records = new Collection<ReadinessRecord>(foundKeys.ToList());
-            foreach (var e in remainingKeys)
-                records.Add(new ReadinessRecord
-                {
-                    id = e.id,
-                    name = e.name,
-                    doneTaskCount = 0,
-                    taskCount = 0
-                });
             foreach (var r in records)
             {
                 if (r.taskCount != 0)
-                    r.doneTaskPercent = (double) r.doneTaskCount / r.taskCount;
+                    r.doneTaskPercent = (double)r.doneTaskCount / r.taskCount;
                 else
                     r.doneTaskPercent = -1;
             }
@@ -125,7 +115,28 @@ namespace ff_todo_aspnet.PivotTables
             var remainingKeys = context.Boards
                 .Select(board => new PivotPrimaryKey { id = board.id, name = board.name })
                 .Except(foundKeys.Select(e => new PivotPrimaryKey { id = e.id, name = e.name }));
-            return ResultReadinessPivot(foundKeys, remainingKeys);
+            var records = new List<ReadinessRecord>(foundKeys.ToList());
+            if (remainingKeys.Count() > 0)
+            {
+                foreach (var e in remainingKeys)
+                    records.Add(new ReadinessRecord
+                    {
+                        id = e.id,
+                        name = e.name,
+                        doneTaskCount = 0,
+                        taskCount = 0
+                    });
+            }
+            /*
+            var records = context.Boards.Select(board => new ReadinessRecord
+            {
+                id = board.id,
+                name = board.name,
+                doneTaskCount = board.doneTaskCount(),
+                taskCount = board.taskCount()
+            }).AsEnumerable();
+            */
+            return ResultReadinessPivot(records);
         }
         public PivotResponse<ReadinessRecord> FetchTodoReadiness()
         {
@@ -154,7 +165,28 @@ namespace ff_todo_aspnet.PivotTables
             var remainingKeys = context.Todos
                 .Select(todo => new PivotPrimaryKey { id = todo.id, name = todo.name })
                 .Except(foundKeys.Select(e => new PivotPrimaryKey { id = e.id, name = e.name }));
-            return ResultReadinessPivot(foundKeys, remainingKeys);
+            var records = new List<ReadinessRecord>(foundKeys.ToList());
+            if (remainingKeys.Count() > 0)
+            {
+                foreach (var e in remainingKeys)
+                    records.Add(new ReadinessRecord
+                    {
+                        id = e.id,
+                        name = e.name,
+                        doneTaskCount = 0,
+                        taskCount = 0
+                    });
+            }
+            /*
+            var records = context.Todos.Select(todo => new ReadinessRecord
+            {
+                id = todo.id,
+                name = todo.name,
+                doneTaskCount = todo.doneTaskCount(),
+                taskCount = todo.taskCount()
+            }).AsEnumerable();
+            */
+            return ResultReadinessPivot(records);
         }
 
         public PivotResponse<LatestUpdateRecord> FetchBoardLatestUpdate()
@@ -164,7 +196,7 @@ namespace ff_todo_aspnet.PivotTables
                 id = board.id,
                 name = board.name,
                 latestUpdated = board.latestUpdated,
-                latestEvent = board.latestEvent,
+                latestEvent = board.latestEvent.ToString(),
                 affectedId = board.affectedId,
                 affectedName = board.affectedName
             }).AsEnumerable();
@@ -177,7 +209,7 @@ namespace ff_todo_aspnet.PivotTables
                 id = todo.id,
                 name = todo.name,
                 latestUpdated = todo.latestUpdated,
-                latestEvent = todo.latestEvent,
+                latestEvent = todo.latestEvent.ToString(),
                 affectedId = todo.affectedId,
                 affectedName = todo.affectedName
             }).AsEnumerable();
