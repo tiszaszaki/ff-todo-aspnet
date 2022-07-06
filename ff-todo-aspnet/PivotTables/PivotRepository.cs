@@ -19,12 +19,7 @@ namespace ff_todo_aspnet.PivotTables
         private PivotResponse<ReadinessRecord> ResultReadinessPivot(IEnumerable<ReadinessRecord> records)
         {
             foreach (var r in records)
-            {
-                if (r.taskCount != 0)
-                    r.doneTaskPercent = (double)r.doneTaskCount / r.taskCount;
-                else
-                    r.doneTaskPercent = -1;
-            }
+                r.doneTaskPercent = ReadinessRecord.GetPercent(r.doneTaskCount, r.taskCount);
             var res = new PivotResponse<ReadinessRecord>
             {
                 fields = PivotResponse<ReadinessRecord>.ExtractFieldsFromType(typeof(ReadinessRecord)),

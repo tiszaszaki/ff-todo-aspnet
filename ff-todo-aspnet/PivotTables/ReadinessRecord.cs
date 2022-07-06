@@ -11,6 +11,14 @@
             {"taskCount", "Count of all tasks"}, {"doneTaskPercent", "% of tasks done"}
         };
 
+        public static double GetPercent(long num, long denom)
+        {
+            double result = -1;
+            if (denom != 0)
+                result = (double)num / denom;
+            return result;
+        }
+
         public long id { get; set; }
         public string name { get; set; }
         public long doneTaskCount { get; set; }

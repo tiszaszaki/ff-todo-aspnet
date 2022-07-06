@@ -115,9 +115,9 @@ namespace ff_todo_aspnet.Services
             return result;
         }
 
-        public String GetTodoPhaseName(int idx)
+        public string GetTodoPhaseName(int idx)
         {
-            String result = TodoCommon.GetTodoPhaseName(idx);
+            string result = TodoCommon.GetTodoPhaseName(idx);
             if (result != "")
                 logger.LogInformation("Querying phase name with index ({0}) for all Todos: {1}", idx, result);
             else
