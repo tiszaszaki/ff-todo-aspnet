@@ -12,24 +12,17 @@
             UPDATE_TASK
         }
 
-        public static readonly List<string> fieldOrder = new List<string> {
-            "id", "name", "latestUpdated", "latestEvent", "affectedId", "affectedName"
-        };
-        public static readonly IDictionary<string, string> fieldRoles = new Dictionary<string, string> {
-            {"id", "Key"}, {"name", "Key"}, {"latestUpdated", ""},
-            {"latestEvent", ""}, {"affectedId", ""}, {"affectedName", ""}
-        };
-        public static readonly IDictionary<string, string> fieldDisplay = new Dictionary<string, string> {
-            {"id", "ID"}, {"name", "Name"}, {"latestUpdated", "Date of latest event"},
-            {"latestEvent", "Type of latest event"}, {"affectedId", "ID of entity affected"},
-            {"affectedName", "Name of entity affected"}
-        };
-
+        [PivotFetch(1, "Key", "ID")]
         public long id { get; set; }
+        [PivotFetch(2, "Key", "Name")]
         public string name { get; set; }
+        [PivotFetch(3, "Date of latest event")]
         public DateTime latestUpdated { get; set; }
+        [PivotFetch(4, "Type of latest event")]
         public string latestEvent { get; set; }
+        [PivotFetch(5, "ID of entity affected")]
         public long affectedId { get; set; }
+        [PivotFetch(6, "Name of entity affected")]
         public string affectedName { get; set; }
     }
 }

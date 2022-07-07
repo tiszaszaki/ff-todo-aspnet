@@ -23,25 +23,10 @@ namespace ff_todo_aspnet.PivotTables
             var res = new PivotResponse<ReadinessRecord>
             {
                 fields = PivotResponse<ReadinessRecord>.ExtractFieldsFromType(typeof(ReadinessRecord)),
-                fieldOrder = ReadinessRecord.fieldOrder,
+                fieldOrder = PivotResponse<ReadinessRecord>.ExtractFieldOrderFromType(typeof(ReadinessRecord)),
+                fieldDisplay = PivotResponse<ReadinessRecord>.ExtractFieldDisplayFromType(typeof(ReadinessRecord)),
                 records = records
             };
-            res.fieldDisplay = new HashSet<KeyValuePair<string, string>>();
-            foreach (var e in ReadinessRecord.fieldDisplay)
-                res.fieldDisplay.Add(new KeyValuePair<string, string>(e.Key, e.Value));
-            foreach (var f in res.fieldOrder)
-            {
-                var role = ReadinessRecord.fieldRoles[f].Trim();
-                if (role != "")
-                {
-                    var temp = res.fields.Single(e => e.Key == f);
-                    var key = temp.Key;
-                    var value = temp.Value;
-                    res.fields.Remove(temp);
-                    value += $",{role}";
-                    res.fields.Add(new KeyValuePair<string, string>(key, value));
-                }
-            }
             return res;
         }
         private PivotResponse<LatestUpdateRecord> ResultLatestUpdatePivot(IEnumerable<LatestUpdateRecord> records)
@@ -49,25 +34,10 @@ namespace ff_todo_aspnet.PivotTables
             var res = new PivotResponse<LatestUpdateRecord>
             {
                 fields = PivotResponse<LatestUpdateRecord>.ExtractFieldsFromType(typeof(LatestUpdateRecord)),
-                fieldOrder = LatestUpdateRecord.fieldOrder,
+                fieldOrder = PivotResponse<LatestUpdateRecord>.ExtractFieldOrderFromType(typeof(LatestUpdateRecord)),
+                fieldDisplay = PivotResponse<LatestUpdateRecord>.ExtractFieldDisplayFromType(typeof(LatestUpdateRecord)),
                 records = records
             };
-            res.fieldDisplay = new HashSet<KeyValuePair<string, string>>();
-            foreach (var e in LatestUpdateRecord.fieldDisplay)
-                res.fieldDisplay.Add(new KeyValuePair<string, string>(e.Key, e.Value));
-            foreach (var f in res.fieldOrder)
-            {
-                var role = LatestUpdateRecord.fieldRoles[f].Trim();
-                if (role != "")
-                {
-                    var temp = res.fields.Single(e => e.Key == f);
-                    var key = temp.Key;
-                    var value = temp.Value;
-                    res.fields.Remove(temp);
-                    value += $",{role}";
-                    res.fields.Add(new KeyValuePair<string, string>(key, value));
-                }
-            }
             return res;
         }
 

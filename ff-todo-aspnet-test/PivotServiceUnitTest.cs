@@ -18,8 +18,8 @@ public class PivotServiceUnitTest
         var result = new PivotResponse<ReadinessRecord>()
         {
             fields = PivotResponse<ReadinessRecord>.ExtractFieldsFromType(typeof(ReadinessRecord)),
-            fieldDisplay = PivotResponse<ReadinessRecord>.ExtractFieldsFromType(typeof(ReadinessRecord)),
-            fieldOrder = ReadinessRecord.fieldOrder,
+            fieldDisplay = PivotResponse<ReadinessRecord>.ExtractFieldDisplayFromType(typeof(ReadinessRecord)),
+            fieldOrder = PivotResponse<ReadinessRecord>.ExtractFieldOrderFromType(typeof(ReadinessRecord)),
             records = records
         };
         return result;
@@ -37,8 +37,8 @@ public class PivotServiceUnitTest
         var result = new PivotResponse<LatestUpdateRecord>()
         {
             fields = PivotResponse<LatestUpdateRecord>.ExtractFieldsFromType(typeof(LatestUpdateRecord)),
-            fieldDisplay = PivotResponse<LatestUpdateRecord>.ExtractFieldsFromType(typeof(LatestUpdateRecord)),
-            fieldOrder = LatestUpdateRecord.fieldOrder,
+            fieldDisplay = PivotResponse<LatestUpdateRecord>.ExtractFieldDisplayFromType(typeof(LatestUpdateRecord)),
+            fieldOrder = PivotResponse<LatestUpdateRecord>.ExtractFieldOrderFromType(typeof(LatestUpdateRecord)),
             records = records
         };
         return result;

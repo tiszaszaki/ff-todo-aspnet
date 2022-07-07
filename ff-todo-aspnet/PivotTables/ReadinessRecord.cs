@@ -2,15 +2,6 @@
 {
     public class ReadinessRecord
     {
-        public static readonly List<string> fieldOrder = new List<string> { "id", "name", "doneTaskCount", "taskCount", "doneTaskPercent" };
-        public static readonly IDictionary<string, string> fieldRoles = new Dictionary<string, string> { 
-            {"id", "Key"}, {"name", "Key"}, {"doneTaskCount", ""}, {"taskCount", ""}, {"doneTaskPercent", "Percent"}
-        };
-        public static readonly IDictionary<string, string> fieldDisplay = new Dictionary<string, string> {
-            {"id", "ID"}, {"name", "Name"}, {"doneTaskCount", "Count of tasks done"},
-            {"taskCount", "Count of all tasks"}, {"doneTaskPercent", "% of tasks done"}
-        };
-
         public static double GetPercent(long num, long denom)
         {
             double result = -1;
@@ -19,10 +10,15 @@
             return result;
         }
 
+        [PivotFetch(1, "Key", "ID")]
         public long id { get; set; }
+        [PivotFetch(2, "Key", "Name")]
         public string name { get; set; }
+        [PivotFetch(3, "Count of tasks done")]
         public long doneTaskCount { get; set; }
+        [PivotFetch(4, "Count of all tasks")]
         public long taskCount { get; set; }
+        [PivotFetch(5, "Percent", "% of tasks done")]
         public double doneTaskPercent { get; set; }
     }
 }
