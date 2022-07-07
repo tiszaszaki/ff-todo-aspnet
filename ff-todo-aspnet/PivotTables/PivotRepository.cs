@@ -22,9 +22,9 @@ namespace ff_todo_aspnet.PivotTables
                 r.doneTaskPercent = ReadinessRecord.GetPercent(r.doneTaskCount, r.taskCount);
             var res = new PivotResponse<ReadinessRecord>
             {
-                fields = PivotResponse<ReadinessRecord>.ExtractFieldsFromType(typeof(ReadinessRecord)),
-                fieldOrder = PivotResponse<ReadinessRecord>.ExtractFieldOrderFromType(typeof(ReadinessRecord)),
-                fieldDisplay = PivotResponse<ReadinessRecord>.ExtractFieldDisplayFromType(typeof(ReadinessRecord)),
+                fields = PivotResponseTools.ExtractFieldsFromType(typeof(ReadinessRecord)),
+                fieldOrder = PivotResponseTools.ExtractFieldOrderFromType(typeof(ReadinessRecord)),
+                fieldDisplay = PivotResponseTools.ExtractFieldDisplayFromType(typeof(ReadinessRecord)),
                 records = records
             };
             return res;
@@ -33,9 +33,9 @@ namespace ff_todo_aspnet.PivotTables
         {
             var res = new PivotResponse<LatestUpdateRecord>
             {
-                fields = PivotResponse<LatestUpdateRecord>.ExtractFieldsFromType(typeof(LatestUpdateRecord)),
-                fieldOrder = PivotResponse<LatestUpdateRecord>.ExtractFieldOrderFromType(typeof(LatestUpdateRecord)),
-                fieldDisplay = PivotResponse<LatestUpdateRecord>.ExtractFieldDisplayFromType(typeof(LatestUpdateRecord)),
+                fields = PivotResponseTools.ExtractFieldsFromType(typeof(LatestUpdateRecord)),
+                fieldOrder = PivotResponseTools.ExtractFieldOrderFromType(typeof(LatestUpdateRecord)),
+                fieldDisplay = PivotResponseTools.ExtractFieldDisplayFromType(typeof(LatestUpdateRecord)),
                 records = records
             };
             return res;
