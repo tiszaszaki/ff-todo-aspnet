@@ -17,9 +17,9 @@ public class PivotServiceUnitTest
             e.doneTaskPercent = ReadinessRecord.GetPercent(e.doneTaskCount, e.taskCount);
         var result = new PivotResponse<ReadinessRecord>()
         {
-            fields = PivotResponse<ReadinessRecord>.ExtractFieldsFromType(typeof(ReadinessRecord)),
-            fieldDisplay = PivotResponse<ReadinessRecord>.ExtractFieldDisplayFromType(typeof(ReadinessRecord)),
-            fieldOrder = PivotResponse<ReadinessRecord>.ExtractFieldOrderFromType(typeof(ReadinessRecord)),
+            fields = PivotResponseTools.ExtractFieldsFromType(typeof(ReadinessRecord)),
+            fieldDisplay = PivotResponseTools.ExtractFieldDisplayFromType(typeof(ReadinessRecord)),
+            fieldOrder = PivotResponseTools.ExtractFieldOrderFromType(typeof(ReadinessRecord)),
             records = records
         };
         return result;
@@ -36,9 +36,9 @@ public class PivotServiceUnitTest
         };
         var result = new PivotResponse<LatestUpdateRecord>()
         {
-            fields = PivotResponse<LatestUpdateRecord>.ExtractFieldsFromType(typeof(LatestUpdateRecord)),
-            fieldDisplay = PivotResponse<LatestUpdateRecord>.ExtractFieldDisplayFromType(typeof(LatestUpdateRecord)),
-            fieldOrder = PivotResponse<LatestUpdateRecord>.ExtractFieldOrderFromType(typeof(LatestUpdateRecord)),
+            fields = PivotResponseTools.ExtractFieldsFromType(typeof(LatestUpdateRecord)),
+            fieldDisplay = PivotResponseTools.ExtractFieldDisplayFromType(typeof(LatestUpdateRecord)),
+            fieldOrder = PivotResponseTools.ExtractFieldOrderFromType(typeof(LatestUpdateRecord)),
             records = records
         };
         return result;
