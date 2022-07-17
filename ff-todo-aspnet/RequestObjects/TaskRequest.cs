@@ -12,7 +12,7 @@ namespace ff_todo_aspnet.RequestObjects
 				done = tr.done
 			};
 		}
-		public string name { get; set; }
+		public string? name { get; set; }
 		public bool done { get; set; }
 		public DateTime? deadline { get; set; }
 	}

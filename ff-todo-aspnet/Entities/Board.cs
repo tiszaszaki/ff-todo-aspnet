@@ -13,11 +13,11 @@ namespace ff_todo_aspnet.Entities
 		public long id { get; set; }
 		[Required(AllowEmptyStrings = false)]
 		[MaxLength(TodoCommon.MAX_BOARD_NAME_LENGTH)]
-		public string name { get; set; }
+		public string? name { get; set; }
 		[MaxLength(TodoCommon.MAX_BOARD_DESCRIPTION_LENGTH)]
-		public string description { get; set; }
+		public string? description { get; set; }
 		[MaxLength(TodoCommon.MAX_BOARD_AUTHOR_LENGTH)]
-		public string author { get; set; }
+		public string? author { get; set; }
 		[Column("date_created")]
 		public DateTime dateCreated { get; set; }
 		[Column("date_modified")]
@@ -46,8 +46,8 @@ namespace ff_todo_aspnet.Entities
 		private List<PivotEntityEvent> GetEvents()
 		{
 			var result = new List<PivotEntityEvent> {
-				new PivotEntityEvent(LatestUpdateEvent.ADD_BOARD, dateCreated, id, name),
-				new PivotEntityEvent(LatestUpdateEvent.UPDATE_BOARD, dateModified, id, name)
+				new PivotEntityEvent(LatestUpdateEvent.ADD_BOARD, dateCreated, id, name ?? ""),
+				new PivotEntityEvent(LatestUpdateEvent.UPDATE_BOARD, dateModified, id, name ?? "")
 			};
 			if (todos is not null)
 				foreach (var t in todos)

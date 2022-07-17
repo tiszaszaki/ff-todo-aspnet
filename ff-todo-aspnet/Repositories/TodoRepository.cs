@@ -44,7 +44,7 @@ namespace ff_todo_aspnet.Repositories
         }
         public Todo AddTodo(Todo todo)
         {
-            todo.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TODO, todo.name, false);
+            todo.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TODO, todo.name ?? "", false);
             context.Todos.Add(todo);
             context.SaveChanges();
             return todo;
@@ -115,7 +115,7 @@ namespace ff_todo_aspnet.Repositories
                 Todo oldTodo = context.Todos.Single(todo => todo.id == id);
                 Todo newTodo = new Todo
                 {
-                    name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TODO, oldTodo.name, true),
+                    name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TODO, oldTodo.name ?? "", true),
                     description = oldTodo.description,
                     phase = phase,
                     dateCreated = dateCreatedNew,
@@ -124,7 +124,7 @@ namespace ff_todo_aspnet.Repositories
                     boardId = boardId
                 };
                 IsNameTruncated = context.IsNameTruncated;
-                CloneTodoOldName = oldTodo.name; CloneTodoNewName = newTodo.name;
+                CloneTodoOldName = oldTodo.name ?? ""; CloneTodoNewName = newTodo.name;
                 context.Todos.Add(newTodo);
                 context.SaveChanges();
                 CloneTasks(oldTodo.id, newTodo.id);

@@ -13,7 +13,7 @@
         [PivotFetch(1, "Key", "ID")]
         public long id { get; set; }
         [PivotFetch(2, "Key", "Name")]
-        public string name { get; set; }
+        public string? name { get; set; }
         [PivotFetch(3, "Count of tasks done")]
         public long doneTaskCount { get; set; }
         [PivotFetch(4, "Count of all tasks")]

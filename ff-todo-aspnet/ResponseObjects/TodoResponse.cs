@@ -19,14 +19,14 @@ namespace ff_todo_aspnet.ResponseObjects
 			};
 		}
 		public long id { get; set; }
-		public string name { get; set; }
-		public string description { get; set; }
+		public string? name { get; set; }
+		public string? description { get; set; }
 		public int phase { get; set; }
 		public DateTime dateCreated { get; set; }
 		public DateTime dateModified { get; set; }
 		public DateTime? deadline { get; set; }
 		public IEnumerable<TaskResponse>? tasks { get; set; }
-		public long boardId { get; set; }
+		public long? boardId { get; set; }
 		public override string ToString()
 		{
 			return $"[{id}, \"{name}\", \"{description}\", {phase}, \"{dateCreated}\", \"{dateModified}\", \"{deadline}\"]";

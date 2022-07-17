@@ -14,8 +14,8 @@ namespace ff_todo_aspnet.RequestObjects
 				deadline = tr.deadline
 			};
 		}
-		public string name { get; set; }
-		public string description { get; set; }
+		public string? name { get; set; }
+		public string? description { get; set; }
 		public int phase { get; set; }
 		public DateTime? deadline { get; set; }
 	}

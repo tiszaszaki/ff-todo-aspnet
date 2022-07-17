@@ -38,7 +38,7 @@ namespace ff_todo_aspnet.Repositories
         }
         public Task AddTask(Task task)
         {
-            task.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TASK, task.name, false);
+            task.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TASK, task.name ?? "", false);
             context.Tasks.Add(task);
             context.SaveChanges();
             return task;

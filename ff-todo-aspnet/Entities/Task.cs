@@ -13,7 +13,7 @@ namespace ff_todo_aspnet.Entities
 		public long id { get; set; }
 		[Required(AllowEmptyStrings = false)]
 		[MaxLength(TodoCommon.MAX_TASK_NAME_LENGTH)]
-		public string name { get; set; }
+		public string? name { get; set; }
 		public bool done { get; set; }
 		[Column("date_created")]
 		public DateTime dateCreated { get; set; }
@@ -22,13 +22,13 @@ namespace ff_todo_aspnet.Entities
 		public DateTime? deadline { get; set; }
 		[Column("todo_id")]
 		public long todoId { get; set; }
-		public Todo todo { get; set; }
+		public Todo? todo { get; set; }
 
 		private List<PivotEntityEvent> GetEvents()
         {
 			return new List<PivotEntityEvent> {
-				new PivotEntityEvent(LatestUpdateEvent.ADD_TASK, dateCreated, id, name),
-				new PivotEntityEvent(LatestUpdateEvent.UPDATE_TASK, dateModified, id, name)
+				new PivotEntityEvent(LatestUpdateEvent.ADD_TASK, dateCreated, id, name ?? ""),
+				new PivotEntityEvent(LatestUpdateEvent.UPDATE_TASK, dateModified, id, name ?? "")
 			};
 		}
 

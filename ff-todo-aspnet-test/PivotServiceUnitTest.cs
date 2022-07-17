@@ -54,8 +54,11 @@ public class PivotServiceUnitTest
         var actual = mockService.Object.GetBoardReadiness();
 
         Assert.Equal(expected.GetType(), actual.GetType());
-        Assert.Equal(expected.records.GetType(), actual.records.GetType());
-        Assert.Equal(expected.records.Count(), actual.records.Count());
+        if ((expected.records is not null) && (actual.records is not null))
+        {
+            Assert.Equal(expected.records.GetType(), actual.records.GetType());
+            Assert.Equal(expected.records.Count(), actual.records.Count());
+        }
     }
 
     [Fact]
@@ -68,8 +71,11 @@ public class PivotServiceUnitTest
         var actual = mockService.Object.GetTodoReadiness();
 
         Assert.Equal(expected.GetType(), actual.GetType());
-        Assert.Equal(expected.records.GetType(), actual.records.GetType());
-        Assert.Equal(expected.records.Count(), actual.records.Count());
+        if ((expected.records is not null) && (actual.records is not null))
+        {
+            Assert.Equal(expected.records.GetType(), actual.records.GetType());
+            Assert.Equal(expected.records.Count(), actual.records.Count());
+        }
     }
 
     [Fact]
@@ -82,8 +88,11 @@ public class PivotServiceUnitTest
         var actual = mockService.Object.GetBoardLatestUpdate();
 
         Assert.Equal(expected.GetType(), actual.GetType());
-        Assert.Equal(expected.records.GetType(), actual.records.GetType());
-        Assert.Equal(expected.records.Count(), actual.records.Count());
+        if ((expected.records is not null) && (actual.records is not null))
+        {
+            Assert.Equal(expected.records.GetType(), actual.records.GetType());
+            Assert.Equal(expected.records.Count(), actual.records.Count());
+        }
     }
 
     [Fact]
@@ -96,7 +105,10 @@ public class PivotServiceUnitTest
         var actual = mockService.Object.GetTodoLatestUpdate();
 
         Assert.Equal(expected.GetType(), actual.GetType());
-        Assert.Equal(expected.records.GetType(), actual.records.GetType());
-        Assert.Equal(expected.records.Count(), actual.records.Count());
+        if ((expected.records is not null) && (actual.records is not null))
+        {
+            Assert.Equal(expected.records.GetType(), actual.records.GetType());
+            Assert.Equal(expected.records.Count(), actual.records.Count());
+        }
     }
 }

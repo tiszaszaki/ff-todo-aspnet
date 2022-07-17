@@ -18,8 +18,8 @@ namespace ff_todo_aspnet.ResponseObjects
 			};
 		}
 		public long id { get; set; }
-		public string name { get; set; }
-		public bool done { get; set; }
+		public string? name { get; set; }
+		public bool? done { get; set; }
 		public DateTime dateCreated { get; set; }
 		public DateTime dateModified { get; set; }
 		public DateTime? deadline { get; set; }

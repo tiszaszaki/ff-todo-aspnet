@@ -13,9 +13,9 @@ namespace ff_todo_aspnet.Entities
 		public long id { get; set; }
         [Required(AllowEmptyStrings = false)]
         [MaxLength(TodoCommon.MAX_TODO_NAME_LENGTH)]
-		public string name { get; set; }
+		public string? name { get; set; }
         [MaxLength(TodoCommon.MAX_TODO_DESCRIPTION_LENGTH)]
-		public string description { get; set; }
+		public string? description { get; set; }
         [Range(TodoCommon.TODO_PHASE_MIN,TodoCommon.TODO_PHASE_MAX)]
 		public int phase { get; set; }
         [Column("date_created")]
@@ -25,8 +25,8 @@ namespace ff_todo_aspnet.Entities
 		public DateTime? deadline { get; set; }
 		public IEnumerable<Task>? tasks { get; set; }
 		[Column("board_id")]
-		public long boardId { get; set; }
-		public Board board { get; set; }
+		public long? boardId { get; set; }
+		public Board? board { get; set; }
 
 		public long doneTaskCount()
         {
@@ -46,12 +46,12 @@ namespace ff_todo_aspnet.Entities
 		private List<PivotEntityEvent> GetEvents()
 		{
 			var result = new List<PivotEntityEvent> {
-				new PivotEntityEvent(LatestUpdateEvent.ADD_TODO, dateCreated, id, name),
-				new PivotEntityEvent(LatestUpdateEvent.UPDATE_TODO, dateModified, id, name)
+				new PivotEntityEvent(LatestUpdateEvent.ADD_TODO, dateCreated, id, name ?? ""),
+				new PivotEntityEvent(LatestUpdateEvent.UPDATE_TODO, dateModified, id, name ?? "")
 			};
 			if (tasks is not null)
 				foreach (var t in tasks)
-					result.Add(new PivotEntityEvent(t.latestEvent, t.latestUpdated, t.id, t.name));
+					result.Add(new PivotEntityEvent(t.latestEvent, t.latestUpdated, t.id, t.name ?? ""));
 			return result;
 		}
 
