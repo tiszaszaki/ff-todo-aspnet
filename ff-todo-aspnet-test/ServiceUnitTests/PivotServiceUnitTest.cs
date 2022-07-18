@@ -2,7 +2,7 @@
 using Moq;
 using static ff_todo_aspnet.PivotTables.LatestUpdateRecord;
 
-namespace ff_todo_aspnet_test;
+namespace ff_todo_aspnet_test.ServiceUnitTests;
 
 public class PivotServiceUnitTest
 {

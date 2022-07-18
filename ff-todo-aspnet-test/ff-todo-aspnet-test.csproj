@@ -29,4 +29,9 @@
     <ProjectReference Include="..\ff-todo-aspnet\ff-todo-aspnet.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="IntegrationTests\" />
+    <Folder Include="ServiceUnitTests\" />
+  </ItemGroup>
+
 </Project>

@@ -2,37 +2,19 @@
 using ff_todo_aspnet.RequestObjects;
 using ff_todo_aspnet.ResponseObjects;
 using ff_todo_aspnet.Services;
+using ff_todo_aspnet_test.Utilities;
 using Moq;
 using System.Collections.ObjectModel;
 
-namespace ff_todo_aspnet_test;
+namespace ff_todo_aspnet_test.ServiceUnitTests;
 public class BoardServiceUnitTest
 {
     private readonly Mock<IBoardService> mockService = new Mock<IBoardService>();
 
-    private Board GetTestBoard()
-    {
-        return new Board
-        {
-            name = "Test board",
-            description = "Test description",
-            author = "Test author"
-        };
-    }
-    private Board GetUpdateTestBoard()
-    {
-        return new Board
-        {
-            name = "Updated test board",
-            description = "Updated test description",
-            author = "Updated test author"
-        };
-    }
-
     private Collection<BoardResponse> GetTestBoardResponses()
     {
         var boards = new Collection<BoardResponse>();
-        boards.Add(GetTestBoard());
+        boards.Add(TestEntityProvider.GetTestBoard());
         return boards;
     }
     private Collection<long> GetTestBoardIds()
@@ -113,7 +95,7 @@ public class BoardServiceUnitTest
     [Fact]
     public void GetExistingBoardTest()
     {
-        Board testEntity = GetTestBoard();
+        Board testEntity = TestEntityProvider.GetTestBoard();
         long testId = 0L;
 
         mockService.Setup(s => s.GetBoard(testId)).Returns(testEntity);
@@ -141,7 +123,7 @@ public class BoardServiceUnitTest
     [Fact]
     public void AddBoardTest()
     {
-        Board testEntity = GetTestBoard();
+        Board testEntity = TestEntityProvider.GetTestBoard();
         BoardRequest testRequest = GetBoardRequest(testEntity);
 
         mockService.Setup(s => s.AddBoard(testRequest)).Returns(testEntity);
@@ -155,8 +137,8 @@ public class BoardServiceUnitTest
     [Fact]
     public void UpdateExistingBoardTest()
     {
-        Board testEntity = GetTestBoard();
-        Board updateTestEntity = GetUpdateTestBoard();
+        Board testEntity = TestEntityProvider.GetTestBoard();
+        Board updateTestEntity = TestEntityProvider.GetUpdateTestBoard();
         BoardRequest updateTestRequest = GetBoardRequest(updateTestEntity);
         BoardResponse updatedTestResponse = GetBoardResponse(updateTestRequest);
         long testId = 0L;
@@ -174,7 +156,7 @@ public class BoardServiceUnitTest
     [Fact]
     public void UpdateNonExistentBoardTest()
     {
-        Board updateTestEntity = GetUpdateTestBoard();
+        Board updateTestEntity = TestEntityProvider.GetUpdateTestBoard();
         BoardRequest updateTestRequest = GetBoardRequest(updateTestEntity);
         long testId = 666L;
 
@@ -188,7 +170,7 @@ public class BoardServiceUnitTest
     [Fact]
     public void DeleteExistingBoardTest()
     {
-        Board testEntity = GetTestBoard();
+        Board testEntity = TestEntityProvider.GetTestBoard();
         long testId = 0L;
 
         mockService.Setup(s => s.RemoveBoard(testId)).Returns(testEntity);

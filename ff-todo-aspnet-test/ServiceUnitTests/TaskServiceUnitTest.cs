@@ -1,39 +1,20 @@
-﻿using ff_todo_aspnet.Constants;
-using ff_todo_aspnet.Entities;
-using ff_todo_aspnet.RequestObjects;
+﻿using ff_todo_aspnet.RequestObjects;
 using ff_todo_aspnet.ResponseObjects;
 using ff_todo_aspnet.Services;
+using ff_todo_aspnet_test.Utilities;
 using Moq;
 using System.Collections.ObjectModel;
 using Task = ff_todo_aspnet.Entities.Task;
 
-namespace ff_todo_aspnet_test;
+namespace ff_todo_aspnet_test.ServiceUnitTests;
 public class TaskServiceUnitTest
 {
     private readonly Mock<ITaskService> mockService = new Mock<ITaskService>();
 
-    private Task GetTestTask()
-    {
-        return new Task
-        {
-            name = "Test task",
-            done = false
-        };
-    }
-
-    private Task GetUpdateTestTask()
-    {
-        return new Task
-        {
-            name = "Updated test task",
-            done = true
-        };
-    }
-
     private Collection<TaskResponse> GetTestTaskResponses()
     {
         var tasks = new Collection<TaskResponse>();
-        tasks.Add(GetTestTask());
+        tasks.Add(TestEntityProvider.GetTestTask());
         return tasks;
     }
 
@@ -120,7 +101,7 @@ public class TaskServiceUnitTest
     [Fact]
     public void GetExistingTaskTest()
     {
-        var testEntity = GetTestTask();
+        var testEntity = TestEntityProvider.GetTestTask();
         var testId = 0L;
 
         mockService.Setup(s => s.GetTask(testId)).Returns(testEntity);
@@ -148,7 +129,7 @@ public class TaskServiceUnitTest
     [Fact]
     public void AddTaskTest()
     {
-        Task testEntity = GetTestTask();
+        Task testEntity = TestEntityProvider.GetTestTask();
         TaskRequest testRequest = GetTaskRequest(testEntity);
         long todoId = 0L;
 
@@ -163,8 +144,8 @@ public class TaskServiceUnitTest
     [Fact]
     public void UpdateExistingTaskTest()
     {
-        Task testEntity = GetTestTask();
-        Task updateTestEntity = GetUpdateTestTask();
+        Task testEntity = TestEntityProvider.GetTestTask();
+        Task updateTestEntity = TestEntityProvider.GetUpdateTestTask();
         TaskRequest updateTestRequest = GetTaskRequest(updateTestEntity);
         TaskResponse updatedTestResponse = GetTaskResponse(updateTestRequest);
         long testId = 0L;
@@ -182,7 +163,7 @@ public class TaskServiceUnitTest
     [Fact]
     public void UpdateNonExistentTodoTest()
     {
-        Task updateTestEntity = GetUpdateTestTask();
+        Task updateTestEntity = TestEntityProvider.GetUpdateTestTask();
         TaskRequest updateTestRequest = GetTaskRequest(updateTestEntity);
         long testId = 666L;
 
@@ -196,7 +177,7 @@ public class TaskServiceUnitTest
     [Fact]
     public void DeleteExistingTaskTest()
     {
-        Task testEntity = GetTestTask();
+        Task testEntity = TestEntityProvider.GetTestTask();
         long testId = 0L;
 
         mockService.Setup(s => s.RemoveTask(testId)).Returns(testEntity);

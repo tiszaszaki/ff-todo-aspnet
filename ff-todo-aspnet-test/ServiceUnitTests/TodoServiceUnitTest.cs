@@ -3,48 +3,21 @@ using ff_todo_aspnet.Entities;
 using ff_todo_aspnet.RequestObjects;
 using ff_todo_aspnet.ResponseObjects;
 using ff_todo_aspnet.Services;
+using ff_todo_aspnet_test.Utilities;
 using Moq;
 using System.Collections.ObjectModel;
 
-namespace ff_todo_aspnet_test;
+namespace ff_todo_aspnet_test.ServiceUnitTests;
 public class TodoServiceUnitTest
 {
     private readonly Mock<ITodoService> mockService = new Mock<ITodoService>();
 
-    private Todo GetTestTodo()
-    {
-        return new Todo
-        {
-            name = "Test todo",
-            description = "Test description",
-            phase = TodoCommon.TODO_PHASE_MIN
-        };
-    }
-
-    private Todo GetTestCloneParams()
-    {
-        return new Todo
-        {
-            id = 0L,
-            phase = TodoCommon.TODO_PHASE_MAX,
-            boardId = 2L
-        };
-    }
-
-    private Todo GetUpdateTestTodo()
-    {
-        return new Todo
-        {
-            name = "Updated test todo",
-            description = "Updated test description",
-            phase = TodoCommon.TODO_PHASE_MAX
-        };
-    }
+    private readonly long defaultBoardId = -666;
 
     private Collection<TodoResponse> GetTestTodoResponses()
     {
         var todos = new Collection<TodoResponse>();
-        todos.Add(GetTestTodo());
+        todos.Add(TestEntityProvider.GetTestTodo());
         return todos;
     }
 
@@ -145,7 +118,7 @@ public class TodoServiceUnitTest
     [Fact]
     public void GetExistingTodoTest()
     {
-        var testEntity = GetTestTodo();
+        var testEntity = TestEntityProvider.GetTestTodo();
         var testId = 0L;
 
         mockService.Setup(s => s.GetTodo(testId)).Returns(testEntity);
@@ -173,8 +146,8 @@ public class TodoServiceUnitTest
     [Fact]
     public void GetTodoByNameTest()
     {
-        var testEntity = GetTestTodo();
-        var testName = testEntity.name;
+        var testEntity = TestEntityProvider.GetTestTodo();
+        var testName = testEntity.name ?? "";
 
         mockService.Setup(s => s.GetTodoByName(testName)).Returns(testEntity);
 
@@ -189,7 +162,7 @@ public class TodoServiceUnitTest
     [Fact]
     public void AddTodoTest()
     {
-        Todo testEntity = GetTestTodo();
+        Todo testEntity = TestEntityProvider.GetTestTodo();
         TodoRequest testRequest = GetTodoRequest(testEntity);
         long boardId = 0L;
 
@@ -204,8 +177,8 @@ public class TodoServiceUnitTest
     [Fact]
     public void UpdateExistingTodoTest()
     {
-        Todo testEntity = GetTestTodo();
-        Todo updateTestEntity = GetUpdateTestTodo();
+        Todo testEntity = TestEntityProvider.GetTestTodo();
+        Todo updateTestEntity = TestEntityProvider.GetUpdateTestTodo();
         TodoRequest updateTestRequest = GetTodoRequest(updateTestEntity);
         TodoResponse updatedTestResponse = GetTodoResponse(updateTestRequest);
         long testId = 0L;
@@ -223,7 +196,7 @@ public class TodoServiceUnitTest
     [Fact]
     public void UpdateNonExistentTodoTest()
     {
-        Todo updateTestEntity = GetUpdateTestTodo();
+        Todo updateTestEntity = TestEntityProvider.GetUpdateTestTodo();
         TodoRequest updateTestRequest = GetTodoRequest(updateTestEntity);
         long testId = 666L;
 
@@ -237,18 +210,18 @@ public class TodoServiceUnitTest
     [Fact]
     public void CloneExistingTodoTest()
     {
-        Todo testEntity = GetTestTodo();
-        Todo testCloneParams = GetTestCloneParams();
-        Todo clonedEntity = GetTestTodo();
+        Todo testEntity = TestEntityProvider.GetTestTodo();
+        Todo testCloneParams = TestEntityProvider.GetTestCloneParams();
+        Todo clonedEntity = TestEntityProvider.GetTestTodo();
 
         clonedEntity.id = testEntity.id;
         clonedEntity.phase = testEntity.phase;
         clonedEntity.boardId = testEntity.boardId;
 
-        mockService.Setup(s => s.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId)).Returns(clonedEntity);
+        mockService.Setup(s => s.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId ?? defaultBoardId)).Returns(clonedEntity);
 
         var expected = clonedEntity;
-        var actual = mockService.Object.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId);
+        var actual = mockService.Object.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId ?? defaultBoardId);
 
         Assert.NotNull(actual);
         if (actual is not null)
@@ -258,11 +231,11 @@ public class TodoServiceUnitTest
     [Fact]
     public void CloneNonExistentTodoTest()
     {
-        Todo testCloneParams = GetTestCloneParams();
+        Todo testCloneParams = TestEntityProvider.GetTestCloneParams();
 
-        mockService.Setup(s => s.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId)).Returns(null as Todo);
+        mockService.Setup(s => s.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId ?? defaultBoardId)).Returns(null as Todo);
 
-        var actual = mockService.Object.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId);
+        var actual = mockService.Object.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId ?? defaultBoardId);
 
         Assert.Null(actual);
     }
@@ -270,7 +243,7 @@ public class TodoServiceUnitTest
     [Fact]
     public void DeleteExistingTodoTest()
     {
-        Todo testEntity = GetTestTodo();
+        Todo testEntity = TestEntityProvider.GetTestTodo();
         long testId = 0L;
 
         mockService.Setup(s => s.RemoveTodo(testId)).Returns(testEntity);

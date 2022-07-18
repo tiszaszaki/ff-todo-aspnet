@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json.Linq;
 using Xunit.Abstractions;
 
-namespace ff_todo_aspnet_test;
+namespace ff_todo_aspnet_test.IntegrationTests;
 public class BoardIntegrationTest
 {
     private readonly HttpClient client;
