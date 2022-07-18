@@ -18,25 +18,6 @@ public class TaskServiceUnitTest
         return tasks;
     }
 
-    private TaskRequest GetTaskRequest(Task task)
-    {
-        return new TaskRequest
-        {
-            name = task.name,
-            done = task.done,
-            deadline = task.deadline
-        };
-    }
-    private TaskResponse GetTaskResponse(TaskRequest task)
-    {
-        return new TaskResponse
-        {
-            name = task.name,
-            done = task.done,
-            deadline = task.deadline
-        };
-    }
-
     private void AssertTaskResponsesEqual(TaskResponse expected, TaskResponse actual, bool is_strict = false)
     {
         if (is_strict) Assert.Equal(expected.id, actual.id);
@@ -130,7 +111,7 @@ public class TaskServiceUnitTest
     public void AddTaskTest()
     {
         Task testEntity = TestEntityProvider.GetTestTask();
-        TaskRequest testRequest = GetTaskRequest(testEntity);
+        TaskRequest testRequest = TestEntityConverter.GetTaskRequest(testEntity);
         long todoId = 0L;
 
         mockService.Setup(s => s.AddTask(todoId, testRequest)).Returns(testEntity);
@@ -146,8 +127,8 @@ public class TaskServiceUnitTest
     {
         Task testEntity = TestEntityProvider.GetTestTask();
         Task updateTestEntity = TestEntityProvider.GetUpdateTestTask();
-        TaskRequest updateTestRequest = GetTaskRequest(updateTestEntity);
-        TaskResponse updatedTestResponse = GetTaskResponse(updateTestRequest);
+        TaskRequest updateTestRequest = TestEntityConverter.GetTaskRequest(updateTestEntity);
+        TaskResponse updatedTestResponse = TestEntityConverter.GetTaskResponse(updateTestRequest);
         long testId = 0L;
 
         mockService.Setup(s => s.UpdateTask(testId, updateTestRequest)).Returns(updatedTestResponse);
@@ -164,7 +145,7 @@ public class TaskServiceUnitTest
     public void UpdateNonExistentTodoTest()
     {
         Task updateTestEntity = TestEntityProvider.GetUpdateTestTask();
-        TaskRequest updateTestRequest = GetTaskRequest(updateTestEntity);
+        TaskRequest updateTestRequest = TestEntityConverter.GetTaskRequest(updateTestEntity);
         long testId = 666L;
 
         mockService.Setup(s => s.UpdateTask(testId, updateTestRequest)).Returns(null as TaskResponse);

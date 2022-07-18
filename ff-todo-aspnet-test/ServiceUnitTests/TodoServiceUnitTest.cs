@@ -21,27 +21,6 @@ public class TodoServiceUnitTest
         return todos;
     }
 
-    private TodoRequest GetTodoRequest(Todo todo)
-    {
-        return new TodoRequest
-        {
-            name = todo.name,
-            description = todo.description,
-            phase = todo.phase,
-            deadline = todo.deadline
-        };
-    }
-    private TodoResponse GetTodoResponse(TodoRequest todo)
-    {
-        return new TodoResponse
-        {
-            name = todo.name,
-            description = todo.description,
-            phase = todo.phase,
-            deadline = todo.deadline
-        };
-    }
-
     private void AssertTodoResponsesEqual(TodoResponse expected, TodoResponse actual, bool is_strict = false)
     {
         if (is_strict) Assert.Equal(expected.id, actual.id);
@@ -163,7 +142,7 @@ public class TodoServiceUnitTest
     public void AddTodoTest()
     {
         Todo testEntity = TestEntityProvider.GetTestTodo();
-        TodoRequest testRequest = GetTodoRequest(testEntity);
+        TodoRequest testRequest = TestEntityConverter.GetTodoRequest(testEntity);
         long boardId = 0L;
 
         mockService.Setup(s => s.AddTodo(boardId, testRequest)).Returns(testEntity);
@@ -179,8 +158,8 @@ public class TodoServiceUnitTest
     {
         Todo testEntity = TestEntityProvider.GetTestTodo();
         Todo updateTestEntity = TestEntityProvider.GetUpdateTestTodo();
-        TodoRequest updateTestRequest = GetTodoRequest(updateTestEntity);
-        TodoResponse updatedTestResponse = GetTodoResponse(updateTestRequest);
+        TodoRequest updateTestRequest = TestEntityConverter.GetTodoRequest(updateTestEntity);
+        TodoResponse updatedTestResponse = TestEntityConverter.GetTodoResponse(updateTestRequest);
         long testId = 0L;
 
         mockService.Setup(s => s.UpdateTodo(testId, updateTestRequest)).Returns(updatedTestResponse);
@@ -197,7 +176,7 @@ public class TodoServiceUnitTest
     public void UpdateNonExistentTodoTest()
     {
         Todo updateTestEntity = TestEntityProvider.GetUpdateTestTodo();
-        TodoRequest updateTestRequest = GetTodoRequest(updateTestEntity);
+        TodoRequest updateTestRequest = TestEntityConverter.GetTodoRequest(updateTestEntity);
         long testId = 666L;
 
         mockService.Setup(s => s.UpdateTodo(testId, updateTestRequest)).Returns(null as TodoResponse);

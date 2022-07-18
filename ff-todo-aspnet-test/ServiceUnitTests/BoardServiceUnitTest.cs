@@ -25,25 +25,6 @@ public class BoardServiceUnitTest
         return boardIds;
     }
 
-    private BoardRequest GetBoardRequest(Board board)
-    {
-        return new BoardRequest
-        {
-            name = board.name,
-            description = board.description,
-            author = board.author
-        };
-    }
-    private BoardResponse GetBoardResponse(BoardRequest board)
-    {
-        return new BoardResponse
-        {
-            name = board.name,
-            description = board.description,
-            author = board.author
-        };
-    }
-
     private void AssertBoardResponsesEqual(BoardResponse expected, BoardResponse actual, bool is_strict = false)
     {
         if (is_strict) Assert.Equal(expected.id, actual.id);
@@ -124,7 +105,7 @@ public class BoardServiceUnitTest
     public void AddBoardTest()
     {
         Board testEntity = TestEntityProvider.GetTestBoard();
-        BoardRequest testRequest = GetBoardRequest(testEntity);
+        BoardRequest testRequest = TestEntityConverter.GetBoardRequest(testEntity);
 
         mockService.Setup(s => s.AddBoard(testRequest)).Returns(testEntity);
 
@@ -139,8 +120,8 @@ public class BoardServiceUnitTest
     {
         Board testEntity = TestEntityProvider.GetTestBoard();
         Board updateTestEntity = TestEntityProvider.GetUpdateTestBoard();
-        BoardRequest updateTestRequest = GetBoardRequest(updateTestEntity);
-        BoardResponse updatedTestResponse = GetBoardResponse(updateTestRequest);
+        BoardRequest updateTestRequest = TestEntityConverter.GetBoardRequest(updateTestEntity);
+        BoardResponse updatedTestResponse = TestEntityConverter.GetBoardResponse(updateTestRequest);
         long testId = 0L;
 
         mockService.Setup(s => s.UpdateBoard(testId, updateTestRequest)).Returns(updatedTestResponse);
@@ -157,7 +138,7 @@ public class BoardServiceUnitTest
     public void UpdateNonExistentBoardTest()
     {
         Board updateTestEntity = TestEntityProvider.GetUpdateTestBoard();
-        BoardRequest updateTestRequest = GetBoardRequest(updateTestEntity);
+        BoardRequest updateTestRequest = TestEntityConverter.GetBoardRequest(updateTestEntity);
         long testId = 666L;
 
         mockService.Setup(s => s.UpdateBoard(testId, updateTestRequest)).Returns(null as BoardResponse);
