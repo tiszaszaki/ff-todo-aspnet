@@ -18,23 +18,6 @@ public class TaskServiceUnitTest
         return tasks;
     }
 
-    private void AssertTaskResponsesEqual(TaskResponse expected, TaskResponse actual, bool is_strict = false)
-    {
-        if (is_strict) Assert.Equal(expected.id, actual.id);
-        Assert.Equal(expected.name, actual.name);
-        Assert.Equal(expected.done, actual.done);
-        Assert.Equal(expected.deadline, actual.deadline);
-        Assert.Equal(expected.todoId, actual.todoId);
-    }
-    private void AssertTasksEqual(Task expected, Task actual, bool is_strict = false)
-    {
-        if (is_strict) Assert.Equal(expected.id, actual.id);
-        Assert.Equal(expected.name, actual.name);
-        Assert.Equal(expected.done, actual.done);
-        Assert.Equal(expected.deadline, actual.deadline);
-        Assert.Equal(expected.todoId, actual.todoId);
-    }
-
     [Fact]
     public void GetTodosFromExistingBoardTest()
     {
@@ -92,7 +75,7 @@ public class TaskServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertTaskResponsesEqual(expected, actual);
+            TestEntityAsserter.AssertTaskResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -119,7 +102,7 @@ public class TaskServiceUnitTest
         var expected = testEntity;
         var actual = mockService.Object.AddTask(todoId, testRequest);
 
-        AssertTaskResponsesEqual(expected, actual);
+        TestEntityAsserter.AssertTaskResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -138,7 +121,7 @@ public class TaskServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertTaskResponsesEqual(expected, actual);
+            TestEntityAsserter.AssertTaskResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -168,7 +151,7 @@ public class TaskServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertTasksEqual(expected, actual);
+            TestEntityAsserter.AssertTasksEqual(expected, actual);
     }
 
     [Fact]

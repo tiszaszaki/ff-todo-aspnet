@@ -21,35 +21,6 @@ public class TodoServiceUnitTest
         return todos;
     }
 
-    private void AssertTodoResponsesEqual(TodoResponse expected, TodoResponse actual, bool is_strict = false)
-    {
-        if (is_strict) Assert.Equal(expected.id, actual.id);
-        Assert.Equal(expected.name, actual.name);
-        Assert.Equal(expected.description, actual.description);
-        Assert.Equal(expected.phase, actual.phase);
-        if (is_strict)
-        {
-            Assert.Equal(expected.dateCreated, actual.dateCreated);
-            Assert.Equal(expected.dateModified, actual.dateModified);
-        }
-        Assert.Equal(expected.deadline, actual.deadline);
-        Assert.Equal(expected.boardId, actual.boardId);
-    }
-    private void AssertTodosEqual(Todo expected, Todo actual, bool is_strict = false)
-    {
-        if (is_strict) Assert.Equal(expected.id, actual.id);
-        Assert.Equal(expected.name, actual.name);
-        Assert.Equal(expected.description, actual.description);
-        Assert.Equal(expected.phase, actual.phase);
-        if (is_strict)
-        {
-            Assert.Equal(expected.dateCreated, actual.dateCreated);
-            Assert.Equal(expected.dateModified, actual.dateModified);
-        }
-        Assert.Equal(expected.deadline, actual.deadline);
-        Assert.Equal(expected.boardId, actual.boardId);
-    }
-
     [Fact]
     public void GetTodosFromExistingBoardTest()
     {
@@ -107,7 +78,7 @@ public class TodoServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertTodoResponsesEqual(expected, actual);
+            TestEntityAsserter.AssertTodoResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -135,7 +106,7 @@ public class TodoServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertTodoResponsesEqual(expected, actual);
+            TestEntityAsserter.AssertTodoResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -150,7 +121,7 @@ public class TodoServiceUnitTest
         var expected = testEntity;
         var actual = mockService.Object.AddTodo(boardId, testRequest);
 
-        AssertTodoResponsesEqual(expected, actual);
+        TestEntityAsserter.AssertTodoResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -169,7 +140,7 @@ public class TodoServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertTodoResponsesEqual(expected, actual);
+            TestEntityAsserter.AssertTodoResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -204,7 +175,7 @@ public class TodoServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertTodoResponsesEqual(expected, actual);
+            TestEntityAsserter.AssertTodoResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -232,7 +203,7 @@ public class TodoServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertTodosEqual(expected, actual);
+            TestEntityAsserter.AssertTodosEqual(expected, actual);
     }
 
     [Fact]

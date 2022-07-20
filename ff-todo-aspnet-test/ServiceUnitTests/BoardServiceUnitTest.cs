@@ -25,26 +25,6 @@ public class BoardServiceUnitTest
         return boardIds;
     }
 
-    private void AssertBoardResponsesEqual(BoardResponse expected, BoardResponse actual, bool is_strict = false)
-    {
-        if (is_strict) Assert.Equal(expected.id, actual.id);
-        Assert.Equal(expected.name, actual.name);
-        Assert.Equal(expected.description, actual.description);
-        Assert.Equal(expected.author, actual.author);
-        if (is_strict) Assert.Equal(expected.dateCreated, actual.dateCreated);
-        Assert.Equal(expected.readonlyTodos, actual.readonlyTodos);
-        Assert.Equal(expected.readonlyTasks, actual.readonlyTasks);
-    }
-    private void AssertBoardsEqual(Board expected, Board actual, bool is_strict = false)
-    {
-        Assert.Equal(expected.name, actual.name);
-        Assert.Equal(expected.description, actual.description);
-        Assert.Equal(expected.author, actual.author);
-        if (is_strict) Assert.Equal(expected.dateCreated, actual.dateCreated);
-        Assert.Equal(expected.readonlyTodos, actual.readonlyTodos);
-        Assert.Equal(expected.readonlyTasks, actual.readonlyTasks);
-    }
-
     [Fact]
     public void GetBoardIdsTest()
     {
@@ -86,7 +66,7 @@ public class BoardServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertBoardResponsesEqual(expected, actual);
+            TestEntityAsserter.AssertBoardResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -112,7 +92,7 @@ public class BoardServiceUnitTest
         var expected = testEntity;
         var actual = mockService.Object.AddBoard(testRequest);
 
-        AssertBoardResponsesEqual(expected, actual);
+        TestEntityAsserter.AssertBoardResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -131,7 +111,7 @@ public class BoardServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertBoardResponsesEqual(expected, actual);
+            TestEntityAsserter.AssertBoardResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -161,7 +141,7 @@ public class BoardServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertBoardsEqual(expected, actual);
+            TestEntityAsserter.AssertBoardsEqual(expected, actual);
     }
 
     [Fact]

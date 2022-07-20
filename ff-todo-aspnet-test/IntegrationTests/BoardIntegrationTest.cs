@@ -38,7 +38,6 @@ public class BoardIntegrationTest
     {
         var testBoard = TestEntityProvider.GetTestBoard();
         var testBoardRequest = TestEntityConverter.GetBoardRequest(testBoard);
-        long testBoardId = -666L;
         var jsonContent = JsonConvert.SerializeObject(testBoardRequest);
         logger.WriteLine($"GetBoard-Add: {jsonContent}");
         var request = await client.PutAsync($"{TodoCommon.boardPath}", new StringContent(jsonContent, Encoding.UTF8, "application/json"));
@@ -46,19 +45,17 @@ public class BoardIntegrationTest
         if (request is not null)
         {
             var addedBoardContent = await request.Content.ReadAsStringAsync();
-            var addedBoard = JsonConvert.DeserializeObject(addedBoardContent) as Board;
-            logger.WriteLine($"GetBoard-Fetch-Content: {addedBoardContent}");
+            var addedBoard = JsonConvert.DeserializeObject<Board>(addedBoardContent);
             if (addedBoard is not null)
             {
-                testBoardId = addedBoard.id;
+                var testBoardId = addedBoard.id;
                 var response = await client.GetAsync($"{TodoCommon.boardPath}/{testBoardId}");
+                response.EnsureSuccessStatusCode();
                 jsonContent = JsonConvert.SerializeObject(addedBoard);
                 logger.WriteLine($"GetBoard-Fetch: {jsonContent}");
-                /*
-                var expectedObject = JObject.Parse("");
-                var responseObject = JObject.Parse(await response.Content.ReadAsStringAsync());
-                Assert.Equal(expectedObject, responseObject);
-                */
+                var expectedObject = testBoard;
+                var responseObject = addedBoard;
+                TestEntityAsserter.AssertBoardsEqual(expectedObject, responseObject);
             }
         }
     }
