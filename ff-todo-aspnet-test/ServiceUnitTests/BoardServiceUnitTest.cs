@@ -112,7 +112,7 @@ public class BoardServiceUnitTest
         var expected = testEntity;
         var actual = mockService.Object.AddBoard(testRequest);
 
-        AssertBoardsEqual(expected, actual);
+        AssertBoardResponsesEqual(expected, actual);
     }
 
     [Fact]

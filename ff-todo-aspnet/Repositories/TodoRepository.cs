@@ -42,7 +42,7 @@ namespace ff_todo_aspnet.Repositories
             else
                 return null;
         }
-        public Todo AddTodo(Todo todo)
+        public TodoResponse AddTodo(Todo todo)
         {
             todo.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_TODO, todo.name ?? "", false);
             context.Todos.Add(todo);
@@ -108,7 +108,7 @@ namespace ff_todo_aspnet.Repositories
             }
             context.SaveChanges();
         }
-        public Todo? CloneTodo(long id, int phase, long boardId, DateTime dateCreatedNew, DateTime dateModifiedNew)
+        public TodoResponse? CloneTodo(long id, int phase, long boardId, DateTime dateCreatedNew, DateTime dateModifiedNew)
         {
             if (context.Todos.Count(todo => todo.id == id) > 0)
             {

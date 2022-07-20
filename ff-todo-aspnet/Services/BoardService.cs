@@ -40,7 +40,7 @@ namespace ff_todo_aspnet.Services
         {
             return DateTime.UtcNow;
         }
-        public Board AddBoard(BoardRequest boardRequest)
+        public BoardResponse AddBoard(BoardRequest boardRequest)
         {
             Board board = boardRequest;
             BoardResponse addedBoard;
@@ -50,7 +50,7 @@ namespace ff_todo_aspnet.Services
             board.todos = new Collection<Todo>();
             addedBoard = boardRepository.AddBoard(board);
             logger.LogInformation("Successfully added new Board: {0}", addedBoard.ToString());
-            return board;
+            return addedBoard;
         }
         public Board? RemoveBoard(long id)
         {

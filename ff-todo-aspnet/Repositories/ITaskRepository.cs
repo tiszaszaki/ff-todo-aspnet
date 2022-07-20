@@ -5,7 +5,7 @@ namespace ff_todo_aspnet.Repositories
 {
     public interface ITaskRepository
     {
-        Task AddTask(Task task);
+        TaskResponse AddTask(Task task);
         IEnumerable<TaskResponse> FetchAllTasksFromTodo(long todoId);
         TaskResponse? FetchTask(long id);
         TaskResponse? FetchTaskByName(string name);

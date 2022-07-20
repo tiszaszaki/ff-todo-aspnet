@@ -27,7 +27,7 @@ namespace ff_todo_aspnet.Repositories
             else
                 return null;
         }
-        public Board AddBoard(Board board)
+        public BoardResponse AddBoard(Board board)
         {
             board.name = context.ReplaceNameToUnused(TodoDbEntityType.FFTODO_BOARD, board.name ?? "", false);
             context.Boards.Add(board);

@@ -12,7 +12,7 @@ public class TodoServiceUnitTest
 {
     private readonly Mock<ITodoService> mockService = new Mock<ITodoService>();
 
-    private readonly long defaultBoardId = -666;
+    private readonly long defaultBoardId = -666L;
 
     private Collection<TodoResponse> GetTestTodoResponses()
     {
@@ -150,7 +150,7 @@ public class TodoServiceUnitTest
         var expected = testEntity;
         var actual = mockService.Object.AddTodo(boardId, testRequest);
 
-        AssertTodosEqual(expected, actual);
+        AssertTodoResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -212,7 +212,7 @@ public class TodoServiceUnitTest
     {
         Todo testCloneParams = TestEntityProvider.GetTestCloneParams();
 
-        mockService.Setup(s => s.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId ?? defaultBoardId)).Returns(null as Todo);
+        mockService.Setup(s => s.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId ?? defaultBoardId)).Returns(null as TodoResponse);
 
         var actual = mockService.Object.CloneTodo(testCloneParams.id, testCloneParams.phase, testCloneParams.boardId ?? defaultBoardId);
 

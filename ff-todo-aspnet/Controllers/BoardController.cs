@@ -33,7 +33,7 @@ namespace ff_todo_aspnet.Controllers
                 return NotFound(ErrorMessages.BOARD_NOT_EXIST_MESSAGE(id));
         }
         [HttpPut]
-        public Board AddBoard(BoardRequest board)
+        public BoardResponse AddBoard(BoardRequest board)
         {
             return boardService.AddBoard(board);
         }
@@ -61,7 +61,7 @@ namespace ff_todo_aspnet.Controllers
             return todoService.GetAllTodosFromBoard(id);
         }
         [HttpPut("{id}/todo")]
-        public Todo AddTodo(long id, [FromBody] TodoRequest todo)
+        public TodoResponse AddTodo(long id, [FromBody] TodoRequest todo)
         {
             return todoService.AddTodo(id, todo);
         }

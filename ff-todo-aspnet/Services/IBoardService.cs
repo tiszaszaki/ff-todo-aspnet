@@ -6,7 +6,7 @@ namespace ff_todo_aspnet.Services
 {
     public interface IBoardService
     {
-        Board AddBoard(BoardRequest boardRequest);
+        BoardResponse AddBoard(BoardRequest boardRequest);
         BoardResponse? GetBoard(long id);
         IEnumerable<long> GetBoardIds();
         bool GetBoardReadonlyTasksSetting(long id);

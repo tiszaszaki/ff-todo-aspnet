@@ -49,7 +49,7 @@ namespace ff_todo_aspnet.Services
         {
             return DateTime.UtcNow;
         }
-        public Todo AddTodo(long boardId, TodoRequest todoRequest)
+        public TodoResponse AddTodo(long boardId, TodoRequest todoRequest)
         {
             Todo todo = todoRequest;
             TodoResponse addedTodo;
@@ -59,7 +59,7 @@ namespace ff_todo_aspnet.Services
             todo.boardId = boardId;
             addedTodo = todoRepository.AddTodo(todo);
             logger.LogInformation("Successfully added new Todo: {0}", addedTodo.ToString());
-            return todo;
+            return addedTodo;
         }
         public Todo? RemoveTodo(long id)
         {
@@ -100,9 +100,9 @@ namespace ff_todo_aspnet.Services
                 logger.LogError("Failed to update Todo with ID ({0})", id);
             return persistedTodo;
         }
-        public Todo? CloneTodo(long id, int phase, long boardId)
+        public TodoResponse? CloneTodo(long id, int phase, long boardId)
         {
-            Todo? result = todoRepository.CloneTodo(id, phase, boardId, FetchNewDateTime(), FetchNewDateTime());
+            TodoResponse? result = todoRepository.CloneTodo(id, phase, boardId, FetchNewDateTime(), FetchNewDateTime());
             if (result is not null)
             {
                 if (todoRepository.IsNameTruncated)

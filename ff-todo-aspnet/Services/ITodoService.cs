@@ -6,8 +6,8 @@ namespace ff_todo_aspnet.Services
 {
     public interface ITodoService
     {
-        Todo AddTodo(long boardId, TodoRequest todoRequest);
-        Todo? CloneTodo(long id, int phase, long boardId);
+        TodoResponse AddTodo(long boardId, TodoRequest todoRequest);
+        TodoResponse? CloneTodo(long id, int phase, long boardId);
         IEnumerable<TodoResponse> GetAllTodosFromBoard(long boardId);
         TodoResponse? GetTodo(long id);
         TodoResponse? GetTodoByName(string name);

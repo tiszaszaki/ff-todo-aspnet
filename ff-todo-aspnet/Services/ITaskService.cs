@@ -6,7 +6,7 @@ namespace ff_todo_aspnet.Services
 {
     public interface ITaskService
     {
-        Task AddTask(long todoId, TaskRequest taskRequest);
+        TaskResponse AddTask(long todoId, TaskRequest taskRequest);
         IEnumerable<TaskResponse> GetAllTasksFromTodo(long todoId);
         TaskResponse? GetTask(long id);
         IEnumerable<TaskResponse> GetTasks();

@@ -9,8 +9,8 @@ namespace ff_todo_aspnet.Repositories
         string CloneTodoOldName { get; set; }
         bool IsNameTruncated { get; set; }
 
-        Todo AddTodo(Todo todo);
-        Todo? CloneTodo(long id, int phase, long boardId, DateTime dateCreatedNew, DateTime dateModifiedNew);
+        TodoResponse AddTodo(Todo todo);
+        TodoResponse? CloneTodo(long id, int phase, long boardId, DateTime dateCreatedNew, DateTime dateModifiedNew);
         IEnumerable<TodoResponse> FetchAllTodosFromBoard(long boardId);
         TodoResponse? FetchTodo(long id);
         TodoResponse? FetchTodoByName(string name);

@@ -5,7 +5,7 @@ namespace ff_todo_aspnet.Repositories
 {
     public interface IBoardRepository
     {
-        Board AddBoard(Board board);
+        BoardResponse AddBoard(Board board);
         BoardResponse? FetchBoard(long id);
         IEnumerable<long> FetchBoardIds();
         bool FetchBoardReadonlyTasksSetting(long id);

@@ -39,7 +39,7 @@ namespace ff_todo_aspnet.Services
         {
             return DateTime.UtcNow;
         }
-        public Task AddTask(long todoId, TaskRequest taskRequest)
+        public TaskResponse AddTask(long todoId, TaskRequest taskRequest)
         {
             Task task = taskRequest;
             TaskResponse addedTask;
@@ -49,7 +49,7 @@ namespace ff_todo_aspnet.Services
             task.todoId = todoId;
             addedTask = taskRepository.AddTask(task);
             logger.LogInformation("Successfully added new Task: {0}", addedTask.ToString());
-            return task;
+            return addedTask;
         }
         public Task? RemoveTask(long id)
         {

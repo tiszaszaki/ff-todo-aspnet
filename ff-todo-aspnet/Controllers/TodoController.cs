@@ -70,7 +70,7 @@ namespace ff_todo_aspnet.Controllers
         [HttpGet("{id}/clone/{phase}/{boardId}")]
         public ActionResult CloneTodo(long id, int phase, long boardId)
         {
-            Todo? todo = todoService.CloneTodo(id, phase, boardId);
+            TodoResponse? todo = todoService.CloneTodo(id, phase, boardId);
             if (todo is not null)
                 return Ok(todo);
             else
@@ -82,7 +82,7 @@ namespace ff_todo_aspnet.Controllers
             return taskService.GetAllTasksFromTodo(id);
         }
         [HttpPut("{id}/task")]
-        public Task AddTask(long id, [FromBody] TaskRequest task)
+        public TaskResponse AddTask(long id, [FromBody] TaskRequest task)
         {
             return taskService.AddTask(id, task);
         }

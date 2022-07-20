@@ -26,7 +26,7 @@ public class TaskServiceUnitTest
         Assert.Equal(expected.deadline, actual.deadline);
         Assert.Equal(expected.todoId, actual.todoId);
     }
-    private void AssertTodosEqual(Task expected, Task actual, bool is_strict = false)
+    private void AssertTasksEqual(Task expected, Task actual, bool is_strict = false)
     {
         if (is_strict) Assert.Equal(expected.id, actual.id);
         Assert.Equal(expected.name, actual.name);
@@ -119,7 +119,7 @@ public class TaskServiceUnitTest
         var expected = testEntity;
         var actual = mockService.Object.AddTask(todoId, testRequest);
 
-        AssertTodosEqual(expected, actual);
+        AssertTaskResponsesEqual(expected, actual);
     }
 
     [Fact]
@@ -168,7 +168,7 @@ public class TaskServiceUnitTest
 
         Assert.NotNull(actual);
         if (actual is not null)
-            AssertTodosEqual(expected, actual);
+            AssertTasksEqual(expected, actual);
     }
 
     [Fact]
