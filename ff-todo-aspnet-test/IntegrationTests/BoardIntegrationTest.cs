@@ -1,7 +1,7 @@
 ﻿using ff_todo_aspnet.Constants;
 using ff_todo_aspnet.Entities;
+using ff_todo_aspnet.ResponseObjects;
 using ff_todo_aspnet_test.Utilities;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
@@ -9,23 +9,21 @@ using Xunit.Abstractions;
 using SystemTask = System.Threading.Tasks.Task;
 
 namespace ff_todo_aspnet_test.IntegrationTests;
-public class BoardIntegrationTest
+public class BoardIntegrationTest : IClassFixture<BoardIntegrationTestFixture>
 {
-    private readonly HttpClient client;
     private readonly ITestOutputHelper logger;
+    private readonly BoardIntegrationTestFixture fixture;
 
-    public BoardIntegrationTest(ITestOutputHelper logger)
+    public BoardIntegrationTest(BoardIntegrationTestFixture fixture, ITestOutputHelper logger)
     {
-        var webapp = new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder => builder.UseSetting("IsRealDatabase", "false"));
-        client = webapp.CreateDefaultClient();
         this.logger = logger;
+        this.fixture = fixture;
     }
 
     [Fact]
     public async SystemTask GetBoardIds()
     {
-        var response = await client.GetAsync($"{TodoCommon.boardPath}");
+        var response = await fixture.client.GetAsync($"{TodoCommon.boardPath}");
         response.EnsureSuccessStatusCode();
         var expectedObject = new JArray();
         var responseObject = JArray.Parse(await response.Content.ReadAsStringAsync());
@@ -34,29 +32,50 @@ public class BoardIntegrationTest
     }
 
     [Fact]
-    public async SystemTask GetBoard()
+    public async SystemTask AddValidBoard()
     {
         var testBoard = TestEntityProvider.GetTestBoard();
         var testBoardRequest = TestEntityConverter.GetBoardRequest(testBoard);
         var jsonContent = JsonConvert.SerializeObject(testBoardRequest);
-        logger.WriteLine($"GetBoard-Add: {jsonContent}");
-        var request = await client.PutAsync($"{TodoCommon.boardPath}", new StringContent(jsonContent, Encoding.UTF8, "application/json"));
+        var request = await fixture.client.PutAsync($"{TodoCommon.boardPath}", new StringContent(jsonContent, Encoding.UTF8, "application/json"));
         request.EnsureSuccessStatusCode();
-        if (request is not null)
+        var addedBoardContent = await request.Content.ReadAsStringAsync();
+        var addedBoard = JsonConvert.DeserializeObject<Board>(addedBoardContent);
+        fixture.testBoardId = addedBoard.id;
+        var expectedObject = testBoard;
+        var actualObject = addedBoard;
+        logger.WriteLine($"AddValidBoard-Expected: {jsonContent}");
+        logger.WriteLine($"AddValidBoard-Actual: {addedBoardContent}");
+        TestEntityAsserter.AssertBoardsEqual(expectedObject, actualObject);
+    }
+
+    /*
+    [Fact]
+    public async SystemTask AddInvalidBoard()
+    {
+        var idx = 0;
+        foreach (var testBoardRequest in TestEntityProvider.GetInvalidBoardRequests())
         {
-            var addedBoardContent = await request.Content.ReadAsStringAsync();
-            var addedBoard = JsonConvert.DeserializeObject<Board>(addedBoardContent);
-            if (addedBoard is not null)
-            {
-                var testBoardId = addedBoard.id;
-                var response = await client.GetAsync($"{TodoCommon.boardPath}/{testBoardId}");
-                response.EnsureSuccessStatusCode();
-                jsonContent = JsonConvert.SerializeObject(addedBoard);
-                logger.WriteLine($"GetBoard-Fetch: {jsonContent}");
-                var expectedObject = testBoard;
-                var responseObject = addedBoard;
-                TestEntityAsserter.AssertBoardsEqual(expectedObject, responseObject);
-            }
+            var testBoard = testBoardRequest;
+            var jsonContent = JsonConvert.SerializeObject(testBoardRequest);
+            var request = await fixture.client.PutAsync($"{TodoCommon.boardPath}", new StringContent(jsonContent, Encoding.UTF8, "application/json"));
+            logger.WriteLine($"AddInvalidBoard-{++idx}: {jsonContent}");
         }
     }
+    */
+
+    /*
+    [Fact]
+    public async SystemTask GetExistingBoard()
+    {
+        var testBoardId = fixture.testBoardId;
+        logger.WriteLine($"GetBoard-Fetch-ID: {testBoardId}");
+        var response = await fixture.client.GetAsync($"{TodoCommon.boardPath}/{testBoardId}");
+        response.EnsureSuccessStatusCode();
+        var fetchedBoardContent = await response.Content.ReadAsStringAsync();
+        var fetchedBoard = JsonConvert.DeserializeObject<BoardResponse>(fetchedBoardContent);
+        logger.WriteLine($"GetBoard-Fetch-Object: {fetchedBoardContent}");
+        Assert.NotNull(fetchedBoard);
+    }
+    */
 }

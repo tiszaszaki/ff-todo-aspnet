@@ -14,17 +14,10 @@ public class TodoServiceUnitTest
 
     private readonly long defaultBoardId = -666L;
 
-    private Collection<TodoResponse> GetTestTodoResponses()
-    {
-        var todos = new Collection<TodoResponse>();
-        todos.Add(TestEntityProvider.GetTestTodo());
-        return todos;
-    }
-
     [Fact]
     public void GetTodosFromExistingBoardTest()
     {
-        var testTodos = GetTestTodoResponses();
+        var testTodos = TestEntityProvider.GetTestTodoResponses();
         var testId = 0L;
 
         mockService.Setup(s => s.GetAllTodosFromBoard(testId)).Returns(testTodos);
@@ -54,7 +47,7 @@ public class TodoServiceUnitTest
     [Fact]
     public void GetTodosTest()
     {
-        var testTodos = GetTestTodoResponses();
+        var testTodos = TestEntityProvider.GetTestTodoResponses();
 
         mockService.Setup(s => s.GetTodos()).Returns(testTodos);
 

@@ -11,17 +11,10 @@ public class TaskServiceUnitTest
 {
     private readonly Mock<ITaskService> mockService = new Mock<ITaskService>();
 
-    private Collection<TaskResponse> GetTestTaskResponses()
-    {
-        var tasks = new Collection<TaskResponse>();
-        tasks.Add(TestEntityProvider.GetTestTask());
-        return tasks;
-    }
-
     [Fact]
     public void GetTodosFromExistingBoardTest()
     {
-        var testTasks = GetTestTaskResponses();
+        var testTasks = TestEntityProvider.GetTestTaskResponses();
         var testId = 0L;
 
         mockService.Setup(s => s.GetAllTasksFromTodo(testId)).Returns(testTasks);
@@ -51,7 +44,7 @@ public class TaskServiceUnitTest
     [Fact]
     public void GetTasksTest()
     {
-        var testTasks = GetTestTaskResponses();
+        var testTasks = TestEntityProvider.GetTestTaskResponses();
 
         mockService.Setup(s => s.GetTasks()).Returns(testTasks);
 

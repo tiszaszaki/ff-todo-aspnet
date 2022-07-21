@@ -11,24 +11,10 @@ public class BoardServiceUnitTest
 {
     private readonly Mock<IBoardService> mockService = new Mock<IBoardService>();
 
-    private Collection<BoardResponse> GetTestBoardResponses()
-    {
-        var boards = new Collection<BoardResponse>();
-        boards.Add(TestEntityProvider.GetTestBoard());
-        return boards;
-    }
-    private Collection<long> GetTestBoardIds()
-    {
-        var boardIds = new Collection<long> {
-            1L, 2L
-        };
-        return boardIds;
-    }
-
     [Fact]
     public void GetBoardIdsTest()
     {
-        var testBoards = GetTestBoardIds();
+        var testBoards = TestEntityProvider.GetTestBoardIds();
 
         mockService.Setup(s => s.GetBoardIds()).Returns(testBoards);
 
@@ -42,7 +28,7 @@ public class BoardServiceUnitTest
     [Fact]
     public void GetBoardsTest()
     {
-        var testBoards = GetTestBoardResponses();
+        var testBoards = TestEntityProvider.GetTestBoardResponses();
 
         mockService.Setup(s => s.GetBoards()).Returns(testBoards);
 
