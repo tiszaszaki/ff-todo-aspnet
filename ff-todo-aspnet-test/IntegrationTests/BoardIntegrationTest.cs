@@ -35,39 +35,35 @@ public class BoardIntegrationTest : IClassFixture<BoardIntegrationTestFixture>
     public async SystemTask AddValidBoard()
     {
         var testBoard = TestEntityProvider.GetTestBoard();
-        var testBoardRequest = TestEntityConverter.GetBoardRequest(testBoard);
-        var jsonContent = JsonConvert.SerializeObject(testBoardRequest);
+        var jsonContent = JsonConvert.SerializeObject(TestEntityConverter.GetBoardRequest(testBoard));
         var request = await fixture.client.PutAsync($"{TodoCommon.boardPath}", new StringContent(jsonContent, Encoding.UTF8, "application/json"));
+        fixture.waitForAddOperation = false;
         request.EnsureSuccessStatusCode();
         var addedBoardContent = await request.Content.ReadAsStringAsync();
         var addedBoard = JsonConvert.DeserializeObject<Board>(addedBoardContent);
         fixture.testBoardId = addedBoard.id;
-        var expectedObject = testBoard;
-        var actualObject = addedBoard;
         logger.WriteLine($"AddValidBoard-Expected: {jsonContent}");
         logger.WriteLine($"AddValidBoard-Actual: {addedBoardContent}");
-        TestEntityAsserter.AssertBoardsEqual(expectedObject, actualObject);
+        TestEntityAsserter.AssertBoardsEqual(testBoard, addedBoard);
     }
 
-    /*
     [Fact]
     public async SystemTask AddInvalidBoard()
     {
         var idx = 0;
-        foreach (var testBoardRequest in TestEntityProvider.GetInvalidBoardRequests())
+        foreach (var testBoard in TestEntityProvider.GetInvalidBoardRequests())
         {
-            var testBoard = testBoardRequest;
-            var jsonContent = JsonConvert.SerializeObject(testBoardRequest);
+            var jsonContent = JsonConvert.SerializeObject(testBoard);
             var request = await fixture.client.PutAsync($"{TodoCommon.boardPath}", new StringContent(jsonContent, Encoding.UTF8, "application/json"));
             logger.WriteLine($"AddInvalidBoard-{++idx}: {jsonContent}");
         }
     }
-    */
 
-    /*
     [Fact]
     public async SystemTask GetExistingBoard()
     {
+        while (fixture.waitForAddOperation)
+            await SystemTask.Delay(1);
         var testBoardId = fixture.testBoardId;
         logger.WriteLine($"GetBoard-Fetch-ID: {testBoardId}");
         var response = await fixture.client.GetAsync($"{TodoCommon.boardPath}/{testBoardId}");
@@ -77,5 +73,4 @@ public class BoardIntegrationTest : IClassFixture<BoardIntegrationTestFixture>
         logger.WriteLine($"GetBoard-Fetch-Object: {fetchedBoardContent}");
         Assert.NotNull(fetchedBoard);
     }
-    */
 }

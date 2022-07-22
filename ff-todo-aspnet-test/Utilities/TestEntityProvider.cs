@@ -81,13 +81,13 @@ public class TestEntityProvider
         });
         boards.Add(new BoardRequest // description with invalid length
         {
-            name = validBoardName,
+            name = $"{validBoardName} (invalid)",
             description = new string('a', TodoCommon.MAX_BOARD_DESCRIPTION_LENGTH + 1),
             author = validBoardAuthor
         });
         boards.Add(new BoardRequest // author's name with invalid length
         {
-            name = validBoardName,
+            name = $"{validBoardName} (invalid)",
             description = validBoardDescription,
             author = new string('a', TodoCommon.MAX_BOARD_AUTHOR_LENGTH + 1)
         });
