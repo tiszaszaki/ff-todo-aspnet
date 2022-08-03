@@ -1,4 +1,5 @@
-﻿using ff_todo_aspnet.Configurations;
+﻿using Microsoft.EntityFrameworkCore;
+using ff_todo_aspnet.Configurations;
 
 namespace ff_todo_aspnet.PivotTables
 {
@@ -11,15 +12,8 @@ namespace ff_todo_aspnet.PivotTables
             this.context = context;
         }
 
-        private class PivotPrimaryKey
-        {
-            public long id { get; set; }
-            public string? name { get; set; }
-        }
         private PivotResponse<ReadinessRecord> ResultReadinessPivot(IEnumerable<ReadinessRecord> records)
-        {
-            foreach (var r in records)
-                r.doneTaskPercent = ReadinessRecord.GetPercent(r.doneTaskCount, r.taskCount);
+        {               
             var res = new PivotResponse<ReadinessRecord>
             {
                 fields = PivotResponseTools.ExtractFieldsFromType(typeof(ReadinessRecord)),
@@ -43,102 +37,37 @@ namespace ff_todo_aspnet.PivotTables
 
         public PivotResponse<ReadinessRecord> FetchBoardReadiness()
         {
-            var foundKeys = context.Boards
-                .Join(
-                    context.Todos,
-                    board => board.id,
-                    todo => todo.boardId,
-                    (board, todo) => new
-                    {
-                        boardId = board.id,
-                        name = board.name,
-                        todoId = todo.id
-                    }
-                )
-                .Join(
-                    context.Tasks,
-                    boardTodo => boardTodo.todoId,
-                    task => task.todoId,
-                    (boardTodo, task) => new
-                    {
-                        boardId = boardTodo.boardId,
-                        name = boardTodo.name,
-                        todoId = boardTodo.todoId,
-                        taskId = task.id,
-                        done = task.done
-                    }
-                )
-                .GroupBy(boardTodoTask => new { id = boardTodoTask.boardId, name = boardTodoTask.name })
-                .Select(groupedBoardTodoTask => new ReadinessRecord
-                    {
-                        id = groupedBoardTodoTask.Key.id,
-                        name = groupedBoardTodoTask.Key.name ?? "",
-                        doneTaskCount = groupedBoardTodoTask.Count(boardTodoTask => boardTodoTask.done),
-                        taskCount = groupedBoardTodoTask.Count()
-                    }
-                );
-            var remainingKeys = context.Boards
-                .Select(board => new PivotPrimaryKey { id = board.id, name = board.name ?? "" })
-                .Except(foundKeys.Select(e => new PivotPrimaryKey { id = e.id, name = e.name }));
-            var records = new List<ReadinessRecord>(foundKeys.ToList());
-            if (remainingKeys.Count() > 0)
+            var records_with_todos = context.Boards.Include(board => board.todos);
+            var records_with_tasks = records_with_todos.ThenInclude(todo => todo.tasks);
+            var records = records_with_tasks.Select(board => new ReadinessRecord
             {
-                foreach (var e in remainingKeys)
-                    records.Add(new ReadinessRecord
-                    {
-                        id = e.id,
-                        name = e.name,
-                        doneTaskCount = 0,
-                        taskCount = 0
-                    });
-            }
+                id = board.id,
+                name = board.name,
+                doneTaskCount = board.doneTaskCount,
+                taskCount = board.taskCount,
+                doneTaskPercent = board.doneTaskPercent
+        }).AsEnumerable();
             return ResultReadinessPivot(records);
         }
         public PivotResponse<ReadinessRecord> FetchTodoReadiness()
         {
-            var foundKeys = context.Todos
-                .Join(
-                    context.Tasks,
-                    todo => todo.id,
-                    task => task.todoId,
-                    (todo, task) => new
-                    {
-                        todoId = todo.id,
-                        name = todo.name,
-                        taskId = task.id,
-                        done = task.done
-                    }
-                )
-                .GroupBy(todoTask => new PivotPrimaryKey { id = todoTask.todoId, name = todoTask.name ?? "" })
-                .Select(groupedTodoTask => new ReadinessRecord
-                {
-                    id = groupedTodoTask.Key.id,
-                    name = groupedTodoTask.Key.name,
-                    doneTaskCount = groupedTodoTask.Count(boardTodoTask => boardTodoTask.done),
-                    taskCount = groupedTodoTask.Count()
-                }
-            );
-            var remainingKeys = context.Todos
-                .Select(todo => new PivotPrimaryKey { id = todo.id, name = todo.name ?? "" })
-                .Except(foundKeys.Select(e => new PivotPrimaryKey { id = e.id, name = e.name }));
-            var records = new List<ReadinessRecord>(foundKeys.ToList());
-            if (remainingKeys.Count() > 0)
+            var records_with_tasks = context.Todos.Include(todo => todo.tasks);
+            var records = records_with_tasks.Select(todo => new ReadinessRecord
             {
-                foreach (var e in remainingKeys)
-                    records.Add(new ReadinessRecord
-                    {
-                        id = e.id,
-                        name = e.name,
-                        doneTaskCount = 0,
-                        taskCount = 0
-                    });
-            }
+                id = todo.id,
+                name = todo.name,
+                doneTaskCount = todo.doneTaskCount,
+                taskCount = todo.taskCount,
+                doneTaskPercent = todo.doneTaskPercent
+            }).AsEnumerable();
             return ResultReadinessPivot(records);
         }
 
         public PivotResponse<LatestUpdateRecord> FetchBoardLatestUpdate()
         {
-            var records = context.Boards.Select(board => new LatestUpdateRecord
+            var records_with_todos = context.Boards.Include(board => board.todos);
+            var records_with_tasks = records_with_todos.ThenInclude(todo => todo.tasks);
+            var records = records_with_tasks.Select(board => new LatestUpdateRecord
             {
                 id = board.id,
                 name = board.name,
@@ -151,7 +80,8 @@ namespace ff_todo_aspnet.PivotTables
         }
         public PivotResponse<LatestUpdateRecord> FetchTodoLatestUpdate()
         {
-            var records = context.Todos.Select(todo => new LatestUpdateRecord
+            var records_with_tasks = context.Todos.Include(todo => todo.tasks);
+            var records = records_with_tasks.Select(todo => new LatestUpdateRecord
             {
                 id = todo.id,
                 name = todo.name,

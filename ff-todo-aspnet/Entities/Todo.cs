@@ -28,19 +28,32 @@ namespace ff_todo_aspnet.Entities
 		public long? boardId { get; set; }
 		public Board? board { get; set; }
 
-		public long doneTaskCount()
+		public long doneTaskCount
         {
-			if (tasks is not null)
-				return tasks.Where(t => t.done).Count();
-			else
-				return 0;
+			get
+			{
+				if (tasks is not null)
+					return tasks.Where(t => t.done).Count();
+				else
+					return 0;
+			}
         }
-		public long taskCount()
+		public long taskCount
 		{
-			if (tasks is not null)
-				return tasks.Count();
-			else
-				return 0;
+			get
+			{
+				if (tasks is not null)
+					return tasks.Count();
+				else
+					return 0;
+			}
+		}
+		public double doneTaskPercent
+		{
+			get
+			{
+				return ReadinessRecord.GetPercent(doneTaskCount, taskCount);
+			}
 		}
 
 		private List<PivotEntityEvent> GetEvents()

@@ -28,20 +28,33 @@ namespace ff_todo_aspnet.Entities
 		public bool readonlyTasks { get; set; }
 		public IEnumerable<Todo>? todos { get; set; }
 
-		public long doneTaskCount()
+		public long doneTaskCount
 		{
-			if (todos is not null)
-				return todos.Select(t => t.doneTaskCount()).Sum();
-			else
-				return 0;
+			get
+			{
+				if (todos is not null)
+					return todos.Select(t => t.doneTaskCount).Sum();
+				else
+					return 0;
+			}
 		}
-		public long taskCount()
+		public long taskCount
 		{
-			if (todos is not null)
-				return todos.Select(t => t.taskCount()).Sum();
-			else
-				return 0;
+			get
+			{
+				if (todos is not null)
+					return todos.Select(t => t.taskCount).Sum();
+				else
+					return 0;
+			}
 		}
+		public double doneTaskPercent
+        {
+			get
+            {
+				return ReadinessRecord.GetPercent(doneTaskCount, taskCount);
+            }
+        }
 
 		private List<PivotEntityEvent> GetEvents()
 		{
